@@ -1,10 +1,159 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zaid Ahmad | CS Portfolio</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    canvas#bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+
 <body>
+  <canvas id="bg"></canvas>
 
-<h1>My First Heading</h1>
+  <div id="intro">
+    <h1>Zaid Ahmad</h1>
+    <p>Computer Science Student | Aspiring Software Engineer</p>
+  </div>
 
-<p>My first paragraph.</p>
+  <header>
+    <h1>Zaid Ahmad</h1>
+    <p>Computer Science Student @ Carleton University</p>
+  </header>
 
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Tech Stack</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+    <a class="resume-btn" href="Zaid-Ahmad-CV.pdf" target="_blank" download>📄 CV</a>
+  </nav>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I’m a CS student with a passion for solving real-world problems through tech. I’ve built interactive apps using React Native, Firebase, and Node.js — and I love applying my skills in team-based settings like hackathons and part-time jobs. I'm looking for internships where I can contribute and grow.</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project">
+      <h3>Homeless Shelter Finder (CUHacking 2025)</h3>
+      <p>Swipeable React Native app that helps users discover local shelters based on location, gender, and amenities. Firebase Firestore + Node.js backend.</p>
+    </div>
+    <div class="project">
+      <h3>Arduino Memory Colour Game</h3>
+      <p>Memory-challenge game using LED buttons, sound, and LCD with Arduino. Tests user's memory and sequence recall visually and audibly.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Tech Stack</h2>
+    <ul>
+      <li><strong>Languages:</strong> Python, Java, C</li>
+      <li><strong>Frameworks:</strong> Node.js, Flask</li>
+      <li><strong>Tools:</strong> Firebase, IntelliJ, VS Code, Matplotlib</li>
+    </ul>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="project">
+      <h3>Crew Member — McDonald's (Aug 2022–Present)</h3>
+      <ul>
+        <li>Delivered high-quality service and managed food safety protocols.</li>
+        <li>Handled high-volume orders efficiently while maintaining clear communication.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Get in Touch</h2>
+    <p>Email: <a class="contact-link" href="mailto:zaidahmad8060@gmail.com">zaidahmad8060@gmail.com</a></p>
+    <p>GitHub: <a class="contact-link" href="https://github.com/zaidahmad16" target="_blank">github.com/zaidahmad16</a></p>
+    <p>LinkedIn: <a class="contact-link" href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank">linkedin.com/in/zaid-ahmad-ba9b10224</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Zaid Ahmad. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+    let stars = [], numStars = 150;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.5,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        star.x += star.vx;
+        star.y += star.vy;
+
+        if (star.x < 0 || star.x > canvas.width) star.vx *= -1;
+        if (star.y < 0 || star.y > canvas.height) star.vy *= -1;
+      });
+
+      // Draw lines between nearby stars
+      ctx.beginPath();
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+          }
+        }
+      }
+      ctx.stroke();
+
+      requestAnimationFrame(drawStars);
+    }
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      initStars();
+    });
+
+    resizeCanvas();
+    initStars();
+    drawStars();
+  </script>
 </body>
+
 </html>
