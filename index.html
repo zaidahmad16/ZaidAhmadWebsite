@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,21 +7,103 @@
   <link rel="stylesheet" href="reset.css" />
   <link rel="stylesheet" href="styles.css" />
   <style>
+    body {
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, nav a, .resume-btn, .tech-item, .contact-link {
+      color: #ffffff !important;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .project {
+      background-color: #121212;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    }
+
+    nav a:hover, .contact-link:hover {
+      text-decoration: underline;
+      color: #ffffff;
+    }
+
+    .resume-btn {
+      background-color: #ffffff;
+      color: #000000;
+      text-shadow: none;
+    }
+
+    .resume-btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .tech-item {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      font-weight: 500;
+      transition: transform 0.3s;
+    }
+
+    .tech-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    section {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      opacity: 1;
+      transform: none;
+    }
+
+    #intro {
+      background-color: #0a0a0a;
+      color: #ffffff;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 2rem;
+    }
+
+    #typed-name {
+      color: white;
+      font-size: 3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid white;
+    }
+
     canvas#bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
+      display: none;
     }
   </style>
 </head>
-
 <body>
-  <canvas id="bg"></canvas>
-
   <div id="intro">
-    <h1>Zaid Ahmad</h1>
-    <p>Computer Science Student | Aspiring Software Engineer</p>
+    <h1 id="typed-name"></h1>
+    <p>Computer Science Student</p>
   </div>
 
   <header>
@@ -41,7 +122,8 @@
 
   <section id="about">
     <h2>About Me</h2>
-    <p>I’m a CS student with a passion for solving real-world problems through tech. I’ve built interactive apps using React Native, Firebase, and Node.js — and I love applying my skills in team-based settings like hackathons and part-time jobs. I'm looking for internships where I can contribute and grow.</p>
+    <p>Hey! I'm Zaid — born and raised in Ottawa and currently studying Computer Science at Carleton University. I'm someone who’s always been curious about how tech can solve real-world problems. Whether it’s through hackathons, building an Arduino game, or learning backend systems, I love bringing ideas to life with code.</p>
+    <p>Outside of tech, you’ll probably find me exploring new cafés, watching space documentaries, or tweaking my setup late into the night. I'm actively looking for internships where I can grow as a developer, learn from smart people, and contribute to meaningful projects.</p>
   </section>
 
   <section id="projects">
@@ -58,11 +140,19 @@
 
   <section id="skills">
     <h2>Tech Stack</h2>
-    <ul>
-      <li><strong>Languages:</strong> Python, Java, C</li>
-      <li><strong>Frameworks:</strong> Node.js, Flask</li>
-      <li><strong>Tools:</strong> Firebase, IntelliJ, VS Code, Matplotlib</li>
-    </ul>
+    <div class="tech-grid">
+      <div class="tech-item">🐍 Python</div>
+      <div class="tech-item">☕ Java</div>
+      <div class="tech-item">💻 C</div>
+      <div class="tech-item">🟢 Node.js</div>
+      <div class="tech-item">🔥 Flask</div>
+      <div class="tech-item">📦 Firebase</div>
+      <div class="tech-item">🧠 IntelliJ</div>
+      <div class="tech-item">🧩 VS Code</div>
+      <div class="tech-item">📊 Matplotlib</div>
+      <div class="tech-item">📈 Algorithms</div>
+      <div class="tech-item">📐 OOP</div>
+    </div>
   </section>
 
   <section id="experience">
@@ -70,8 +160,20 @@
     <div class="project">
       <h3>Crew Member — McDonald's (Aug 2022–Present)</h3>
       <ul>
-        <li>Delivered high-quality service and managed food safety protocols.</li>
-        <li>Handled high-volume orders efficiently while maintaining clear communication.</li>
+        <li>Provided friendly, efficient service to hundreds of customers daily at both front counter and drive-thru.</li>
+        <li>Managed high-pressure environments and multitasked across order prep, cooking, and cleaning.</li>
+        <li>Followed detailed food safety protocols and maintained clean, organized workspaces during busy hours.</li>
+        <li>Collaborated with team members to ensure timely and accurate order delivery.</li>
+        <li>Communicated clearly and professionally with customers to resolve issues and provide excellent experiences.</li>
+      </ul>
+    </div>
+    <div class="project">
+      <h3>CUHacking 2025 — Hackathon Participant</h3>
+      <ul>
+        <li>Worked in a fast-paced, team-based hackathon to develop a mobile app in under 24 hours.</li>
+        <li>Built "Homeless Shelter Finder" — a React Native app powered by Firebase Firestore and Node.js Express.</li>
+        <li>Implemented swipeable UI, real-time data filters, and user-focused design targeting accessibility and impact.</li>
+        <li>Presented and demoed the project to industry mentors and judges at the CUHacking showcase.</li>
       </ul>
     </div>
   </section>
@@ -89,71 +191,21 @@
 
   <script src="script.js"></script>
   <script>
-    const canvas = document.getElementById("bg");
-    const ctx = canvas.getContext("2d");
-    let stars = [], numStars = 150;
+    const nameText = "Zaid Ahmad";
+    const nameElement = document.getElementById("typed-name");
+    let index = 0;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < numStars; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.5,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3
-        });
+    function typeLetter() {
+      if (index < nameText.length) {
+        nameElement.textContent += nameText.charAt(index);
+        index++;
+        setTimeout(typeLetter, 180);
+      } else {
+        nameElement.style.borderRight = "none";
       }
     }
 
-    function drawStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-        star.x += star.vx;
-        star.y += star.vy;
-
-        if (star.x < 0 || star.x > canvas.width) star.vx *= -1;
-        if (star.y < 0 || star.y > canvas.height) star.vy *= -1;
-      });
-
-      // Draw lines between nearby stars
-      ctx.beginPath();
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-          }
-        }
-      }
-      ctx.stroke();
-
-      requestAnimationFrame(drawStars);
-    }
-
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-      initStars();
-    });
-
-    resizeCanvas();
-    initStars();
-    drawStars();
+    document.addEventListener("DOMContentLoaded", typeLetter);
   </script>
 </body>
-
 </html>
