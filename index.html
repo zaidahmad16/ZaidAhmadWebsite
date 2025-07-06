@@ -16,9 +16,31 @@
       overflow-x: hidden;
     }
 
-    h1, h2, h3, nav a, .resume-btn, .tech-item, .contact-link {
+    h1, h2, h3, nav a, .tech-item, .contact-link {
       color: #ffffff !important;
       text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .resume-btn {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      text-shadow: none !important;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+      margin-left: 1rem;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .resume-btn:hover {
+      background-color: #e0e0e0;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+    }
+
+    nav a:hover, .contact-link:hover {
+      text-decoration: underline;
+      color: #ffffff;
     }
 
     .project {
@@ -28,21 +50,6 @@
       padding: 1rem;
       margin-bottom: 1.5rem;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-    }
-
-    nav a:hover, .contact-link:hover {
-      text-decoration: underline;
-      color: #ffffff;
-    }
-
-    .resume-btn {
-      background-color: #000000;
-      color: #000000;
-      text-shadow: none;
-    }
-
-    .resume-btn:hover {
-      background-color: #e0e0e0;
     }
 
     .tech-grid {
@@ -117,7 +124,7 @@
     <a href="#skills">Tech Stack</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
-    <a class="resume-btn" href="Zaid-Ahmad-CV.pdf" target="_blank" download>📄 CV</a>
+    <a class="resume-btn" href="Zaid-Ahmad-CV.pdf" download>📄 CV</a>
   </nav>
 
   <section id="about">
