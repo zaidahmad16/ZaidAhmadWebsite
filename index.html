@@ -248,6 +248,26 @@
       align-items: center;
       height: 100vh;
       font-size: 2rem;
+      position: fixed;
+      width: 100%;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #intro.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #snakeCanvas {
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    #gameInstructions {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #aaa;
     }
 
     #typed-name {
@@ -265,8 +285,9 @@
 </head>
 <body>
   <div id="intro">
-    <h1 id="typed-name"></h1>
-    <p>Computer Science Student</p>
+    <canvas id="snakeCanvas" width="600" height="400"></canvas>
+    <p id="gameInstructions">Use Arrow Keys to Play • Collect the food!</p>
+    <p id="gameScore" style="margin-top: 0.5rem; font-size: 1.2rem;">Score: 0</p>
   </div>
 
   <header style="background-color: #0a0a0a !important; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
@@ -467,21 +488,137 @@
 
   <script src="script.js"></script>
   <script>
-    const nameText = "Zaid Ahmad";
-    const nameElement = document.getElementById("typed-name");
-    let index = 0;
+    // Snake Game Implementation
+    const canvas = document.getElementById('snakeCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreElement = document.getElementById('gameScore');
+    
+    const gridSize = 20;
+    const tileCount = canvas.width / gridSize;
+    
+    let snake = [{x: 10, y: 10}];
+    let food = {x: 15, y: 15};
+    let dx = 0;
+    let dy = 0;
+    let score = 0;
+    let gameRunning = false;
+    let gameOver = false;
 
-    function typeLetter() {
-      if (index < nameText.length) {
-        nameElement.textContent += nameText.charAt(index);
-        index++;
-        setTimeout(typeLetter, 180);
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      if (!gameRunning && !gameOver) {
+        gameRunning = true;
+        gameLoop();
+      }
+      
+      const key = e.key;
+      if (key === 'ArrowUp' && dy === 0) { dx = 0; dy = -1; }
+      if (key === 'ArrowDown' && dy === 0) { dx = 0; dy = 1; }
+      if (key === 'ArrowLeft' && dx === 0) { dx = -1; dy = 0; }
+      if (key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; }
+    });
+
+    function drawGame() {
+      // Clear canvas
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw snake
+      snake.forEach((segment, index) => {
+        ctx.fillStyle = index === 0 ? '#00ff88' : '#00cc66';
+        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
+      });
+      
+      // Draw food
+      ctx.fillStyle = '#ff4444';
+      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+    }
+
+    function updateGame() {
+      if (!gameRunning) return;
+      
+      const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+      
+      // Check wall collision
+      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+        endGame();
+        return;
+      }
+      
+      // Check self collision
+      if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+        endGame();
+        return;
+      }
+      
+      snake.unshift(head);
+      
+      // Check food collision
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        scoreElement.textContent = `Score: ${score}`;
+        food = {
+          x: Math.floor(Math.random() * tileCount),
+          y: Math.floor(Math.random() * tileCount)
+        };
       } else {
-        nameElement.style.borderRight = "none";
+        snake.pop();
       }
     }
 
-    document.addEventListener("DOMContentLoaded", typeLetter);
+    function gameLoop() {
+      if (!gameRunning) return;
+      updateGame();
+      drawGame();
+      setTimeout(gameLoop, 100);
+    }
+
+    function endGame() {
+      gameRunning = false;
+      gameOver = true;
+      spellName();
+    }
+
+    function spellName() {
+      // Positions to spell "ZAID AHMAD" on the canvas
+      const letterPositions = {
+        'Z': [{x:2,y:2},{x:3,y:2},{x:4,y:2},{x:5,y:2},{x:5,y:3},{x:4,y:4},{x:3,y:5},{x:2,y:6},{x:3,y:6},{x:4,y:6},{x:5,y:6}],
+        'A1': [{x:8,y:6},{x:8,y:5},{x:8,y:4},{x:8,y:3},{x:8,y:2},{x:9,y:2},{x:10,y:2},{x:10,y:3},{x:10,y:4},{x:10,y:5},{x:10,y:6},{x:9,y:4}],
+        'I': [{x:12,y:2},{x:12,y:3},{x:12,y:4},{x:12,y:5},{x:12,y:6}],
+        'D': [{x:14,y:2},{x:14,y:3},{x:14,y:4},{x:14,y:5},{x:14,y:6},{x:15,y:2},{x:16,y:3},{x:16,y:4},{x:16,y:5},{x:15,y:6}],
+        'A2': [{x:2,y:10},{x:2,y:11},{x:2,y:12},{x:2,y:13},{x:2,y:14},{x:3,y:10},{x:4,y:10},{x:4,y:11},{x:4,y:12},{x:4,y:13},{x:4,y:14},{x:3,y:12}],
+        'H': [{x:6,y:10},{x:6,y:11},{x:6,y:12},{x:6,y:13},{x:6,y:14},{x:7,y:12},{x:8,y:10},{x:8,y:11},{x:8,y:12},{x:8,y:13},{x:8,y:14}],
+        'M': [{x:10,y:14},{x:10,y:13},{x:10,y:12},{x:10,y:11},{x:10,y:10},{x:11,y:11},{x:12,y:12},{x:13,y:11},{x:14,y:10},{x:14,y:11},{x:14,y:12},{x:14,y:13},{x:14,y:14}],
+        'A3': [{x:16,y:14},{x:16,y:13},{x:16,y:12},{x:16,y:11},{x:16,y:10},{x:17,y:10},{x:18,y:10},{x:18,y:11},{x:18,y:12},{x:18,y:13},{x:18,y:14},{x:17,y:12}],
+        'D2': [{x:20,y:10},{x:20,y:11},{x:20,y:12},{x:20,y:13},{x:20,y:14},{x:21,y:10},{x:22,y:11},{x:22,y:12},{x:22,y:13},{x:21,y:14}]
+      };
+      
+      const allPositions = Object.values(letterPositions).flat();
+      
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      let index = 0;
+      const animationInterval = setInterval(() => {
+        if (index < allPositions.length) {
+          const pos = allPositions[index];
+          ctx.fillStyle = '#00ff88';
+          ctx.fillRect(pos.x * gridSize, pos.y * gridSize, gridSize - 2, gridSize - 2);
+          index++;
+        } else {
+          clearInterval(animationInterval);
+          setTimeout(() => {
+            document.getElementById('intro').classList.add('fade-out');
+            setTimeout(() => {
+              document.getElementById('intro').style.display = 'none';
+            }, 1000);
+          }, 2000);
+        }
+      }, 30);
+    }
+
+    // Initial draw
+    drawGame();
   </script>
 </body>
 </html>
