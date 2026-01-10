@@ -13,10 +13,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   sections.forEach(section => observer.observe(section));
-
-  // Remove intro splash after fade
-  setTimeout(() => {
-    const intro = document.getElementById("intro");
-    if (intro) intro.style.display = "none";
-  }, 4500);
 });

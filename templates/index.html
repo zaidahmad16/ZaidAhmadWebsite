@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zaid Ahmad | CS Portfolio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="reset.css" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <style>
-    body {
-      background-color: #0a0a0a;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
+    /* Intro Animation */
+    #intro {
+      background-color: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: fixed;
+      width: 100%;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 1s ease-out;
     }
 
-    h1, h2, h3, nav a, .tech-item, .contact-link {
-      color: #ffffff !important;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    #intro.fade-out {
+      opacity: 0;
     }
 
+    /* Component Styles */
     .resume-btn {
       background-color: #ffffff !important;
       color: #000000 !important;
@@ -39,11 +45,6 @@
       box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
     }
 
-    nav a:hover, .contact-link:hover {
-      text-decoration: underline;
-      color: #ffffff;
-    }
-
     .project {
       background-color: #121212;
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -51,13 +52,6 @@
       padding: 1rem;
       margin-bottom: 1.5rem;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-    }
-
-    .highlights {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
     }
 
     .highlight-card {
@@ -114,11 +108,6 @@
       color: #bbb;
       font-size: 1.1rem;
       margin: 0.5rem 0;
-    }
-
-    .education-detail {
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
     }
 
     .coursework-list {
@@ -187,11 +176,6 @@
       line-height: 1.6;
     }
 
-    .skills-container {
-      display: grid;
-      gap: 2rem;
-    }
-
     .skill-category {
       background-color: #0f0f0f;
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -222,6 +206,8 @@
       padding: 0.75rem 1rem;
       text-align: center;
       font-weight: 500;
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
       transition: transform 0.3s;
     }
 
@@ -229,86 +215,34 @@
       transform: scale(1.05);
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
-
-    section {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
-      opacity: 1;
-      transform: none;
-    }
-
-    #intro {
-      background-color: #0a0a0a;
-      color: #ffffff;
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-size: 2rem;
-      position: fixed;
-      width: 100%;
-      z-index: 9999;
-      transition: opacity 1s ease;
-    }
-
-    #intro.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    #snakeCanvas {
-      border: 2px solid #ffffff;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    }
-
-    #gameInstructions {
-      margin-top: 1rem;
-      font-size: 1rem;
-      color: #aaa;
-    }
-
-    #typed-name {
-      color: white;
-      font-size: 3rem;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid white;
-    }
-
-    canvas#bg {
-      display: none;
-    }
   </style>
 </head>
 <body>
   <div id="intro">
-    <canvas id="snakeCanvas" width="600" height="400"></canvas>
-    <p id="gameInstructions">Use Arrow Keys to Play • Collect the food!</p>
-    <p id="gameScore" style="margin-top: 0.5rem; font-size: 1.2rem;">Score: 0</p>
+    <img src="{{ url_for('static', filename='snake-animation.gif') }}" alt="Snake Animation" style="width: 100vw; height: 100vh; object-fit: contain;">
   </div>
 
-  <header style="background-color: #0a0a0a !important; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
+  <header>
     <h1 class="text-4xl font-bold mb-2">Zaid Ahmad</h1>
-    <p class="text-lg" style="color: #e0e0e0;">Computer Science Student @ Carleton University</p>
+    <p class="text-lg">Computer Science Student @ Carleton University</p>
   </header>
 
-  <nav style="background-color: #0a0a0a !important; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
-    <a href="#about" class="hover:text-teal-400 transition-colors">About</a>
-    <a href="#education" class="hover:text-teal-400 transition-colors">Education</a>
-    <a href="#projects" class="hover:text-teal-400 transition-colors">Projects</a>
-    <a href="#skills" class="hover:text-teal-400 transition-colors">Tech Stack</a>
-    <a href="#experience" class="hover:text-teal-400 transition-colors">Experience</a>
-    <a href="#contact" class="hover:text-teal-400 transition-colors">Contact</a>
-    <a class="resume-btn inline-flex items-center gap-2 px-4 py-2 bg-teal-500 hover:bg-teal-600 transition-all transform hover:scale-105" href="ZaidAhmadCV.pdf" download>📄 Download CV</a>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#education">Education</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Tech Stack</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+    <a class="resume-btn" href="{{ url_for('static', filename='ZaidAhmadCV.pdf') }}" download>📄 Download CV</a>
   </nav>
 
-  <section id="about" class="animate-fade-in">
-    <h2 class="text-3xl font-bold mb-4 text-teal-400">About Me</h2>
-    <p>Hey! I'm Zaid — born and raised in Ottawa and currently studying Computer Science at Carleton University. I'm someone who’s always been curious about how tech can solve real-world problems. Whether it’s through hackathons, building an Arduino game, or learning backend systems, I love bringing ideas to life with code.</p>
-    <p>Outside of tech, you’ll probably find me exploring new cafés, watching space documentaries, or tweaking my setup late into the night. I'm actively looking for internships where I can grow as a developer, learn from smart people, and contribute to meaningful projects.</p>    <div class="highlights grid md:grid-cols-3 gap-6 mt-8">
+  <section id="about">
+    <h2 class="text-3xl font-bold mb-4">About Me</h2>
+    <p>Hi, I'm Zaid Ahmad — a Computer Science student at Carleton University with a passion for creating meaningful software solutions. From developing full-stack web applications to building Arduino-based games, I thrive on turning ideas into functional, impactful projects.</p>
+    <p>I'm driven by curiosity and continuous learning. Whether it's competing in hackathons, exploring new frameworks, or diving deep into backend architecture, I'm always looking for opportunities to grow as a developer. I believe the best solutions come from combining technical expertise with creative problem-solving.</p>
+    <p>When I'm not coding, you'll find me exploring Ottawa's coffee scene, watching space documentaries, or tinkering with my development setup. I'm actively seeking internship opportunities where I can contribute to real-world projects, collaborate with talented teams, and make a tangible impact.</p>
+    <div class="grid md:grid-cols-3 gap-6 mt-8">
       <div class="highlight-card">
         <div class="highlight-icon">🏆</div>
         <div class="highlight-text">Hackathon Participant</div>
@@ -332,8 +266,8 @@
         <span class="education-date">Expected Graduation: 2028</span>
       </div>
       <p class="institution">Carleton University | Ottawa, ON</p>
-      <p class="education-detail"><strong>CGPA:</strong> 7.3/12</p>
-      <p class="education-detail"><strong>Relevant Coursework:</strong></p>
+      <p style="margin-top: 1rem;"><strong>CGPA:</strong> 7.3/12</p>
+      <p style="margin-top: 1rem; margin-bottom: 0.5rem;"><strong>Relevant Coursework:</strong></p>
       <ul class="coursework-list">
         <li>Data Structures & Algorithms</li>
         <li>Object-Oriented Programming (Java & Python)</li>
@@ -378,7 +312,7 @@
       <ul class="project-highlights">
         <li>Implemented responsive design with modern frontend practices</li>
         <li>Created smooth navigation and interactive user experience</li>
-        <li>Deployed live at <a href="https://zaidahmad.dev/" target="_blank" style="color: #80cbc4;">zaidahmad.dev</a></li>
+        <li>Deployed live at <a href="https://zaidahmad.dev/" target="_blank" class="contact-link">zaidahmad.dev</a></li>
       </ul>
     </div>
     <div class="project">
@@ -433,11 +367,11 @@
           <div class="tech-item">🐙 Git/GitHub</div>
           <div class="tech-item">🧩 VS Code</div>
           <div class="tech-item">🧠 IntelliJ</div>
-          <div class="tech-item">� Linux</div>
+          <div class="tech-item">🐧 Linux</div>
           <div class="tech-item">🖥️ Virtual Machines</div>
           <div class="tech-item">🎮 Unreal Engine</div>
           <div class="tech-item">🎯 Godot</div>
-          <div class="tech-item">�📈 Data Structures</div>
+          <div class="tech-item">📈 Data Structures</div>
           <div class="tech-item">📐 OOP</div>
           <div class="tech-item">🔧 Arduino</div>
         </div>
@@ -486,139 +420,26 @@
     <p>&copy; 2025 Zaid Ahmad. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
   <script>
-    // Snake Game Implementation
-    const canvas = document.getElementById('snakeCanvas');
-    const ctx = canvas.getContext('2d');
-    const scoreElement = document.getElementById('gameScore');
-    
-    const gridSize = 20;
-    const tileCount = canvas.width / gridSize;
-    
-    let snake = [{x: 10, y: 10}];
-    let food = {x: 15, y: 15};
-    let dx = 0;
-    let dy = 0;
-    let score = 0;
-    let gameRunning = false;
-    let gameOver = false;
+    // Force GIF to restart from beginning by adding cache-busting parameter
+    const gifImg = document.querySelector('#intro img');
+    if (gifImg) {
+      const gifSrc = gifImg.src.split('?')[0];
+      gifImg.src = gifSrc + '?t=' + new Date().getTime();
+    }
 
-    // Keyboard controls
-    document.addEventListener('keydown', (e) => {
-      if (!gameRunning && !gameOver) {
-        gameRunning = true;
-        gameLoop();
+    // Fade out and hide intro after GIF completes
+    setTimeout(() => {
+      const intro = document.getElementById('intro');
+      if (intro) {
+        intro.classList.add('fade-out');
+        // Hide completely after fade animation finishes
+        setTimeout(() => {
+          intro.style.display = 'none';
+        }, 1000); // Match the CSS transition duration
       }
-      
-      const key = e.key;
-      if (key === 'ArrowUp' && dy === 0) { dx = 0; dy = -1; }
-      if (key === 'ArrowDown' && dy === 0) { dx = 0; dy = 1; }
-      if (key === 'ArrowLeft' && dx === 0) { dx = -1; dy = 0; }
-      if (key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; }
-    });
-
-    function drawGame() {
-      // Clear canvas
-      ctx.fillStyle = '#0a0a0a';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw snake
-      snake.forEach((segment, index) => {
-        ctx.fillStyle = index === 0 ? '#00ff88' : '#00cc66';
-        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
-      });
-      
-      // Draw food
-      ctx.fillStyle = '#ff4444';
-      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-    }
-
-    function updateGame() {
-      if (!gameRunning) return;
-      
-      const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-      
-      // Check wall collision
-      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-        endGame();
-        return;
-      }
-      
-      // Check self collision
-      if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
-        endGame();
-        return;
-      }
-      
-      snake.unshift(head);
-      
-      // Check food collision
-      if (head.x === food.x && head.y === food.y) {
-        score++;
-        scoreElement.textContent = `Score: ${score}`;
-        food = {
-          x: Math.floor(Math.random() * tileCount),
-          y: Math.floor(Math.random() * tileCount)
-        };
-      } else {
-        snake.pop();
-      }
-    }
-
-    function gameLoop() {
-      if (!gameRunning) return;
-      updateGame();
-      drawGame();
-      setTimeout(gameLoop, 100);
-    }
-
-    function endGame() {
-      gameRunning = false;
-      gameOver = true;
-      spellName();
-    }
-
-    function spellName() {
-      // Positions to spell "ZAID AHMAD" on the canvas
-      const letterPositions = {
-        'Z': [{x:2,y:2},{x:3,y:2},{x:4,y:2},{x:5,y:2},{x:5,y:3},{x:4,y:4},{x:3,y:5},{x:2,y:6},{x:3,y:6},{x:4,y:6},{x:5,y:6}],
-        'A1': [{x:8,y:6},{x:8,y:5},{x:8,y:4},{x:8,y:3},{x:8,y:2},{x:9,y:2},{x:10,y:2},{x:10,y:3},{x:10,y:4},{x:10,y:5},{x:10,y:6},{x:9,y:4}],
-        'I': [{x:12,y:2},{x:12,y:3},{x:12,y:4},{x:12,y:5},{x:12,y:6}],
-        'D': [{x:14,y:2},{x:14,y:3},{x:14,y:4},{x:14,y:5},{x:14,y:6},{x:15,y:2},{x:16,y:3},{x:16,y:4},{x:16,y:5},{x:15,y:6}],
-        'A2': [{x:2,y:10},{x:2,y:11},{x:2,y:12},{x:2,y:13},{x:2,y:14},{x:3,y:10},{x:4,y:10},{x:4,y:11},{x:4,y:12},{x:4,y:13},{x:4,y:14},{x:3,y:12}],
-        'H': [{x:6,y:10},{x:6,y:11},{x:6,y:12},{x:6,y:13},{x:6,y:14},{x:7,y:12},{x:8,y:10},{x:8,y:11},{x:8,y:12},{x:8,y:13},{x:8,y:14}],
-        'M': [{x:10,y:14},{x:10,y:13},{x:10,y:12},{x:10,y:11},{x:10,y:10},{x:11,y:11},{x:12,y:12},{x:13,y:11},{x:14,y:10},{x:14,y:11},{x:14,y:12},{x:14,y:13},{x:14,y:14}],
-        'A3': [{x:16,y:14},{x:16,y:13},{x:16,y:12},{x:16,y:11},{x:16,y:10},{x:17,y:10},{x:18,y:10},{x:18,y:11},{x:18,y:12},{x:18,y:13},{x:18,y:14},{x:17,y:12}],
-        'D2': [{x:20,y:10},{x:20,y:11},{x:20,y:12},{x:20,y:13},{x:20,y:14},{x:21,y:10},{x:22,y:11},{x:22,y:12},{x:22,y:13},{x:21,y:14}]
-      };
-      
-      const allPositions = Object.values(letterPositions).flat();
-      
-      ctx.fillStyle = '#0a0a0a';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      let index = 0;
-      const animationInterval = setInterval(() => {
-        if (index < allPositions.length) {
-          const pos = allPositions[index];
-          ctx.fillStyle = '#00ff88';
-          ctx.fillRect(pos.x * gridSize, pos.y * gridSize, gridSize - 2, gridSize - 2);
-          index++;
-        } else {
-          clearInterval(animationInterval);
-          setTimeout(() => {
-            document.getElementById('intro').classList.add('fade-out');
-            setTimeout(() => {
-              document.getElementById('intro').style.display = 'none';
-            }, 1000);
-          }, 2000);
-        }
-      }, 30);
-    }
-
-    // Initial draw
-    drawGame();
+    }, 7500); // 7.5 seconds to show GIF once
   </script>
 </body>
 </html>
