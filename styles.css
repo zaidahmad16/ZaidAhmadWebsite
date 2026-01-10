@@ -9,14 +9,14 @@ body {
 }
 
 header {
-  background-color: #1f1f1f;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   color: white;
   padding: 2rem 1rem;
   text-align: center;
 }
 
 nav {
-  background-color: #222;
+  background-color: #0a0a0a;
   text-align: center;
   padding: 1rem;
 }
