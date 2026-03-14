@@ -3,444 +3,456 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zaid Ahmad | CS Portfolio</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Zaid Ahmad | Software Developer</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="static/reset.css">
   <link rel="stylesheet" href="static/styles.css">
-  <style>
-    /* Intro Animation */
-    #intro {
-      background-color: #000000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      position: fixed;
-      width: 100%;
-      z-index: 9999;
-      opacity: 1;
-      transition: opacity 1s ease-out;
-    }
-
-    #intro.fade-out {
-      opacity: 0;
-    }
-
-    /* Component Styles */
-    .resume-btn {
-      background-color: #ffffff !important;
-      color: #000000 !important;
-      text-shadow: none !important;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      font-weight: bold;
-      text-decoration: none;
-      margin-left: 1rem;
-      transition: background-color 0.3s, box-shadow 0.3s;
-    }
-
-    .resume-btn:hover {
-      background-color: #e0e0e0;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-    }
-
-    .project {
-      background-color: #121212;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-    }
-
-    .highlight-card {
-      background: linear-gradient(135deg, #1a1a1a, #252525);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .highlight-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.15);
-    }
-
-    .highlight-icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .highlight-text {
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    .education-card {
-      background-color: #121212;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-    }
-
-    .education-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 0.5rem;
-    }
-
-    .education-header h3 {
-      margin: 0;
-    }
-
-    .education-date {
-      color: #aaa;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-
-    .institution {
-      color: #bbb;
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
-    }
-
-    .coursework-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.5rem;
-      list-style: none;
-      padding: 0;
-      margin-top: 0.5rem;
-    }
-
-    .coursework-list li {
-      background-color: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 5px;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .project-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 0.5rem;
-    }
-
-    .project-header h3 {
-      margin: 0;
-    }
-
-    .project-badge {
-      background-color: #2a2a2a;
-      color: #ffffff;
-      padding: 0.3rem 0.8rem;
-      border-radius: 15px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .tech-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 1rem 0;
-    }
-
-    .tag {
-      background-color: #1a1a1a;
-      color: #ffffff;
-      padding: 0.4rem 0.8rem;
-      border-radius: 5px;
-      font-size: 0.85rem;
-      border: 1px solid #444;
-      font-weight: 500;
-    }
-
-    .project-highlights {
-      margin-top: 1rem;
-      padding-left: 1.5rem;
-    }
-
-    .project-highlights li {
-      margin-bottom: 0.5rem;
-      line-height: 1.6;
-    }
-
-    .skill-category {
-      background-color: #0f0f0f;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 1.5rem;
-    }
-
-    .category-title {
-      color: #ffffff;
-      margin-top: 0;
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 0.5rem;
-    }
-
-    .tech-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .tech-item {
-      background-color: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      text-align: center;
-      font-weight: 500;
-      color: #ffffff;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-      transition: transform 0.3s;
-    }
-
-    .tech-item:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
 <body>
-  <div id="intro">
-    <img src="static/snake-animation.gif" alt="Snake Animation" style="width: 100vw; height: 100vh; object-fit: contain;">
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="gradient-sphere sphere-1"></div>
+    <div class="gradient-sphere sphere-2"></div>
+    <div class="gradient-sphere sphere-3"></div>
   </div>
 
-  <header>
-    <h1 class="text-4xl font-bold mb-2">Zaid Ahmad</h1>
-    <p class="text-lg">Computer Science Student @ Carleton University</p>
-  </header>
+  <!-- Floating Particles -->
+  <div id="particles"></div>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#education">Education</a>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Tech Stack</a>
-    <a href="#experience">Experience</a>
-    <a href="#contact">Contact</a>
-    <a class="resume-btn" href="static/ZaidAhmadCV.pdf" target="_blank">📄 View CV</a>
+  <!-- Navigation -->
+  <nav class="glass-nav">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>ZA<span class="logo-bracket">/&gt;</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#education" class="nav-link">Education</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a class="resume-btn" href="static/ZaidAhmadCV.pdf" target="_blank">
+          <i class="fas fa-file-alt"></i> Resume
+        </a>
+      </div>
+      <button class="mobile-menu-btn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </nav>
 
-  <section id="about">
-    <h2 class="text-3xl font-bold mb-4">About Me</h2>
-    <p>Hi, I'm Zaid Ahmad — a Computer Science student at Carleton University with a passion for creating meaningful software solutions. From developing full-stack web applications to building Arduino-based games, I thrive on turning ideas into functional, impactful projects.</p>
-    <p>I'm driven by curiosity and continuous learning. Whether it's competing in hackathons, exploring new frameworks, or diving deep into backend architecture, I'm always looking for opportunities to grow as a developer. I believe the best solutions come from combining technical expertise with creative problem-solving.</p>
-    <p>When I'm not coding, you'll find me exploring Ottawa's coffee scene, watching space documentaries, or tinkering with my development setup. I'm actively seeking internship opportunities where I can contribute to real-world projects, collaborate with talented teams, and make a tangible impact.</p>
-    <div class="grid md:grid-cols-3 gap-6 mt-8">
-      <div class="highlight-card">
-        <div class="highlight-icon">🏆</div>
-        <div class="highlight-text">Hackathon Participant</div>
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Available for Internships
       </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">💡</div>
-        <div class="highlight-text">Problem Solver</div>
+      <h1 class="hero-title">
+        Hi, I'm <span class="gradient-text">Zaid Ahmad</span>
+      </h1>
+      <div class="typewriter-container">
+        <span class="typewriter-prefix">I build </span>
+        <span class="typewriter" id="typewriter"></span>
+        <span class="cursor">|</span>
       </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">🚀</div>
-        <div class="highlight-text">Fast Learner</div>
+      <p class="hero-description">
+        Computer Science student at Carleton University crafting elegant solutions 
+        through code. Passionate about full-stack development & systems programming.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">
+          <i class="fas fa-code"></i> View Projects
+        </a>
+        <a href="#contact" class="btn btn-secondary">
+          <i class="fas fa-paper-plane"></i> Get in Touch
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" data-target="5">0</span>+
+          <span class="stat-label">Projects Built</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-target="3">0</span>+
+          <span class="stat-label">Hackathons</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-target="7">0</span>+
+          <span class="stat-label">Technologies</span>
+        </div>
       </div>
     </div>
+    <div class="scroll-indicator">
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+      <span>Scroll to explore</span>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="section-header">
+      <span class="section-tag">&lt;about&gt;</span>
+      <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text glass-card">
+        <p>Hi, I'm <strong>Zaid Ahmad</strong> — a Computer Science student at Carleton University with a passion for creating meaningful software solutions. From developing full-stack web applications to building multithreaded systems, I thrive on turning ideas into functional, impactful projects.</p>
+        <p>I'm driven by curiosity and continuous learning. Whether it's competing in hackathons, exploring new frameworks, or diving deep into backend architecture, I'm always looking for opportunities to grow as a developer.</p>
+        <p>When I'm not coding, you'll find me exploring Ottawa's coffee scene, watching space documentaries, or tinkering with my development setup.</p>
+      </div>
+      <div class="highlights-grid">
+        <div class="highlight-card glass-card">
+          <div class="highlight-icon"><i class="fas fa-trophy"></i></div>
+          <h3>Hackathon Veteran</h3>
+          <p>Building under pressure</p>
+        </div>
+        <div class="highlight-card glass-card">
+          <div class="highlight-icon"><i class="fas fa-lightbulb"></i></div>
+          <h3>Problem Solver</h3>
+          <p>Creative solutions</p>
+        </div>
+        <div class="highlight-card glass-card">
+          <div class="highlight-icon"><i class="fas fa-rocket"></i></div>
+          <h3>Fast Learner</h3>
+          <p>Adapts quickly</p>
+        </div>
+        <div class="highlight-card glass-card">
+          <div class="highlight-icon"><i class="fas fa-users"></i></div>
+          <h3>Team Player</h3>
+          <p>Collaborative spirit</p>
+        </div>
+      </div>
+    </div>
+    <span class="section-tag section-tag-end">&lt;/about&gt;</span>
   </section>
 
-  <section id="education">
-    <h2>Education</h2>
-    <div class="education-card">
-      <div class="education-header">
-        <h3>Bachelor of Computer Science (Honours)</h3>
-        <span class="education-date">Expected Graduation: 2028</span>
-      </div>
-      <p class="institution">Carleton University | Ottawa, ON</p>
-      <p style="margin-top: 1rem;"><strong>CGPA:</strong> 7.3/12</p>
-      <p style="margin-top: 1rem; margin-bottom: 0.5rem;"><strong>Relevant Coursework:</strong></p>
-      <ul class="coursework-list">
-        <li>Data Structures & Algorithms</li>
-        <li>Object-Oriented Programming (Java & Python)</li>
-        <li>C/C++ Programming</li>
-        <li>Calculus</li>
-        <li>Linear Algebra</li>
-      </ul>
+  <!-- Education Section -->
+  <section id="education" class="section">
+    <div class="section-header">
+      <span class="section-tag">&lt;education&gt;</span>
+      <h2 class="section-title">My <span class="gradient-text">Education</span></h2>
     </div>
+    <div class="education-card glass-card">
+      <div class="education-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="education-content">
+        <div class="education-header">
+          <h3>Bachelor of Computer Science (Honours)</h3>
+          <span class="education-date"><i class="fas fa-calendar-alt"></i> Expected 2028</span>
+        </div>
+        <p class="institution"><i class="fas fa-university"></i> Carleton University | Ottawa, ON</p>
+        <div class="gpa-badge">
+          <span>CGPA: 7.3/12</span>
+        </div>
+        <div class="coursework">
+          <h4><i class="fas fa-book"></i> Relevant Coursework</h4>
+          <div class="coursework-grid">
+            <span class="course-chip">Data Structures & Algorithms</span>
+            <span class="course-chip">Object-Oriented Programming</span>
+            <span class="course-chip">C/C++ Programming</span>
+            <span class="course-chip">Calculus</span>
+            <span class="course-chip">Linear Algebra</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="section-tag section-tag-end">&lt;/education&gt;</span>
   </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="project">
-      <div class="project-header">
-        <h3>🏠 Homeless Shelter Finder</h3>
-        <span class="project-badge">CUHacking 2025</span>
-      </div>
-      <p>Swipeable React Native mobile app that helps users discover local shelters based on location, gender, and amenities. Built to address real-world social impact with an intuitive, user-focused design.</p>
-      <div class="tech-tags">
-        <span class="tag">React Native</span>
-        <span class="tag">Firebase</span>
-        <span class="tag">Node.js</span>
-        <span class="tag">Express</span>
-      </div>
-      <ul class="project-highlights">
-        <li>Developed swipeable UI with real-time data filtering</li>
-        <li>Implemented location-based search with Firebase Firestore</li>
-        <li>Built RESTful API using Node.js and Express</li>
-        <li>Completed and demoed in under 24 hours at CUHacking</li>
-      </ul>
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <div class="section-header">
+      <span class="section-tag">&lt;projects&gt;</span>
+      <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
     </div>
-    <div class="project">
-      <div class="project-header">
-        <h3>💼 Personal Portfolio Website</h3>
-        <span class="project-badge">Web Development</span>
-      </div>
-      <p>Designed and deployed a responsive personal portfolio website to showcase projects, skills, and experience with clean UI and interactive elements.</p>
-      <div class="tech-tags">
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">JavaScript</span>
-      </div>
-      <ul class="project-highlights">
-        <li>Implemented responsive design with modern frontend practices</li>
-        <li>Created smooth navigation and interactive user experience</li>
-        <li>Deployed live at <a href="https://zaidahmad.dev/" target="_blank" class="contact-link">zaidahmad.dev</a></li>
-      </ul>
+    <div class="projects-grid">
+      <article class="project-card glass-card featured">
+        <div class="project-image">
+          <div class="project-icon"><i class="fas fa-home"></i></div>
+          <span class="project-badge pulse">🏆 Hackathon Project</span>
+        </div>
+        <div class="project-content">
+          <h3>Homeless Shelter Finder</h3>
+          <p>Swipeable React Native mobile app that helps users discover local shelters based on location, gender, and amenities. Built to address real-world social impact.</p>
+          <div class="tech-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">Firebase</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">Express</span>
+          </div>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check"></i> Swipeable UI with real-time data filtering</li>
+            <li><i class="fas fa-check"></i> Location-based search with Firestore</li>
+            <li><i class="fas fa-check"></i> Built & demoed in under 24 hours</li>
+          </ul>
+        </div>
+        <div class="project-footer">
+          <span class="project-event"><i class="fas fa-trophy"></i> CUHacking 2025</span>
+        </div>
+      </article>
+
+      <article class="project-card glass-card">
+        <div class="project-image">
+          <div class="project-icon"><i class="fas fa-globe"></i></div>
+        </div>
+        <div class="project-content">
+          <h3>Portfolio Website</h3>
+          <p>Responsive personal portfolio with clean UI, interactive elements, and modern design patterns.</p>
+          <div class="tech-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check"></i> Responsive modern design</li>
+            <li><i class="fas fa-check"></i> Smooth animations & transitions</li>
+          </ul>
+        </div>
+        <div class="project-footer">
+          <a href="https://zaidahmad.dev/" target="_blank" class="project-link">
+            <i class="fas fa-external-link-alt"></i> Live Site
+          </a>
+        </div>
+      </article>
+
+      <article class="project-card glass-card">
+        <div class="project-image">
+          <div class="project-icon"><i class="fas fa-microchip"></i></div>
+        </div>
+        <div class="project-content">
+          <h3>Multithreaded C Simulation</h3>
+          <p>Built a multithreaded simulation using semaphores and synchronization primitives for concurrent agent management.</p>
+          <div class="tech-tags">
+            <span class="tag">C</span>
+            <span class="tag">POSIX Threads</span>
+            <span class="tag">Semaphores</span>
+            <span class="tag">Linux</span>
+          </div>
+          <ul class="project-highlights">
+            <li><i class="fas fa-check"></i> Deadlock prevention techniques</li>
+            <li><i class="fas fa-check"></i> Thread synchronization</li>
+          </ul>
+        </div>
+        <div class="project-footer">
+          <span class="project-event"><i class="fas fa-code"></i> Systems Programming</span>
+        </div>
+      </article>
     </div>
-    <div class="project">
-      <div class="project-header">
-        <h3>🧵 Multithreaded C Simulation Game</h3>
-        <span class="project-badge">Systems Programming</span>
-      </div>
-      <p>Built a multithreaded C simulation utilizing semaphores and synchronization primitives to manage concurrent agents with deadlock prevention and thread coordination.</p>
-      <div class="tech-tags">
-        <span class="tag">C</span>
-        <span class="tag">POSIX Threads</span>
-        <span class="tag">Semaphores</span>
-        <span class="tag">Linux</span>
-      </div>
-      <ul class="project-highlights">
-        <li>Implemented synchronization primitives for concurrent agent management</li>
-        <li>Applied deadlock prevention techniques and thread coordination</li>
-        <li>Utilized memory management best practices in low-level C programming</li>
-        <li>Developed in Linux environment using virtual machines</li>
-      </ul>
-    </div>
+    <span class="section-tag section-tag-end">&lt;/projects&gt;</span>
   </section>
 
-  <section id="skills">
-    <h2>Tech Stack</h2>
+  <!-- Skills Section -->
+  <section id="skills" class="section">
+    <div class="section-header">
+      <span class="section-tag">&lt;skills&gt;</span>
+      <h2 class="section-title">Tech <span class="gradient-text">Stack</span></h2>
+    </div>
     <div class="skills-container">
-      <div class="skill-category">
-        <h3 class="category-title">Languages</h3>
+      <div class="skill-category glass-card">
+        <h3 class="category-title"><i class="fas fa-code"></i> Languages</h3>
         <div class="tech-grid">
-          <div class="tech-item">🐍 Python</div>
-          <div class="tech-item">☕ Java</div>
-          <div class="tech-item">💻 C/C++</div>
-          <div class="tech-item">🟨 JavaScript</div>
-          <div class="tech-item">📝 HTML/CSS</div>
+          <div class="tech-item" data-skill="Python">
+            <i class="fab fa-python"></i>
+            <span>Python</span>
+          </div>
+          <div class="tech-item" data-skill="Java">
+            <i class="fab fa-java"></i>
+            <span>Java</span>
+          </div>
+          <div class="tech-item" data-skill="C/C++">
+            <i class="fas fa-laptop-code"></i>
+            <span>C/C++</span>
+          </div>
+          <div class="tech-item" data-skill="JavaScript">
+            <i class="fab fa-js-square"></i>
+            <span>JavaScript</span>
+          </div>
+          <div class="tech-item" data-skill="HTML/CSS">
+            <i class="fab fa-html5"></i>
+            <span>HTML/CSS</span>
+          </div>
         </div>
       </div>
-      <div class="skill-category">
-        <h3 class="category-title">Frameworks & Technologies</h3>
+      <div class="skill-category glass-card">
+        <h3 class="category-title"><i class="fas fa-cubes"></i> Frameworks & Tech</h3>
         <div class="tech-grid">
-          <div class="tech-item">⚛️ React Native</div>
-          <div class="tech-item">🟢 Node.js</div>
-          <div class="tech-item">🔥 Flask</div>
-          <div class="tech-item">📦 Firebase</div>
-          <div class="tech-item">🔌 Express</div>
-          <div class="tech-item">📊 Matplotlib</div>
-          <div class="tech-item">🗄️ MongoDB</div>
+          <div class="tech-item" data-skill="React Native">
+            <i class="fab fa-react"></i>
+            <span>React Native</span>
+          </div>
+          <div class="tech-item" data-skill="Node.js">
+            <i class="fab fa-node-js"></i>
+            <span>Node.js</span>
+          </div>
+          <div class="tech-item" data-skill="Flask">
+            <i class="fas fa-pepper-hot"></i>
+            <span>Flask</span>
+          </div>
+          <div class="tech-item" data-skill="Firebase">
+            <i class="fas fa-fire"></i>
+            <span>Firebase</span>
+          </div>
+          <div class="tech-item" data-skill="Express">
+            <i class="fas fa-server"></i>
+            <span>Express</span>
+          </div>
+          <div class="tech-item" data-skill="MongoDB">
+            <i class="fas fa-database"></i>
+            <span>MongoDB</span>
+          </div>
         </div>
       </div>
-      <div class="skill-category">
-        <h3 class="category-title">Tools & Concepts</h3>
+      <div class="skill-category glass-card">
+        <h3 class="category-title"><i class="fas fa-tools"></i> Tools & Concepts</h3>
         <div class="tech-grid">
-          <div class="tech-item">🐙 Git/GitHub</div>
-          <div class="tech-item">🧩 VS Code</div>
-          <div class="tech-item">🧠 IntelliJ</div>
-          <div class="tech-item">🐧 Linux</div>
-          <div class="tech-item">🖥️ Virtual Machines</div>
-          <div class="tech-item">🎮 Unreal Engine</div>
-          <div class="tech-item">🎯 Godot</div>
-          <div class="tech-item">📈 Data Structures</div>
-          <div class="tech-item">📐 OOP</div>
-          <div class="tech-item">🔧 Arduino</div>
+          <div class="tech-item" data-skill="Git">
+            <i class="fab fa-git-alt"></i>
+            <span>Git/GitHub</span>
+          </div>
+          <div class="tech-item" data-skill="VS Code">
+            <i class="fas fa-code"></i>
+            <span>VS Code</span>
+          </div>
+          <div class="tech-item" data-skill="Linux">
+            <i class="fab fa-linux"></i>
+            <span>Linux</span>
+          </div>
+          <div class="tech-item" data-skill="Docker">
+            <i class="fas fa-cube"></i>
+            <span>VMs</span>
+          </div>
+          <div class="tech-item" data-skill="Unreal">
+            <i class="fas fa-gamepad"></i>
+            <span>Game Dev</span>
+          </div>
+          <div class="tech-item" data-skill="Arduino">
+            <i class="fas fa-microchip"></i>
+            <span>Arduino</span>
+          </div>
         </div>
       </div>
     </div>
+    <span class="section-tag section-tag-end">&lt;/skills&gt;</span>
   </section>
 
-  <section id="experience">
-    <h2>Experience</h2>
-    <div class="project">
-      <h3>Logistics Coordinator — cuHacking (Sept 2025–Present)</h3>
-      <ul>
-        <li>Coordinated event logistics for CU Hacking, managing scheduling, room reservations, equipment setup, and on-site operations to ensure a smooth experience for participants.</li>
-        <li>Collaborated with organizers, sponsors, and volunteers to plan and execute event workflows, resolving logistical issues efficiently during live events.</li>
-        <li>Oversaw inventory and resource distribution (check-in materials, swag, food, and supplies), maintaining organization and adherence to event timelines.</li>
-      </ul>
+  <!-- Experience Section -->
+  <section id="experience" class="section">
+    <div class="section-header">
+      <span class="section-tag">&lt;experience&gt;</span>
+      <h2 class="section-title">My <span class="gradient-text">Experience</span></h2>
     </div>
-    <div class="project">
-      <h3>Chief Petty Officer Second Class — Logistics Chief, RCSCC Falkland (Sept 2018–Jun 2025)</h3>
-      <ul>
-        <li>Managed logistics and inventory for over 100 cadets, ensuring readiness and accuracy.</li>
-        <li>Mentored junior cadets, fostering leadership, discipline, and teamwork.</li>
-        <li>Led instructional sessions on uniform care and supply protocols.</li>
-        <li>Demonstrated consistent leadership and organizational skills in a structured military environment.</li>
-      </ul>
+    <div class="timeline">
+      <div class="timeline-item glass-card">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <h3><i class="fas fa-calendar-check"></i> Logistics Coordinator</h3>
+            <span class="timeline-date">Sept 2025 – Present</span>
+          </div>
+          <p class="timeline-company">cuHacking</p>
+          <ul>
+            <li>Coordinated event logistics for CU Hacking, managing scheduling, room reservations, and on-site operations</li>
+            <li>Collaborated with organizers, sponsors, and volunteers to execute event workflows</li>
+            <li>Oversaw inventory and resource distribution, maintaining organization and timelines</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item glass-card">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <h3><i class="fas fa-anchor"></i> Chief Petty Officer Second Class</h3>
+            <span class="timeline-date">Sept 2018 – Jun 2025</span>
+          </div>
+          <p class="timeline-company">RCSCC Falkland | Logistics Chief</p>
+          <ul>
+            <li>Managed logistics and inventory for over 100 cadets, ensuring readiness and accuracy</li>
+            <li>Mentored junior cadets, fostering leadership, discipline, and teamwork</li>
+            <li>Led instructional sessions on uniform care and supply protocols</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item glass-card">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <h3><i class="fas fa-code"></i> Hackathon Hacker</h3>
+            <span class="timeline-date">Mar 2025</span>
+          </div>
+          <p class="timeline-company">CUHacking 2025</p>
+          <ul>
+            <li>Built the Homeless Shelter Finder app with React Native, Firebase, and Node.js</li>
+            <li>Focused on backend development and Firebase Firestore integration</li>
+            <li>Presented and demoed project to industry mentors and judges</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="project">
-      <h3>Hackathon Hacker — CUHacking 2025 (Mar 2025)</h3>
-      <ul>
-        <li>Participated in the CUHacking 2025 hackathon, collaborating with a team to build the Homeless Shelter Finder app.</li>
-        <li>Worked with technologies like React Native, Firebase Firestore, and Node.js to develop an app that allows users to find nearby homeless shelters based on specific criteria.</li>
-        <li>Focused on backend development and integration of Firebase Firestore for real-time shelter data storage.</li>
-        <li>Presented and demoed the project to industry mentors and judges at the CUHacking showcase.</li>
-      </ul>
-    </div>
+    <span class="section-tag section-tag-end">&lt;/experience&gt;</span>
   </section>
 
-  <section id="contact">
-    <h2>Get in Touch</h2>
-    <p>Email: <a class="contact-link" href="mailto:zaidahmad8060@gmail.com">zaidahmad8060@gmail.com</a></p>
-    <p>GitHub: <a class="contact-link" href="https://github.com/zaidahmad16" target="_blank">github.com/zaidahmad16</a></p>
-    <p>LinkedIn: <a class="contact-link" href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank">linkedin.com/in/zaid-ahmad-ba9b10224</a></p>
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="section-header">
+      <span class="section-tag">&lt;contact&gt;</span>
+      <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
+    </div>
+    <div class="contact-container">
+      <div class="contact-text glass-card">
+        <h3>Get in Touch</h3>
+        <p>I'm currently looking for internship opportunities! Whether you have a question, want to collaborate, or just want to say hi — my inbox is always open.</p>
+        <a href="mailto:zaidahmad8060@gmail.com" class="btn btn-primary btn-large">
+          <i class="fas fa-envelope"></i> Say Hello
+        </a>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:zaidahmad8060@gmail.com" class="contact-card glass-card">
+          <i class="fas fa-envelope"></i>
+          <span>Email</span>
+          <p>zaidahmad8060@gmail.com</p>
+        </a>
+        <a href="https://github.com/zaidahmad16" target="_blank" class="contact-card glass-card">
+          <i class="fab fa-github"></i>
+          <span>GitHub</span>
+          <p>zaidahmad16</p>
+        </a>
+        <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="contact-card glass-card">
+          <i class="fab fa-linkedin"></i>
+          <span>LinkedIn</span>
+          <p>Zaid Ahmad</p>
+        </a>
+      </div>
+    </div>
+    <span class="section-tag section-tag-end">&lt;/contact&gt;</span>
   </section>
 
-  <footer>
-    <p>&copy; 2025 Zaid Ahmad. All rights reserved.</p>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="logo-bracket">&lt;</span>ZA<span class="logo-bracket">/&gt;</span>
+      </div>
+      <p>Designed & Built by Zaid Ahmad</p>
+      <div class="footer-social">
+        <a href="https://github.com/zaidahmad16" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:zaidahmad8060@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+      <p class="copyright">&copy; 2025 Zaid Ahmad. All rights reserved.</p>
+    </div>
   </footer>
 
   <script src="static/script.js"></script>
-  <script>
-    // Force GIF to restart from beginning by adding cache-busting parameter
-    const gifImg = document.querySelector('#intro img');
-    if (gifImg) {
-      const gifSrc = gifImg.src.split('?')[0];
-      gifImg.src = gifSrc + '?t=' + new Date().getTime();
-    }
-
-    // Fade out and hide intro after GIF completes
-    setTimeout(() => {
-      const intro = document.getElementById('intro');
-      if (intro) {
-        intro.classList.add('fade-out');
-        // Hide completely after fade animation finishes
-        setTimeout(() => {
-          intro.style.display = 'none';
-        }, 1000); // Match the CSS transition duration
-      }
-    }, 8000); // 8 seconds to show GIF once
-  </script>
 </body>
 </html>
