@@ -4,12 +4,15 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 
 ## Features
 
-- Snake animation intro with smooth fade-out transition
+- Modern glassmorphism design with animated gradient background
+- Floating particle effects and gradient spheres
+- Typewriter text animation in hero section
+- Animated stat counters
+- Interactive skill cards with hover effects
+- Timeline-based experience section
+- **Embedded PDF resume viewer** with download option
 - Responsive design for all devices
-- Dark theme with smooth animations
-- Project showcase with detailed descriptions
-- Organized skills and tech stack
-- Downloadable resume
+- Smooth scroll animations and transitions
 
 ## Live Site
 
@@ -18,9 +21,10 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 ## Tech Stack
 
 - HTML5
-- CSS3
-- JavaScript
-- Tailwind CSS (via CDN)
+- CSS3 (Custom properties, Flexbox, Grid)
+- JavaScript (ES6+)
+- Font Awesome Icons
+- Google Fonts (Inter, JetBrains Mono)
 
 ## Project Structure
 
@@ -29,12 +33,22 @@ ZaidAhmadWebsite/
 ├── index.html              # Main HTML file
 ├── static/
 │   ├── reset.css          # CSS reset
-│   ├── styles.css         # Custom styles
-│   ├── script.js          # JavaScript for animations
-│   ├── snake-animation.gif # Intro animation
-│   └── ZaidAhmadCV.pdf    # Resume/CV
+│   ├── styles.css         # Custom styles (glassmorphism, animations)
+│   ├── script.js          # JavaScript for animations & interactivity
+│   └── ZaidAhmadCV.pdf    # Resume/CV (embedded in site)
 └── README.md              # This file
 ```
+
+## Sections
+
+- **Hero** - Introduction with typewriter effect and stats
+- **About** - Personal bio and highlights
+- **Education** - Academic background and coursework
+- **Projects** - Featured project showcase
+- **Skills** - Technical stack organized by category
+- **Experience** - Timeline of work and activities
+- **Resume** - Embedded PDF viewer
+- **Contact** - Email and social links
 
 ## Deployment
 
