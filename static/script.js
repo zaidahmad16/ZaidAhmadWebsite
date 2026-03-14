@@ -265,5 +265,78 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ========================================
+  // CONTAINER SCROLL ANIMATION
+  // ========================================
+  const scrollContainer = document.querySelector('[data-scroll-container]');
+  const scrollHeader = document.querySelector('[data-scroll-header]');
+  const scrollCard = document.querySelector('[data-scroll-card]');
+
+  if (scrollContainer && scrollHeader && scrollCard) {
+    // Check if mobile
+    let isMobile = window.innerWidth <= 768;
+    
+    window.addEventListener('resize', () => {
+      isMobile = window.innerWidth <= 768;
+    });
+
+    // Helper function to interpolate values based on scroll progress
+    const lerp = (start, end, progress) => {
+      return start + (end - start) * progress;
+    };
+
+    // Clamp value between min and max
+    const clamp = (value, min, max) => {
+      return Math.min(Math.max(value, min), max);
+    };
+
+    const updateScrollAnimation = () => {
+      const rect = scrollContainer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress (0 to 1) based on element position
+      // Start when element enters viewport, end when it's near the top
+      const elementTop = rect.top;
+      const elementHeight = rect.height;
+      
+      // Progress goes from 0 (element just entering) to 1 (element scrolled past)
+      const start = windowHeight;
+      const end = -elementHeight * 0.5;
+      const progress = clamp((start - elementTop) / (start - end), 0, 1);
+      
+      // Calculate transform values based on scroll progress
+      const scaleDimensions = isMobile ? [0.7, 0.9] : [1.05, 1];
+      
+      // Rotate from 20deg to 0deg
+      const rotateX = lerp(20, 0, progress);
+      
+      // Scale based on mobile/desktop
+      const scale = lerp(scaleDimensions[0], scaleDimensions[1], progress);
+      
+      // Translate header from 0 to -100
+      const translateY = lerp(0, -100, progress);
+      
+      // Apply transforms
+      scrollHeader.style.transform = `translateY(${translateY}px)`;
+      scrollCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) scale(${scale})`;
+    };
+
+    // Use requestAnimationFrame for smooth animation
+    let ticking = false;
+    
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateScrollAnimation();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Initial update
+    updateScrollAnimation();
+  }
+
   console.log('🚀 Portfolio loaded successfully!');
 });

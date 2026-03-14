@@ -13,11 +13,10 @@
   <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-  <!-- Animated Background -->
-  <div class="bg-animation">
-    <div class="gradient-sphere sphere-1"></div>
-    <div class="gradient-sphere sphere-2"></div>
-    <div class="gradient-sphere sphere-3"></div>
+  <!-- Falling Pattern Background -->
+  <div class="falling-pattern-container">
+    <div class="falling-pattern"></div>
+    <div class="falling-pattern-overlay"></div>
   </div>
 
   <!-- Floating Particles -->
@@ -95,6 +94,52 @@
       <span>Scroll to explore</span>
     </div>
   </header>
+
+  <!-- Scroll Animation Showcase -->
+  <section id="showcase" class="container-scroll-section">
+    <div class="container-scroll" data-scroll-container>
+      <div class="scroll-content-wrapper">
+        <div class="scroll-header" data-scroll-header>
+          <h2 class="scroll-title">
+            Building the future with <br>
+            <span class="gradient-text scroll-title-large">Clean Code</span>
+          </h2>
+        </div>
+        <div class="scroll-card" data-scroll-card>
+          <div class="scroll-card-inner">
+            <div class="code-showcase">
+              <div class="code-header">
+                <div class="code-dots">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                </div>
+                <span class="code-filename">developer.js</span>
+              </div>
+              <pre class="code-content"><code><span class="code-keyword">const</span> <span class="code-variable">developer</span> = {
+  <span class="code-property">name</span>: <span class="code-string">"Zaid Ahmad"</span>,
+  <span class="code-property">role</span>: <span class="code-string">"Full-Stack Developer"</span>,
+  <span class="code-property">education</span>: <span class="code-string">"Carleton University"</span>,
+  
+  <span class="code-property">skills</span>: [
+    <span class="code-string">"React Native"</span>, <span class="code-string">"Node.js"</span>, <span class="code-string">"Python"</span>,
+    <span class="code-string">"C/C++"</span>, <span class="code-string">"Firebase"</span>, <span class="code-string">"MongoDB"</span>
+  ],
+
+  <span class="code-function">build</span>: <span class="code-keyword">async</span> () => {
+    <span class="code-keyword">const</span> ideas = <span class="code-keyword">await</span> <span class="code-variable">brainstorm</span>();
+    <span class="code-keyword">const</span> code = <span class="code-variable">transform</span>(ideas);
+    <span class="code-keyword">return</span> <span class="code-variable">deploy</span>(code);  <span class="code-comment">// 🚀</span>
+  }
+};
+
+<span class="code-variable">developer</span>.<span class="code-function">build</span>();  <span class="code-comment">// Let's create something amazing</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- About Section -->
   <section id="about" class="section">

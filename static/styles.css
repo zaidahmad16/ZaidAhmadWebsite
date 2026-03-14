@@ -31,59 +31,120 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Animated Background */
-.bg-animation {
+/* ========================================
+   FALLING PATTERN BACKGROUND
+   ======================================== */
+.falling-pattern-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -2;
+  z-index: -3;
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #0f0f1a 0%, #0a0a0f 100%);
 }
 
-.gradient-sphere {
+.falling-pattern {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  animation: float 20s ease-in-out infinite;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(4px 100px at 0px 235px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 235px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 117.5px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 252px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 252px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 126px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 150px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 150px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 75px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 253px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 253px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 126.5px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 204px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 204px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 102px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 134px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 134px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 67px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 179px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 179px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 89.5px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 299px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 299px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 149.5px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 215px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 215px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 107.5px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 281px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 281px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 140.5px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 158px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 158px, var(--primary), transparent),
+    radial-gradient(1.5px 1.5px at 150px 79px, var(--primary) 100%, transparent 150%),
+    radial-gradient(4px 100px at 0px 210px, var(--primary), transparent),
+    radial-gradient(4px 100px at 300px 210px, var(--primary), transparent);
+  background-size: 
+    300px 235px, 300px 235px, 300px 235px,
+    300px 252px, 300px 252px, 300px 252px,
+    300px 150px, 300px 150px, 300px 150px,
+    300px 253px, 300px 253px, 300px 253px,
+    300px 204px, 300px 204px, 300px 204px,
+    300px 134px, 300px 134px, 300px 134px,
+    300px 179px, 300px 179px, 300px 179px,
+    300px 299px, 300px 299px, 300px 299px,
+    300px 215px, 300px 215px, 300px 215px,
+    300px 281px, 300px 281px, 300px 281px,
+    300px 158px, 300px 158px, 300px 158px,
+    300px 210px, 300px 210px;
+  animation: falling-pattern 150s linear infinite;
 }
 
-.sphere-1 {
-  width: 600px;
-  height: 600px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  top: -200px;
-  right: -100px;
-  animation-delay: 0s;
+@keyframes falling-pattern {
+  0% {
+    background-position: 
+      0px 220px, 3px 220px, 151.5px 337.5px,
+      25px 24px, 28px 24px, 176.5px 150px,
+      50px 16px, 53px 16px, 201.5px 91px,
+      75px 224px, 78px 224px, 226.5px 230.5px,
+      100px 19px, 103px 19px, 251.5px 121px,
+      125px 120px, 128px 120px, 276.5px 187px,
+      150px 31px, 153px 31px, 301.5px 120.5px,
+      175px 235px, 178px 235px, 326.5px 384.5px,
+      200px 121px, 203px 121px, 351.5px 228.5px,
+      225px 224px, 228px 224px, 376.5px 364.5px,
+      250px 26px, 253px 26px, 401.5px 105px,
+      275px 75px, 278px 75px;
+  }
+  100% {
+    background-position: 
+      0px 6800px, 3px 6800px, 151.5px 6917.5px,
+      25px 13632px, 28px 13632px, 176.5px 13758px,
+      50px 5416px, 53px 5416px, 201.5px 5491px,
+      75px 17175px, 78px 17175px, 226.5px 17301.5px,
+      100px 5119px, 103px 5119px, 251.5px 5221px,
+      125px 8428px, 128px 8428px, 276.5px 8495px,
+      150px 9876px, 153px 9876px, 301.5px 9965.5px,
+      175px 13391px, 178px 13391px, 326.5px 13540.5px,
+      200px 14741px, 203px 14741px, 351.5px 14848.5px,
+      225px 18770px, 228px 18770px, 376.5px 18910.5px,
+      250px 5082px, 253px 5082px, 401.5px 5161px,
+      275px 6375px, 278px 6375px;
+  }
 }
 
-.sphere-2 {
-  width: 500px;
-  height: 500px;
-  background: linear-gradient(135deg, #06b6d4, #3b82f6);
-  bottom: -150px;
-  left: -100px;
-  animation-delay: -7s;
-}
-
-.sphere-3 {
-  width: 400px;
-  height: 400px;
-  background: linear-gradient(135deg, #ec4899, #8b5cf6);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation-delay: -14s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(50px, -30px) scale(1.05); }
-  50% { transform: translate(-30px, 50px) scale(0.95); }
-  75% { transform: translate(-50px, -20px) scale(1.02); }
+.falling-pattern-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(1em);
+  background-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 2px, var(--bg-dark) 2px);
+  background-size: 8px 8px;
+  mask-image: radial-gradient(ellipse at center, transparent, var(--bg-dark));
+  -webkit-mask-image: radial-gradient(ellipse at center, transparent, var(--bg-dark));
 }
 
 /* Particles */
@@ -1219,3 +1280,191 @@ body {
     min-height: 400px;
   }
 }
+
+/* ========================================
+   CONTAINER SCROLL ANIMATION
+   ======================================== */
+.container-scroll-section {
+  position: relative;
+  z-index: 1;
+}
+
+.container-scroll {
+  height: 80rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .container-scroll {
+    height: 60rem;
+  }
+}
+
+.scroll-content-wrapper {
+  padding: 2.5rem 0 10rem;
+  width: 100%;
+  position: relative;
+  perspective: 1000px;
+}
+
+@media (min-width: 768px) {
+  .scroll-content-wrapper {
+    padding: 10rem 0;
+  }
+}
+
+.scroll-header {
+  max-width: 80rem;
+  margin: 0 auto;
+  text-align: center;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.scroll-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.scroll-title-large {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .scroll-title-large {
+    font-size: 6rem;
+  }
+}
+
+.scroll-card {
+  max-width: 80rem;
+  margin: -3rem auto 0;
+  width: 100%;
+  border: 4px solid #6C6C6C;
+  padding: 0.5rem;
+  background: #222222;
+  border-radius: 30px;
+  box-shadow: 
+    0 0 #0000004d, 
+    0 9px 20px #0000004a, 
+    0 37px 37px #00000042, 
+    0 84px 50px #00000026, 
+    0 149px 60px #0000000a, 
+    0 233px 65px #00000003;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+@media (min-width: 768px) {
+  .scroll-card {
+    padding: 1.5rem;
+  }
+}
+
+.scroll-card-inner {
+  height: 30rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+@media (min-width: 768px) {
+  .scroll-card-inner {
+    height: 40rem;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* Code Showcase */
+.code-showcase {
+  width: 100%;
+  height: 100%;
+  background: #1a1a2e;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.code-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.code-dots .dot.red { background: #ff5f56; }
+.code-dots .dot.yellow { background: #ffbd2e; }
+.code-dots .dot.green { background: #27ca40; }
+
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.code-content {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  overflow: auto;
+}
+
+.code-content code {
+  display: block;
+  white-space: pre;
+}
+
+.code-keyword { color: #c792ea; }
+.code-variable { color: #82aaff; }
+.code-property { color: #f07178; }
+.code-string { color: #c3e88d; }
+.code-function { color: #82aaff; }
+.code-comment { color: #546e7a; }
+
+@media (max-width: 768px) {
+  .code-content {
+    font-size: 0.75rem;
+    padding: 1rem;
+    line-height: 1.6;
+  }
+  
+  .code-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .code-dots .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
