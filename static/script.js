@@ -1,36 +1,108 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ========================================
-  // PARTICLE SYSTEM
+  // CUSTOM CURSOR
+  // ========================================
+  const cursor = document.getElementById('cursor');
+  const cursorDot = document.getElementById('cursor-dot');
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
+
+  // Check if device supports hover (not touch-only)
+  const hasHover = window.matchMedia('(hover: hover)').matches;
+
+  if (hasHover && cursor && cursorDot) {
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      // Immediate dot movement
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+
+    // Smooth cursor circle follow
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Cursor effects on interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .glass-card, .tech-item, .project-card');
+    
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        cursor.style.borderColor = '#00ff88';
+        cursor.style.mixBlendMode = 'normal';
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursor.style.borderColor = '#00ff88';
+        cursor.style.mixBlendMode = 'difference';
+      });
+    });
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+      cursorDot.style.opacity = '0';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      cursor.style.opacity = '1';
+      cursorDot.style.opacity = '1';
+    });
+  }
+
+  // ========================================
+  // PARTICLE SYSTEM (Enhanced)
   // ========================================
   const particleContainer = document.getElementById('particles');
-  const particleCount = 50;
+  const particleCount = 60;
 
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div');
     particle.className = 'particle';
     particle.style.left = Math.random() * 100 + '%';
-    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-    particle.style.animationDelay = Math.random() * 10 + 's';
-    particle.style.opacity = Math.random() * 0.5 + 0.2;
-    particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+    particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.opacity = Math.random() * 0.4 + 0.1;
+    
+    const size = Math.random() * 3 + 1;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    // Random colors from our palette
+    const colors = ['#00ff88', '#00d4ff', '#bf00ff', '#ff00aa'];
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.boxShadow = `0 0 ${size * 2}px ${particle.style.background}`;
+    
     particleContainer.appendChild(particle);
   }
 
   // ========================================
-  // TYPEWRITER EFFECT
+  // TYPEWRITER EFFECT (Terminal Style)
   // ========================================
   const typewriter = document.getElementById('typewriter');
+  const prefix = document.querySelector('.typewriter-prefix');
   const phrases = [
-    'full-stack applications',
-    'elegant solutions',
-    'intuitive interfaces',
-    'robust systems',
-    'impactful software'
+    'building full-stack applications...',
+    'crafting elegant solutions...',
+    'creating intuitive interfaces...',
+    'engineering robust systems...',
+    'shipping impactful software...'
   ];
   let phraseIndex = 0;
   let charIndex = 0;
   let isDeleting = false;
-  let typingSpeed = 100;
+  let typingSpeed = 80;
 
   function type() {
     const currentPhrase = phrases[phraseIndex];
@@ -38,20 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isDeleting) {
       typewriter.textContent = currentPhrase.substring(0, charIndex - 1);
       charIndex--;
-      typingSpeed = 50;
+      typingSpeed = 40;
     } else {
       typewriter.textContent = currentPhrase.substring(0, charIndex + 1);
       charIndex++;
-      typingSpeed = 100;
+      typingSpeed = 80;
     }
 
     if (!isDeleting && charIndex === currentPhrase.length) {
       isDeleting = true;
-      typingSpeed = 2000; // Pause at end
+      typingSpeed = 2500;
     } else if (isDeleting && charIndex === 0) {
       isDeleting = false;
       phraseIndex = (phraseIndex + 1) % phrases.length;
-      typingSpeed = 500; // Pause before new phrase
+      typingSpeed = 500;
     }
 
     setTimeout(type, typingSpeed);
@@ -159,9 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentScroll = window.pageYOffset;
     
     if (currentScroll > 100) {
-      nav.style.background = 'rgba(10, 10, 15, 0.95)';
+      nav.style.background = 'rgba(3, 3, 3, 0.95)';
+      nav.style.borderBottomColor = 'rgba(0, 255, 136, 0.2)';
     } else {
-      nav.style.background = 'rgba(10, 10, 15, 0.8)';
+      nav.style.background = 'rgba(3, 3, 3, 0.8)';
+      nav.style.borderBottomColor = 'rgba(0, 255, 136, 0.1)';
     }
 
     lastScroll = currentScroll;
@@ -194,6 +268,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ========================================
+  // MAGNETIC BUTTON EFFECT
+  // ========================================
+  const magneticBtns = document.querySelectorAll('.magnetic-wrap');
+  
+  magneticBtns.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0, 0)';
+    });
+  });
+
+  // ========================================
   // TECH ITEM HOVER EFFECT
   // ========================================
   const techItems = document.querySelectorAll('.tech-item');
@@ -209,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ========================================
-  // PROJECT CARD TILT EFFECT
+  // PROJECT CARD 3D TILT EFFECT
   // ========================================
   const projectCards = document.querySelectorAll('.project-card');
 
@@ -222,14 +315,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
       
-      const rotateX = (y - centerY) / 20;
-      const rotateY = (centerX - x) / 20;
+      const rotateX = (y - centerY) / 15;
+      const rotateY = (centerX - x) / 15;
       
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      
+      // Dynamic light effect
+      const glowX = (x / rect.width) * 100;
+      const glowY = (y / rect.height) * 100;
+      card.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(0, 255, 136, 0.05) 0%, transparent 50%), var(--bg-glass)`;
     });
 
     card.addEventListener('mouseleave', () => {
       card.style.transform = '';
+      card.style.background = '';
     });
   });
 
@@ -242,28 +341,60 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 100) {
         scrollIndicator.style.opacity = '0';
+        scrollIndicator.style.pointerEvents = 'none';
       } else {
         scrollIndicator.style.opacity = '1';
+        scrollIndicator.style.pointerEvents = 'auto';
       }
     });
   }
 
   // ========================================
-  // FORM FOCUS EFFECTS (if you add a form)
+  // PARALLAX EFFECT ON SCROLL
   // ========================================
-  const formInputs = document.querySelectorAll('input, textarea');
+  const spheres = document.querySelectorAll('.gradient-sphere');
+  const aurora = document.querySelector('.aurora');
   
-  formInputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.parentElement.classList.add('focused');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    
+    spheres.forEach((sphere, index) => {
+      const speed = 0.1 + (index * 0.05);
+      sphere.style.transform = `translateY(${scrolled * speed}px)`;
     });
     
-    input.addEventListener('blur', function() {
-      if (!this.value) {
-        this.parentElement.classList.remove('focused');
-      }
-    });
+    if (aurora) {
+      aurora.style.transform = `translateY(${scrolled * 0.08}px)`;
+    }
   });
 
-  console.log('🚀 Portfolio loaded successfully!');
+  // ========================================
+  // REVEAL ANIMATION FOR CARDS
+  // ========================================
+  const cards = document.querySelectorAll('.glass-card');
+  
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, index * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    cardObserver.observe(card);
+  });
+
+  // ========================================
+  // CONSOLE EASTER EGG
+  // ========================================
+  console.log('%c⚡ ZAID AHMAD ⚡', 'font-size: 2rem; font-weight: bold; color: #00ff88; text-shadow: 0 0 10px #00ff88;');
+  console.log('%cThanks for checking out the console! 🔍', 'font-size: 1rem; color: #00d4ff;');
+  console.log('%cContact: zaidahmad8060@gmail.com', 'font-size: 0.9rem; color: #bf00ff;');
 });

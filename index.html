@@ -13,12 +13,24 @@
   <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <!-- Overlays -->
+  <div class="noise-overlay"></div>
+  <div class="scanlines"></div>
+
   <!-- Animated Background -->
   <div class="bg-animation">
+    <div class="aurora"></div>
     <div class="gradient-sphere sphere-1"></div>
     <div class="gradient-sphere sphere-2"></div>
     <div class="gradient-sphere sphere-3"></div>
   </div>
+
+  <!-- Grid Background -->
+  <div class="grid-bg"></div>
 
   <!-- Floating Particles -->
   <div id="particles"></div>
@@ -56,23 +68,23 @@
         Available for Internships
       </div>
       <h1 class="hero-title">
-        Hi, I'm <span class="gradient-text">Zaid Ahmad</span>
+        Hi, I'm <span class="glitch gradient-text" data-text="Zaid Ahmad">Zaid Ahmad</span>
       </h1>
       <div class="typewriter-container">
-        <span class="typewriter-prefix">I build </span>
+        <span class="typewriter-prefix terminal-text"></span>
         <span class="typewriter" id="typewriter"></span>
-        <span class="cursor">|</span>
+        <span class="cursor-blink">_</span>
       </div>
       <p class="hero-description">
         Computer Science student at Carleton University crafting elegant solutions 
         through code. Passionate about full-stack development & systems programming.
       </p>
       <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">
-          <i class="fas fa-code"></i> View Projects
+        <a href="#projects" class="btn btn-primary magnetic-wrap">
+          <i class="fas fa-terminal"></i> ./view_projects
         </a>
-        <a href="#contact" class="btn btn-secondary">
-          <i class="fas fa-paper-plane"></i> Get in Touch
+        <a href="#contact" class="btn btn-secondary magnetic-wrap">
+          <i class="fas fa-satellite-dish"></i> ./connect
         </a>
       </div>
       <div class="hero-stats">
@@ -94,7 +106,7 @@
       <div class="mouse">
         <div class="wheel"></div>
       </div>
-      <span>Scroll to explore</span>
+      <span>// scroll to explore</span>
     </div>
   </header>
 
