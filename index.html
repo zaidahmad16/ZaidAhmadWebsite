@@ -474,12 +474,48 @@
       <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
     </div>
     <div class="contact-container">
-      <div class="contact-text glass-card">
-        <h3>Get in Touch</h3>
-        <p>I'm currently looking for internship opportunities! Whether you have a question, want to collaborate, or just want to say hi — my inbox is always open.</p>
-        <a href="mailto:zaidahmad8060@gmail.com" class="btn btn-primary btn-large">
-          <i class="fas fa-envelope"></i> Say Hello
-        </a>
+      <div class="contact-form-card glass-card">
+        <h3 class="contact-form-title">Send Me a Message</h3>
+        <div id="contact-form-container">
+          <div id="contact-form" class="contact-form">
+            <input type="hidden" id="access_key" value="8561c428-050d-4d8b-8930-271525dbc678">
+            <div class="form-group">
+              <label for="contact-name">Your Name</label>
+              <input 
+                type="text" 
+                id="contact-name" 
+                placeholder="John Doe"
+              >
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Your Email</label>
+              <input 
+                type="email" 
+                id="contact-email" 
+                placeholder="example@domain.com"
+              >
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea 
+                id="contact-message" 
+                placeholder="Hi Zaid, I'd love to chat about..." 
+                rows="4"
+              ></textarea>
+            </div>
+            <button type="button" id="contact-submit-btn" class="btn btn-primary btn-full">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </div>
+        </div>
+        <div id="contact-success" class="contact-success" style="display: none;">
+          <span class="success-icon">✉️</span>
+          <p>Message sent! I'll get back to you soon.</p>
+        </div>
+        <div id="contact-error" class="contact-error" style="display: none;">
+          <span class="error-icon">❌</span>
+          <p>Something went wrong. Please try again or email me directly.</p>
+        </div>
       </div>
       <div class="contact-links">
         <a href="mailto:zaidahmad8060@gmail.com" class="contact-card glass-card">

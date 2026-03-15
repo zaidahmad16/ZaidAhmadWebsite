@@ -1,3 +1,44 @@
+// ========================================
+// COPY EMAIL FUNCTION
+// ========================================
+function copyEmail() {
+  const email = 'zaidahmad8060@gmail.com';
+  
+  // Try to open email client first
+  const mailtoLink = document.createElement('a');
+  mailtoLink.href = 'mailto:' + email;
+  mailtoLink.click();
+  
+  // Also copy to clipboard as fallback
+  navigator.clipboard.writeText(email).then(() => {
+    const msg = document.getElementById('email-copied');
+    if (msg) {
+      msg.style.display = 'block';
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 3000);
+    }
+  }).catch(() => {
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = email;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    
+    const msg = document.getElementById('email-copied');
+    if (msg) {
+      msg.style.display = 'block';
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 3000);
+    }
+  });
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   // ========================================
   // PARTICLE SYSTEM
@@ -336,6 +377,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initial update
     updateScrollAnimation();
+  }
+
+  // ========================================
+  // CONTACT FORM HANDLER (Web3Forms)
+  // ========================================
+  const contactSubmitBtn = document.getElementById('contact-submit-btn');
+  
+  if (contactSubmitBtn) {
+    contactSubmitBtn.addEventListener('click', function() {
+      const contactFormContainer = document.getElementById('contact-form-container');
+      const contactSuccess = document.getElementById('contact-success');
+      const contactError = document.getElementById('contact-error');
+      
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+      
+      // Validation
+      if (!name || !email || !message) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      // Disable button and show loading state
+      contactSubmitBtn.disabled = true;
+      contactSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      
+      const data = {
+        access_key: '8561c428-050d-4d8b-8930-271525dbc678',
+        subject: 'New Contact from Portfolio Website',
+        name: name,
+        email: email,
+        message: message
+      };
+      
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(result) {
+        console.log('Web3Forms result:', result);
+        if (result.success) {
+          contactFormContainer.style.display = 'none';
+          contactSuccess.style.display = 'block';
+        } else {
+          contactFormContainer.style.display = 'none';
+          contactError.style.display = 'block';
+        }
+      })
+      .catch(function(error) {
+        console.error('Error:', error);
+        contactFormContainer.style.display = 'none';
+        contactError.style.display = 'block';
+      });
+    });
   }
 
   console.log('🚀 Portfolio loaded successfully!');
