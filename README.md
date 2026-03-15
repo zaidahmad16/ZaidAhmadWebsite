@@ -5,12 +5,15 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 ## Features
 
 - Modern glassmorphism design with animated gradient background
+- Animated falling pattern background effect
 - Floating particle effects and gradient spheres
+- 3D scroll-based card animation with code editor showcase
 - Typewriter text animation in hero section
 - Animated stat counters
 - Interactive skill cards with hover effects
 - Timeline-based experience section
 - **Embedded PDF resume viewer** with download option
+- **Contact form** with Web3Forms integration
 - Responsive design for all devices
 - Smooth scroll animations and transitions
 
@@ -21,8 +24,9 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 ## Tech Stack
 
 - HTML5
-- CSS3 (Custom properties, Flexbox, Grid)
+- CSS3 (Custom properties, Flexbox, Grid, 3D Transforms)
 - JavaScript (ES6+)
+- Web3Forms API (contact form)
 - Font Awesome Icons
 - Google Fonts (Inter, JetBrains Mono)
 
@@ -44,11 +48,11 @@ ZaidAhmadWebsite/
 - **Hero** - Introduction with typewriter effect and stats
 - **About** - Personal bio and highlights
 - **Education** - Academic background and coursework
-- **Projects** - Featured project showcase
+- **Projects** - Featured project showcase with 3D scroll animation
 - **Skills** - Technical stack organized by category
 - **Experience** - Timeline of work and activities
 - **Resume** - Embedded PDF viewer
-- **Contact** - Email and social links
+- **Contact** - Functional contact form (sends to email via Web3Forms)
 
 ## Deployment
 
