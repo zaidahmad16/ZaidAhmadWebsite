@@ -3,137 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zaid Ahmad | Software Developer</title>
+  <title>Zaid Ahmad — Software Developer</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="static/reset.css">
   <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-  <!-- Falling Pattern Background -->
-  <div class="falling-pattern-container">
-    <div class="falling-pattern"></div>
-    <div class="falling-pattern-overlay"></div>
-  </div>
 
-  <!-- Floating Particles -->
-  <div id="particles"></div>
+  <!-- Grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
 
-  <!-- Navigation -->
-  <nav class="glass-nav">
-    <div class="nav-container">
-      <a href="#" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>ZA<span class="logo-bracket">/&gt;</span>
-      </a>
-      <div class="nav-links">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#education" class="nav-link">Education</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#experience" class="nav-link">Experience</a>
-        <a href="#resume" class="nav-link">Resume</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </div>
-      <button class="mobile-menu-btn" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <!-- ======== NAV ======== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Zaid Ahmad</a>
+    <div class="nav-links" id="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
     </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span></span><span></span>
+    </button>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Available for Internships
+  <!-- ======== HERO ======== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-meta">
+        <span class="label"><span class="dot"></span> Available for Internships</span>
       </div>
-      <h1 class="hero-title">
-        Hi, I'm <span class="gradient-text">Zaid Ahmad</span>
+      <h1 class="hero-name" aria-label="Zaid Ahmad">
+        <span class="hero-line" data-reveal>Zaid</span>
+        <span class="hero-line" data-reveal>Ahmad</span>
       </h1>
-      <div class="typewriter-container">
-        <span class="typewriter-prefix">I build </span>
-        <span class="typewriter" id="typewriter"></span>
-        <span class="cursor">|</span>
-      </div>
-      <p class="hero-description">
-        Computer Science student at Carleton University crafting elegant solutions 
-        through code. Passionate about full-stack development & systems programming.
-      </p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">
-          <i class="fas fa-code"></i> View Projects
-        </a>
-        <a href="#contact" class="btn btn-secondary">
-          <i class="fas fa-paper-plane"></i> Get in Touch
-        </a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-number" data-target="5">0</span>+
-          <span class="stat-label">Projects Built</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-target="3">0</span>+
-          <span class="stat-label">Hackathons</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-target="7">0</span>+
-          <span class="stat-label">Technologies</span>
+      <div class="hero-footer">
+        <p class="hero-desc">Software developer & CS student at Carleton University. I build full-stack applications and developer tools.</p>
+        <div class="hero-actions">
+          <a href="#work" class="pill-btn">View Work <span class="arrow">&rarr;</span></a>
+          <a href="#contact" class="pill-btn pill-btn--outline">Get in Touch</a>
         </div>
       </div>
     </div>
-    <div class="scroll-indicator">
-      <div class="mouse">
-        <div class="wheel"></div>
-      </div>
-      <span>Scroll to explore</span>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
     </div>
-  </header>
+  </section>
 
-  <!-- Scroll Animation Showcase -->
-  <section id="showcase" class="container-scroll-section">
-    <div class="container-scroll" data-scroll-container>
-      <div class="scroll-content-wrapper">
-        <div class="scroll-header" data-scroll-header>
-          <h2 class="scroll-title">
-            Building the future with <br>
-            <span class="gradient-text scroll-title-large">Clean Code</span>
-          </h2>
-        </div>
-        <div class="scroll-card" data-scroll-card>
-          <div class="scroll-card-inner">
-            <div class="code-showcase">
-              <div class="code-header">
-                <div class="code-dots">
-                  <span class="dot red"></span>
-                  <span class="dot yellow"></span>
-                  <span class="dot green"></span>
-                </div>
-                <span class="code-filename">developer.js</span>
-              </div>
-              <pre class="code-content"><code><span class="code-keyword">const</span> <span class="code-variable">developer</span> = {
-  <span class="code-property">name</span>: <span class="code-string">"Zaid Ahmad"</span>,
-  <span class="code-property">role</span>: <span class="code-string">"Full-Stack Developer"</span>,
-  <span class="code-property">education</span>: <span class="code-string">"Carleton University"</span>,
-  
-  <span class="code-property">skills</span>: [
-    <span class="code-string">"React Native"</span>, <span class="code-string">"Node.js"</span>, <span class="code-string">"Python"</span>,
-    <span class="code-string">"C/C++"</span>, <span class="code-string">"Firebase"</span>, <span class="code-string">"MongoDB"</span>
-  ],
+  <!-- ======== MARQUEE ======== -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span>Python</span><span class="marquee-dot">&middot;</span>
+        <span>JavaScript</span><span class="marquee-dot">&middot;</span>
+        <span>TypeScript</span><span class="marquee-dot">&middot;</span>
+        <span>Java</span><span class="marquee-dot">&middot;</span>
+        <span>C/C++</span><span class="marquee-dot">&middot;</span>
+        <span>React Native</span><span class="marquee-dot">&middot;</span>
+        <span>Next.js</span><span class="marquee-dot">&middot;</span>
+        <span>Node.js</span><span class="marquee-dot">&middot;</span>
+        <span>Express</span><span class="marquee-dot">&middot;</span>
+        <span>Firebase</span><span class="marquee-dot">&middot;</span>
+        <span>MongoDB</span><span class="marquee-dot">&middot;</span>
+        <span>Flask</span><span class="marquee-dot">&middot;</span>
+        <span>Git</span><span class="marquee-dot">&middot;</span>
+        <span>Linux</span><span class="marquee-dot">&middot;</span>
+        <span>React Flow</span><span class="marquee-dot">&middot;</span>
+        <span>Arduino</span><span class="marquee-dot">&middot;</span>
+        <span>Python</span><span class="marquee-dot">&middot;</span>
+        <span>JavaScript</span><span class="marquee-dot">&middot;</span>
+        <span>TypeScript</span><span class="marquee-dot">&middot;</span>
+        <span>Java</span><span class="marquee-dot">&middot;</span>
+        <span>C/C++</span><span class="marquee-dot">&middot;</span>
+        <span>React Native</span><span class="marquee-dot">&middot;</span>
+        <span>Next.js</span><span class="marquee-dot">&middot;</span>
+        <span>Node.js</span><span class="marquee-dot">&middot;</span>
+        <span>Express</span><span class="marquee-dot">&middot;</span>
+        <span>Firebase</span><span class="marquee-dot">&middot;</span>
+        <span>MongoDB</span><span class="marquee-dot">&middot;</span>
+        <span>Flask</span><span class="marquee-dot">&middot;</span>
+        <span>Git</span><span class="marquee-dot">&middot;</span>
+        <span>Linux</span><span class="marquee-dot">&middot;</span>
+        <span>React Flow</span><span class="marquee-dot">&middot;</span>
+        <span>Arduino</span><span class="marquee-dot">&middot;</span>
+      </div>
+    </div>
+  </div>
 
-  <span class="code-function">build</span>: <span class="code-keyword">async</span> () => {
-    <span class="code-keyword">const</span> ideas = <span class="code-keyword">await</span> <span class="code-variable">brainstorm</span>();
-    <span class="code-keyword">const</span> code = <span class="code-variable">transform</span>(ideas);
-    <span class="code-keyword">return</span> <span class="code-variable">deploy</span>(code);  <span class="code-comment">// 🚀</span>
-  }
-};
-
-<span class="code-variable">developer</span>.<span class="code-function">build</span>();  <span class="code-comment">// Let's create something amazing</span></code></pre>
+  <!-- ======== ABOUT ======== -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <span class="label">About</span>
+      <div class="about-grid">
+        <h2 class="about-statement">I'm a computer science student who turns ideas into software that actually works.</h2>
+        <div class="about-body">
+          <p>Currently studying at Carleton University in Ottawa. I've built full-stack web applications, mobile apps, developer tools, and multithreaded systems. I'm driven by hackathons, hard problems, and good coffee.</p>
+          <p>When I'm not shipping code, you'll find me exploring Ottawa's coffee scene, watching space documentaries, or tinkering with my dev setup.</p>
+          <div class="about-stats">
+            <div class="about-stat">
+              <span class="about-stat-num" data-target="4">4</span>
+              <span class="about-stat-label">Projects</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num" data-target="3">3</span>
+              <span class="about-stat-label">Hackathons</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num" data-target="16">16</span>
+              <span class="about-stat-label">Technologies</span>
             </div>
           </div>
         </div>
@@ -141,419 +122,209 @@
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;about&gt;</span>
-      <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+  <!-- ======== WORK ======== -->
+  <section id="work" class="section work-section">
+    <div class="container">
+      <span class="label">Selected Work</span>
+      <h2 class="section-title">Projects</h2>
     </div>
-    <div class="about-grid">
-      <div class="about-text glass-card">
-        <p>Hi, I'm <strong>Zaid Ahmad</strong> — a Computer Science student at Carleton University with a passion for creating meaningful software solutions. From developing full-stack web applications to building multithreaded systems, I thrive on turning ideas into functional, impactful projects.</p>
-        <p>I'm driven by curiosity and continuous learning. Whether it's competing in hackathons, exploring new frameworks, or diving deep into backend architecture, I'm always looking for opportunities to grow as a developer.</p>
-        <p>When I'm not coding, you'll find me exploring Ottawa's coffee scene, watching space documentaries, or tinkering with my development setup.</p>
-      </div>
-      <div class="highlights-grid">
-        <div class="highlight-card glass-card">
-          <div class="highlight-icon"><i class="fas fa-trophy"></i></div>
-          <h3>Hackathon Veteran</h3>
-          <p>Building under pressure</p>
-        </div>
-        <div class="highlight-card glass-card">
-          <div class="highlight-icon"><i class="fas fa-lightbulb"></i></div>
-          <h3>Problem Solver</h3>
-          <p>Creative solutions</p>
-        </div>
-        <div class="highlight-card glass-card">
-          <div class="highlight-icon"><i class="fas fa-rocket"></i></div>
-          <h3>Fast Learner</h3>
-          <p>Adapts quickly</p>
-        </div>
-        <div class="highlight-card glass-card">
-          <div class="highlight-icon"><i class="fas fa-users"></i></div>
-          <h3>Team Player</h3>
-          <p>Collaborative spirit</p>
-        </div>
-      </div>
-    </div>
-    <span class="section-tag section-tag-end">&lt;/about&gt;</span>
-  </section>
+    <div class="work-list">
 
-  <!-- Education Section -->
-  <section id="education" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;education&gt;</span>
-      <h2 class="section-title">My <span class="gradient-text">Education</span></h2>
-    </div>
-    <div class="education-card glass-card">
-      <div class="education-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
-      <div class="education-content">
-        <div class="education-header">
-          <h3>Bachelor of Computer Science (Honours)</h3>
-          <span class="education-date"><i class="fas fa-calendar-alt"></i> Expected 2028</span>
-        </div>
-        <p class="institution"><i class="fas fa-university"></i> Carleton University | Ottawa, ON</p>
-        <div class="gpa-badge">
-          <span>CGPA: 7.3/12</span>
-        </div>
-        <div class="coursework">
-          <h4><i class="fas fa-book"></i> Relevant Coursework</h4>
-          <div class="coursework-grid">
-            <span class="course-chip">Data Structures & Algorithms</span>
-            <span class="course-chip">Object-Oriented Programming</span>
-            <span class="course-chip">C/C++ Programming</span>
-            <span class="course-chip">Calculus</span>
-            <span class="course-chip">Linear Algebra</span>
+      <article class="work-card">
+        <a href="https://github.com/buildAtlasOrg" target="_blank" class="work-card-inner">
+          <div class="work-card-content">
+            <span class="work-card-label">01 — Founder Project</span>
+            <h3 class="work-card-title">BuildAtlas</h3>
+            <p class="work-card-desc">A developer tool that visualizes GitHub Actions CI/CD pipelines as interactive graphs. Engineers get a clear visual map of every job, status, duration, and dependency — with failures highlighted instantly.</p>
+            <div class="work-card-tech">Next.js · TypeScript · Node.js · Express · React Flow · GitHub OAuth</div>
           </div>
-        </div>
-      </div>
-    </div>
-    <span class="section-tag section-tag-end">&lt;/education&gt;</span>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;projects&gt;</span>
-      <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
-    </div>
-    <div class="projects-grid">
-      <article class="project-card glass-card featured">
-        <div class="project-image">
-          <div class="project-icon"><i class="fas fa-home"></i></div>
-          <span class="project-badge pulse">🏆 Hackathon Project</span>
-        </div>
-        <div class="project-content">
-          <h3>Homeless Shelter Finder</h3>
-          <p>Swipeable React Native mobile app that helps users discover local shelters based on location, gender, and amenities. Built to address real-world social impact.</p>
-          <div class="tech-tags">
-            <span class="tag">React Native</span>
-            <span class="tag">Firebase</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">Express</span>
+          <div class="work-card-visual">
+            <div class="work-card-gradient" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"></div>
+            <span class="work-card-arrow">&nearr;</span>
           </div>
-          <ul class="project-highlights">
-            <li><i class="fas fa-check"></i> Swipeable UI with real-time data filtering</li>
-            <li><i class="fas fa-check"></i> Location-based search with Firestore</li>
-            <li><i class="fas fa-check"></i> Built & demoed in under 24 hours</li>
-          </ul>
-        </div>
-        <div class="project-footer">
-          <span class="project-event"><i class="fas fa-trophy"></i> CUHacking 2025</span>
-        </div>
+        </a>
       </article>
 
-      <article class="project-card glass-card">
-        <div class="project-image">
-          <div class="project-icon"><i class="fas fa-globe"></i></div>
-        </div>
-        <div class="project-content">
-          <h3>Portfolio Website</h3>
-          <p>Responsive personal portfolio with clean UI, interactive elements, and modern design patterns.</p>
-          <div class="tech-tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
+      <article class="work-card">
+        <a href="https://github.com/zaidahmad16/cuHacking-2025-Project" target="_blank" class="work-card-inner">
+          <div class="work-card-content">
+            <span class="work-card-label">02 — CUHacking 2025</span>
+            <h3 class="work-card-title">ShelterMatch Ottawa</h3>
+            <p class="work-card-desc">Swipeable React Native mobile app helping users find local shelters by location, gender, and amenities. Built and demoed in under 24 hours to address real-world social impact.</p>
+            <div class="work-card-tech">React Native · Firebase · Node.js · Express</div>
           </div>
-          <ul class="project-highlights">
-            <li><i class="fas fa-check"></i> Responsive modern design</li>
-            <li><i class="fas fa-check"></i> Smooth animations & transitions</li>
-          </ul>
+          <div class="work-card-visual">
+            <div class="work-card-gradient" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d1b3d 50%, #1a1a2e 100%);"></div>
+            <span class="work-card-arrow">&nearr;</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="work-card">
+        <a href="https://github.com/zaidahmad16/ZaidAhmadWebsite" target="_blank" class="work-card-inner">
+          <div class="work-card-content">
+            <span class="work-card-label">03 — Personal</span>
+            <h3 class="work-card-title">Portfolio Website</h3>
+            <p class="work-card-desc">Responsive portfolio with scroll animations, interactive elements, and modern design patterns — built entirely from scratch.</p>
+            <div class="work-card-tech">HTML · CSS · JavaScript</div>
+          </div>
+          <div class="work-card-visual">
+            <div class="work-card-gradient" style="background: linear-gradient(135deg, #111 0%, #1c1c1c 50%, #222 100%);"></div>
+            <span class="work-card-arrow">&nearr;</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="work-card">
+        <a href="https://github.com/zaidahmad16/COMP2401-Final-Project" target="_blank" class="work-card-inner">
+          <div class="work-card-content">
+            <span class="work-card-label">04 — Systems Programming</span>
+            <h3 class="work-card-title">Multithreaded C Simulation</h3>
+            <p class="work-card-desc">Multithreaded simulation using semaphores and POSIX synchronization for concurrent agent management with deadlock prevention.</p>
+            <div class="work-card-tech">C · POSIX Threads · Semaphores · Linux</div>
+          </div>
+          <div class="work-card-visual">
+            <div class="work-card-gradient" style="background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #21262d 100%);"></div>
+            <span class="work-card-arrow">&nearr;</span>
+          </div>
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ======== EXPERIENCE ======== -->
+  <section id="experience" class="section exp-section">
+    <div class="container">
+      <span class="label">Experience & Education</span>
+      <h2 class="section-title">Background</h2>
+
+      <div class="exp-table">
+        <div class="exp-row exp-row--header">
+          <span>Year</span>
+          <span>Role</span>
+          <span>Details</span>
         </div>
-        <div class="project-footer">
-          <a href="https://zaidahmad.dev/" target="_blank" class="project-link">
-            <i class="fas fa-external-link-alt"></i> Live Site
+        <div class="exp-row">
+          <span class="exp-year">Mar 2026 —</span>
+          <span class="exp-role">Founder / Software Engineer <span class="exp-org">· BuildAtlas</span></span>
+          <span class="exp-desc">Building a developer tool that visualizes GitHub Actions CI/CD pipelines as interactive graphs. Architected full-stack with Next.js, TypeScript, Node.js, Express, React Flow, and GitHub OAuth.</span>
+        </div>
+        <div class="exp-row">
+          <span class="exp-year">Sep 2025 —</span>
+          <span class="exp-role">Logistics Coordinator <span class="exp-org">· cuHacking</span></span>
+          <span class="exp-desc">Coordinating logistics for Carleton University's largest hackathon. Managing venue operations, sponsor communications, and day-of event execution for 500+ attendees.</span>
+        </div>
+        <div class="exp-row">
+          <span class="exp-year">Mar 2025</span>
+          <span class="exp-role">Hackathon Hacker <span class="exp-org">· CUHacking 2025</span></span>
+          <span class="exp-desc">Built ShelterMatch Ottawa — a React Native mobile app helping users find local shelters by location, gender, and amenities. Designed and demoed in under 24 hours.</span>
+        </div>
+        <div class="exp-row">
+          <span class="exp-year">2018 — 25</span>
+          <span class="exp-role">Chief Petty Officer 2nd Class <span class="exp-org">· RCSCC Falkland</span></span>
+          <span class="exp-desc">Led teams of 20+ cadets in drill, seamanship, and leadership training. Earned highest non-commissioned rank through 7 years of service in the Royal Canadian Sea Cadets.</span>
+        </div>
+      </div>
+
+      <div class="edu-block">
+        <div class="edu-row">
+          <span class="edu-degree">B.CS Honours — AI & Machine Learning, Co-op</span>
+          <span class="edu-school">Carleton University · Ottawa</span>
+          <span class="edu-year">Expected 2028</span>
+        </div>
+        <div class="edu-courses">
+          <span>Data Structures & Algorithms</span>
+          <span>Systems Programming</span>
+          <span>Software Engineering</span>
+          <span>Web Applications</span>
+          <span>Discrete Structures</span>
+          <span>Calculus</span>
+          <span>Linear Algebra</span>
+          <span>Statistical Modelling</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== RESUME ======== -->
+  <section id="resume" class="section resume-section">
+    <div class="container">
+      <span class="label">Resume</span>
+      <div class="resume-block">
+        <h2 class="resume-heading">Download my resume for the full picture.</h2>
+        <div class="resume-actions">
+          <a href="ZaidAhmadCV.pdf" download class="pill-btn"><i class="fas fa-download"></i> Download PDF</a>
+          <a href="ZaidAhmadCV.pdf" target="_blank" class="pill-btn pill-btn--outline"><i class="fas fa-external-link-alt"></i> Open in Tab</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== CONTACT ======== -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <span class="label">Contact</span>
+      <h2 class="contact-heading">Let's work<br>together.</h2>
+      <p class="contact-sub">Have a project in mind, want to collaborate, or just chat? Reach out.</p>
+
+      <div class="contact-grid">
+        <div class="contact-form-wrap">
+          <div id="contact-form-container">
+            <div id="contact-form" class="contact-form">
+              <input type="hidden" id="access_key" value="8561c428-050d-4d8b-8930-271525dbc678">
+              <div class="field">
+                <label for="contact-name">Name</label>
+                <input type="text" id="contact-name" placeholder="Your name">
+              </div>
+              <div class="field">
+                <label for="contact-email">Email</label>
+                <input type="email" id="contact-email" placeholder="you@example.com">
+              </div>
+              <div class="field">
+                <label for="contact-message">Message</label>
+                <textarea id="contact-message" placeholder="Tell me about your project..." rows="5"></textarea>
+              </div>
+              <button type="button" id="contact-submit-btn" class="pill-btn pill-btn--full">Send Message <span class="arrow">&rarr;</span></button>
+            </div>
+          </div>
+          <div id="contact-success" class="form-msg" style="display:none;">
+            <p>Message sent — I'll get back to you soon.</p>
+          </div>
+          <div id="contact-error" class="form-msg form-msg--error" style="display:none;">
+            <p>Something went wrong. Email me directly instead.</p>
+          </div>
+        </div>
+
+        <div class="contact-links">
+          <a href="mailto:zaidahmad8060@gmail.com" class="contact-link">
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-value">zaidahmad8060@gmail.com</span>
+            <span class="arrow">&rarr;</span>
+          </a>
+          <a href="https://github.com/zaidahmad16" target="_blank" class="contact-link">
+            <span class="contact-link-label">GitHub</span>
+            <span class="contact-link-value">zaidahmad16</span>
+            <span class="arrow">&rarr;</span>
+          </a>
+          <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="contact-link">
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-value">Zaid Ahmad</span>
+            <span class="arrow">&rarr;</span>
           </a>
         </div>
-      </article>
-
-      <article class="project-card glass-card">
-        <div class="project-image">
-          <div class="project-icon"><i class="fas fa-microchip"></i></div>
-        </div>
-        <div class="project-content">
-          <h3>Multithreaded C Simulation</h3>
-          <p>Built a multithreaded simulation using semaphores and synchronization primitives for concurrent agent management.</p>
-          <div class="tech-tags">
-            <span class="tag">C</span>
-            <span class="tag">POSIX Threads</span>
-            <span class="tag">Semaphores</span>
-            <span class="tag">Linux</span>
-          </div>
-          <ul class="project-highlights">
-            <li><i class="fas fa-check"></i> Deadlock prevention techniques</li>
-            <li><i class="fas fa-check"></i> Thread synchronization</li>
-          </ul>
-        </div>
-        <div class="project-footer">
-          <span class="project-event"><i class="fas fa-code"></i> Systems Programming</span>
-        </div>
-      </article>
+      </div>
     </div>
-    <span class="section-tag section-tag-end">&lt;/projects&gt;</span>
   </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;skills&gt;</span>
-      <h2 class="section-title">Tech <span class="gradient-text">Stack</span></h2>
-    </div>
-    <div class="skills-container">
-      <div class="skill-category glass-card">
-        <h3 class="category-title"><i class="fas fa-code"></i> Languages</h3>
-        <div class="tech-grid">
-          <div class="tech-item" data-skill="Python">
-            <i class="fab fa-python"></i>
-            <span>Python</span>
-          </div>
-          <div class="tech-item" data-skill="Java">
-            <i class="fab fa-java"></i>
-            <span>Java</span>
-          </div>
-          <div class="tech-item" data-skill="C/C++">
-            <i class="fas fa-laptop-code"></i>
-            <span>C/C++</span>
-          </div>
-          <div class="tech-item" data-skill="JavaScript">
-            <i class="fab fa-js-square"></i>
-            <span>JavaScript</span>
-          </div>
-          <div class="tech-item" data-skill="HTML/CSS">
-            <i class="fab fa-html5"></i>
-            <span>HTML/CSS</span>
-          </div>
-        </div>
-      </div>
-      <div class="skill-category glass-card">
-        <h3 class="category-title"><i class="fas fa-cubes"></i> Frameworks & Tech</h3>
-        <div class="tech-grid">
-          <div class="tech-item" data-skill="React Native">
-            <i class="fab fa-react"></i>
-            <span>React Native</span>
-          </div>
-          <div class="tech-item" data-skill="Node.js">
-            <i class="fab fa-node-js"></i>
-            <span>Node.js</span>
-          </div>
-          <div class="tech-item" data-skill="Flask">
-            <i class="fas fa-pepper-hot"></i>
-            <span>Flask</span>
-          </div>
-          <div class="tech-item" data-skill="Firebase">
-            <i class="fas fa-fire"></i>
-            <span>Firebase</span>
-          </div>
-          <div class="tech-item" data-skill="Express">
-            <i class="fas fa-server"></i>
-            <span>Express</span>
-          </div>
-          <div class="tech-item" data-skill="MongoDB">
-            <i class="fas fa-database"></i>
-            <span>MongoDB</span>
-          </div>
-        </div>
-      </div>
-      <div class="skill-category glass-card">
-        <h3 class="category-title"><i class="fas fa-tools"></i> Tools & Concepts</h3>
-        <div class="tech-grid">
-          <div class="tech-item" data-skill="Git">
-            <i class="fab fa-git-alt"></i>
-            <span>Git/GitHub</span>
-          </div>
-          <div class="tech-item" data-skill="VS Code">
-            <i class="fas fa-code"></i>
-            <span>VS Code</span>
-          </div>
-          <div class="tech-item" data-skill="Linux">
-            <i class="fab fa-linux"></i>
-            <span>Linux</span>
-          </div>
-          <div class="tech-item" data-skill="Docker">
-            <i class="fas fa-cube"></i>
-            <span>VMs</span>
-          </div>
-          <div class="tech-item" data-skill="Unreal">
-            <i class="fas fa-gamepad"></i>
-            <span>Game Dev</span>
-          </div>
-          <div class="tech-item" data-skill="Arduino">
-            <i class="fas fa-microchip"></i>
-            <span>Arduino</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <span class="section-tag section-tag-end">&lt;/skills&gt;</span>
-  </section>
-
-  <!-- Experience Section -->
-  <section id="experience" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;experience&gt;</span>
-      <h2 class="section-title">My <span class="gradient-text">Experience</span></h2>
-    </div>
-    <div class="timeline">
-      <div class="timeline-item glass-card">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-header">
-            <h3><i class="fas fa-calendar-check"></i> Logistics Coordinator</h3>
-            <span class="timeline-date">Sept 2025 – Present</span>
-          </div>
-          <p class="timeline-company">cuHacking</p>
-          <ul>
-            <li>Coordinated event logistics for CU Hacking, managing scheduling, room reservations, and on-site operations</li>
-            <li>Collaborated with organizers, sponsors, and volunteers to execute event workflows</li>
-            <li>Oversaw inventory and resource distribution, maintaining organization and timelines</li>
-          </ul>
-        </div>
-      </div>
-      <div class="timeline-item glass-card">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-header">
-            <h3><i class="fas fa-anchor"></i> Chief Petty Officer Second Class</h3>
-            <span class="timeline-date">Sept 2018 – Jun 2025</span>
-          </div>
-          <p class="timeline-company">RCSCC Falkland | Logistics Chief</p>
-          <ul>
-            <li>Managed logistics and inventory for over 100 cadets, ensuring readiness and accuracy</li>
-            <li>Mentored junior cadets, fostering leadership, discipline, and teamwork</li>
-            <li>Led instructional sessions on uniform care and supply protocols</li>
-          </ul>
-        </div>
-      </div>
-      <div class="timeline-item glass-card">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-header">
-            <h3><i class="fas fa-code"></i> Hackathon Hacker</h3>
-            <span class="timeline-date">Mar 2025</span>
-          </div>
-          <p class="timeline-company">CUHacking 2025</p>
-          <ul>
-            <li>Built the Homeless Shelter Finder app with React Native, Firebase, and Node.js</li>
-            <li>Focused on backend development and Firebase Firestore integration</li>
-            <li>Presented and demoed project to industry mentors and judges</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <span class="section-tag section-tag-end">&lt;/experience&gt;</span>
-  </section>
-
-  <!-- Resume Section -->
-  <section id="resume" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;resume&gt;</span>
-      <h2 class="section-title">My <span class="gradient-text">Resume</span></h2>
-    </div>
-    <div class="resume-container glass-card">
-      <div class="resume-actions">
-        <a href="static/ZaidAhmadCV.pdf" download class="btn btn-primary">
-          <i class="fas fa-download"></i> Download PDF
-        </a>
-        <a href="static/ZaidAhmadCV.pdf" target="_blank" class="btn btn-secondary">
-          <i class="fas fa-external-link-alt"></i> Open in New Tab
-        </a>
-      </div>
-      <div class="pdf-wrapper">
-        <iframe src="static/ZaidAhmadCV.pdf" class="pdf-embed" title="Zaid Ahmad Resume"></iframe>
-      </div>
-    </div>
-    <span class="section-tag section-tag-end">&lt;/resume&gt;</span>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="section">
-    <div class="section-header">
-      <span class="section-tag">&lt;contact&gt;</span>
-      <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
-    </div>
-    <div class="contact-container">
-      <div class="contact-form-card glass-card">
-        <h3 class="contact-form-title">Send Me a Message</h3>
-        <div id="contact-form-container">
-          <div id="contact-form" class="contact-form">
-            <input type="hidden" id="access_key" value="8561c428-050d-4d8b-8930-271525dbc678">
-            <div class="form-group">
-              <label for="contact-name">Your Name</label>
-              <input 
-                type="text" 
-                id="contact-name" 
-                placeholder="John Doe"
-              >
-            </div>
-            <div class="form-group">
-              <label for="contact-email">Your Email</label>
-              <input 
-                type="email" 
-                id="contact-email" 
-                placeholder="example@domain.com"
-              >
-            </div>
-            <div class="form-group">
-              <label for="contact-message">Message</label>
-              <textarea 
-                id="contact-message" 
-                placeholder="Hi Zaid, I'd love to chat about..." 
-                rows="4"
-              ></textarea>
-            </div>
-            <button type="button" id="contact-submit-btn" class="btn btn-primary btn-full">
-              <i class="fas fa-paper-plane"></i> Send Message
-            </button>
-          </div>
-        </div>
-        <div id="contact-success" class="contact-success" style="display: none;">
-          <span class="success-icon">✉️</span>
-          <p>Message sent! I'll get back to you soon.</p>
-        </div>
-        <div id="contact-error" class="contact-error" style="display: none;">
-          <span class="error-icon">❌</span>
-          <p>Something went wrong. Please try again or email me directly.</p>
-        </div>
-      </div>
-      <div class="contact-links">
-        <a href="mailto:zaidahmad8060@gmail.com" class="contact-card glass-card">
-          <i class="fas fa-envelope"></i>
-          <span>Email</span>
-          <p>zaidahmad8060@gmail.com</p>
-        </a>
-        <a href="https://github.com/zaidahmad16" target="_blank" class="contact-card glass-card">
-          <i class="fab fa-github"></i>
-          <span>GitHub</span>
-          <p>zaidahmad16</p>
-        </a>
-        <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="contact-card glass-card">
-          <i class="fab fa-linkedin"></i>
-          <span>LinkedIn</span>
-          <p>Zaid Ahmad</p>
-        </a>
-      </div>
-    </div>
-    <span class="section-tag section-tag-end">&lt;/contact&gt;</span>
-  </section>
-
-  <!-- Footer -->
+  <!-- ======== FOOTER ======== -->
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <span class="logo-bracket">&lt;</span>ZA<span class="logo-bracket">/&gt;</span>
-      </div>
-      <p>Designed & Built by Zaid Ahmad</p>
-      <div class="footer-social">
-        <a href="https://github.com/zaidahmad16" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="mailto:zaidahmad8060@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-      </div>
-      <p class="copyright">&copy; 2025 Zaid Ahmad. All rights reserved.</p>
+    <div class="container footer-inner">
+      <span class="footer-copy">&copy; 2025 Zaid Ahmad</span>
+      <span class="footer-built">Designed & Built by Zaid Ahmad</span>
     </div>
   </footer>
 
-  <script src="static/script.js"></script>
+  <script src="static/script.js?v=2"></script>
 </body>
 </html>
