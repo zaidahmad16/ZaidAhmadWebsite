@@ -1,9 +1,6 @@
-/* ====================================================
-   PORTFOLIO — GROUND-UP REBUILD
-   Editorial · Asymmetric · Dramatic Scale
-   ==================================================== */
+/* Portfolio Styles */
 
-/* ── Reset ── */
+/* Reset */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 a{color:inherit;text-decoration:none}
@@ -12,7 +9,7 @@ img{max-width:100%;display:block}
 button{font:inherit;cursor:pointer;border:none;background:none}
 input,textarea{font:inherit}
 
-/* ── Design Tokens ── */
+/* Design Tokens */
 :root{
   --black:#0a0a0a;
   --white:#e8e8e8;
@@ -28,7 +25,7 @@ input,textarea{font:inherit}
   --spring:cubic-bezier(.34,1.56,.64,1);
 }
 
-/* ── Base ── */
+/* Base */
 body{
   font-family:var(--font);
   background:var(--black);
@@ -37,7 +34,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ── Grain Overlay ── */
+/* Grain */
 .grain{
   position:fixed;inset:0;z-index:9999;
   pointer-events:none;
@@ -47,14 +44,14 @@ body{
   background-size:256px 256px;
 }
 
-/* ── Container ── */
+/* Container */
 .container{
   max-width:1200px;
   margin:0 auto;
   padding:0 clamp(1.5rem,4vw,3rem);
 }
 
-/* ── Labels ── */
+/* Labels */
 .label{
   font-family:var(--mono);
   font-size:0.7rem;
@@ -78,7 +75,7 @@ body{
   50%{opacity:.3}
 }
 
-/* ── Section Defaults ── */
+/* Section */
 .section{
   padding:clamp(5rem,10vw,10rem) 0;
   border-top:1px solid var(--border);
@@ -92,9 +89,7 @@ body{
   margin-bottom:3rem;
 }
 
-/* ====================================================
-   NAV
-   ==================================================== */
+/* Nav */
 .nav{
   position:fixed;top:0;left:0;right:0;
   z-index:100;
@@ -136,9 +131,7 @@ body{
 .nav-toggle{display:none;flex-direction:column;gap:6px;padding:4px;}
 .nav-toggle span{width:20px;height:1.5px;background:var(--white);display:block;transition:all .3s var(--ease)}
 
-/* ====================================================
-   HERO
-   ==================================================== */
+/* Hero */
 .hero{
   min-height:100vh;
   display:flex;flex-direction:column;
@@ -220,7 +213,7 @@ body{
   100%{opacity:1;transform:scaleY(1)}
 }
 
-/* ── Pill Buttons ── */
+/* Pill Buttons */
 .pill-btn{
   display:inline-flex;align-items:center;gap:.5rem;
   padding:.7rem 1.5rem;
@@ -255,9 +248,7 @@ body{
 
 .pill-btn--full{width:100%;justify-content:center}
 
-/* ====================================================
-   MARQUEE
-   ==================================================== */
+/* Marquee */
 .marquee-section{
   border-top:1px solid var(--border);
   border-bottom:1px solid var(--border);
@@ -282,9 +273,7 @@ body{
   100%{transform:translateX(-50%)}
 }
 
-/* ====================================================
-   ABOUT
-   ==================================================== */
+/* About */
 .about-grid{
   display:grid;
   grid-template-columns:1.2fr 1fr;
@@ -327,9 +316,7 @@ body{
   color:var(--gray-2);
 }
 
-/* ====================================================
-   WORK / PROJECTS
-   ==================================================== */
+/* Work */
 .work-list{
   max-width:1200px;
   margin:0 auto;
@@ -412,9 +399,7 @@ body{
   transform:translate(4px,-4px);
 }
 
-/* ====================================================
-   EXPERIENCE
-   ==================================================== */
+/* Experience */
 .exp-table{margin-top:2rem}
 .exp-row{
   display:grid;
@@ -491,27 +476,51 @@ body{
 }
 .edu-courses span:hover{border-color:var(--gray-2);color:var(--white)}
 
-/* ====================================================
-   RESUME
-   ==================================================== */
-.resume-block{
+/* Resume */
+.resume-sub{
+  color:var(--gray-1);
+  font-size:1rem;
+  margin-bottom:1rem;
+  line-height:1.7;
+}
+.resume-actions-row{
+  display:flex;justify-content:center;
+  margin-top:2.5rem;
+}
+.macbook-canvas-wrap{
+  position:relative;
+  width:100%;
+  max-width:800px;
+  margin:0 auto;
+  aspect-ratio:16/10;
+}
+#macbook-canvas{
+  width:100%;
+  height:100%;
+  display:block;
+  cursor:grab;
+}
+#macbook-canvas:active{
+  cursor:grabbing;
+}
+.macbook-click-hint{
+  position:absolute;
+  bottom:1.5rem;
+  left:50%;
+  transform:translateX(-50%);
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  flex-wrap:wrap;
-  gap:2rem;
+  gap:.5rem;
+  font-family:var(--mono);
+  font-size:.7rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--gray-2);
+  pointer-events:none;
+  animation:fadeIn 1s var(--ease) 2s both;
 }
-.resume-heading{
-  font-size:clamp(1.25rem,3vw,1.75rem);
-  font-weight:500;
-  letter-spacing:-.02em;
-  max-width:400px;
-}
-.resume-actions{display:flex;gap:.75rem;flex-wrap:wrap}
 
-/* ====================================================
-   CONTACT
-   ==================================================== */
+/* Contact */
 .contact-heading{
   font-size:clamp(3rem,8vw,7rem);
   font-weight:700;
@@ -594,9 +603,7 @@ body{
 }
 .contact-link:hover .arrow{color:var(--white);transform:translateX(4px)}
 
-/* ====================================================
-   FOOTER
-   ==================================================== */
+/* Footer */
 .footer{
   border-top:1px solid var(--border);
   padding:2rem 0;
@@ -612,9 +619,7 @@ body{
   letter-spacing:.06em;
 }
 
-/* ====================================================
-   RESPONSIVE
-   ==================================================== */
+/* Responsive */
 @media(max-width:900px){
   .about-grid{grid-template-columns:1fr}
   .work-card-inner{grid-template-columns:1fr;min-height:auto}
@@ -625,7 +630,6 @@ body{
   .exp-year{padding-top:0}
   .exp-row--header{display:none}
   .edu-row{grid-template-columns:1fr;gap:.5rem}
-  .resume-block{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:768px){
   .nav-links{
@@ -650,4 +654,5 @@ body{
   .hero-actions{flex-direction:column;width:100%}
   .pill-btn{width:100%;justify-content:center}
   .section{padding:4rem 0}
+  .macbook-canvas-wrap{aspect-ratio:4/3}
 }

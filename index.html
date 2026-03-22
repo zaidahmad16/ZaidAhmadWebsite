@@ -13,10 +13,9 @@
 </head>
 <body>
 
-  <!-- Grain overlay -->
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- ======== NAV ======== -->
+  <!-- Nav -->
   <nav class="nav">
     <a href="#" class="nav-logo">Zaid Ahmad</a>
     <div class="nav-links" id="nav-links">
@@ -30,7 +29,7 @@
     </button>
   </nav>
 
-  <!-- ======== HERO ======== -->
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-meta">
@@ -54,7 +53,7 @@
     </div>
   </section>
 
-  <!-- ======== MARQUEE ======== -->
+  <!-- Marquee -->
   <div class="marquee-section">
     <div class="marquee-track">
       <div class="marquee-content">
@@ -94,7 +93,7 @@
     </div>
   </div>
 
-  <!-- ======== ABOUT ======== -->
+  <!-- About -->
   <section id="about" class="section about-section">
     <div class="container">
       <span class="label">About</span>
@@ -122,7 +121,7 @@
     </div>
   </section>
 
-  <!-- ======== WORK ======== -->
+  <!-- Work -->
   <section id="work" class="section work-section">
     <div class="container">
       <span class="label">Selected Work</span>
@@ -193,7 +192,7 @@
     </div>
   </section>
 
-  <!-- ======== EXPERIENCE ======== -->
+  <!-- Experience -->
   <section id="experience" class="section exp-section">
     <div class="container">
       <span class="label">Experience & Education</span>
@@ -220,11 +219,6 @@
           <span class="exp-role">Hackathon Hacker <span class="exp-org">· CUHacking 2025</span></span>
           <span class="exp-desc">Built ShelterMatch Ottawa — a React Native mobile app helping users find local shelters by location, gender, and amenities. Designed and demoed in under 24 hours.</span>
         </div>
-        <div class="exp-row">
-          <span class="exp-year">2018 — 25</span>
-          <span class="exp-role">Chief Petty Officer 2nd Class <span class="exp-org">· RCSCC Falkland</span></span>
-          <span class="exp-desc">Led teams of 20+ cadets in drill, seamanship, and leadership training. Earned highest non-commissioned rank through 7 years of service in the Royal Canadian Sea Cadets.</span>
-        </div>
       </div>
 
       <div class="edu-block">
@@ -247,21 +241,28 @@
     </div>
   </section>
 
-  <!-- ======== RESUME ======== -->
+  <!-- Resume -->
   <section id="resume" class="section resume-section">
     <div class="container">
       <span class="label">Resume</span>
-      <div class="resume-block">
-        <h2 class="resume-heading">Download my resume for the full picture.</h2>
-        <div class="resume-actions">
-          <a href="ZaidAhmadCV.pdf" download class="pill-btn"><i class="fas fa-download"></i> Download PDF</a>
-          <a href="ZaidAhmadCV.pdf" target="_blank" class="pill-btn pill-btn--outline"><i class="fas fa-external-link-alt"></i> Open in Tab</a>
+      <h2 class="section-title">Resume</h2>
+      <p class="resume-sub">Click the laptop screen to open my full resume.</p>
+
+      <div class="macbook-canvas-wrap" id="macbook-canvas-wrap">
+        <canvas id="macbook-canvas"></canvas>
+        <div class="macbook-click-hint" id="macbook-click-hint">
+          <i class="fas fa-hand-pointer"></i>
+          <span>Click the screen</span>
         </div>
+      </div>
+
+      <div class="resume-actions-row">
+        <a href="ZaidAhmadCV.pdf" download class="pill-btn"><i class="fas fa-download"></i> Download PDF</a>
       </div>
     </div>
   </section>
 
-  <!-- ======== CONTACT ======== -->
+  <!-- Contact -->
   <section id="contact" class="section contact-section">
     <div class="container">
       <span class="label">Contact</span>
@@ -317,7 +318,7 @@
     </div>
   </section>
 
-  <!-- ======== FOOTER ======== -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-inner">
       <span class="footer-copy">&copy; 2025 Zaid Ahmad</span>
@@ -325,6 +326,10 @@
     </div>
   </footer>
 
-  <script src="static/script.js?v=2"></script>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+  </script>
+  <script type="module" src="static/macbook.js?v=1"></script>
+  <script src="static/script.js?v=4"></script>
 </body>
 </html>
