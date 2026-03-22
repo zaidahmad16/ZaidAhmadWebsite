@@ -4,18 +4,17 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 
 ## Features
 
-- Modern glassmorphism design with animated gradient background
-- Animated falling pattern background effect
-- Floating particle effects and gradient spheres
-- 3D scroll-based card animation with code editor showcase
-- Typewriter text animation in hero section
-- Animated stat counters
-- Interactive skill cards with hover effects
-- Timeline-based experience section
-- **Embedded PDF resume viewer** with download option
-- **Contact form** with Web3Forms integration
+- Editorial design with dramatic typography and grain texture overlay
+- Viewport-filling hero with animated text reveal
+- Horizontal scrolling marquee for tech stack
+- Full-width project cards with gradient visuals and hover effects
+- Experience grid table with role descriptions
+- 3D MacBook model (Three.js + GLB) that spins into view on scroll
+- Click the MacBook screen to open resume in a new tab
+- Contact form with Web3Forms integration
+- Nav that hides/shows on scroll
 - Responsive design for all devices
-- Smooth scroll animations and transitions
+- Smooth scroll animations and staggered reveals
 
 ## Live Site
 
@@ -24,8 +23,9 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 ## Tech Stack
 
 - HTML5
-- CSS3 (Custom properties, Flexbox, Grid, 3D Transforms)
-- JavaScript (ES6+)
+- CSS3 (Custom properties, Flexbox, Grid, clamp() fluid typography)
+- JavaScript (ES6+ modules)
+- Three.js (3D MacBook model rendering)
 - Web3Forms API (contact form)
 - Font Awesome Icons
 - Google Fonts (Inter, JetBrains Mono)
@@ -34,55 +34,37 @@ My personal portfolio website showcasing projects, skills, and experience as a C
 
 ```
 ZaidAhmadWebsite/
-├── index.html              # Main HTML file
+├── index.html                          # Main HTML file
 ├── static/
-│   ├── reset.css          # CSS reset
-│   ├── styles.css         # Custom styles (glassmorphism, animations)
-│   ├── script.js          # JavaScript for animations & interactivity
-│   └── ZaidAhmadCV.pdf    # Resume/CV (embedded in site)
-└── README.md              # This file
+│   ├── styles.css                      # All styles
+│   ├── script.js                       # UI interactions and animations
+│   ├── macbook.js                      # Three.js 3D MacBook scene
+│   ├── macbook_pro_14_inch_M5.glb      # 3D MacBook model
+│   └── ZaidAhmadCV.pdf                 # Resume PDF
+└── README.md
 ```
 
 ## Sections
 
-- **Hero** - Introduction with typewriter effect and stats
-- **About** - Personal bio and highlights
-- **Education** - Academic background and coursework
-- **Projects** - Featured project showcase with 3D scroll animation
-- **Skills** - Technical stack organized by category
-- **Experience** - Timeline of work and activities
-- **Resume** - Embedded PDF viewer
-- **Contact** - Functional contact form (sends to email via Web3Forms)
+- **Hero** - Full-viewport name with availability status and CTAs
+- **Marquee** - Scrolling tech stack ticker
+- **About** - Personal statement with animated stat counters
+- **Work** - Featured projects (BuildAtlas, ShelterMatch Ottawa, Portfolio, Multithreaded C Sim)
+- **Experience** - Role history and education with course tags
+- **Resume** - Interactive 3D MacBook displaying resume
+- **Contact** - Form + direct links (email, GitHub, LinkedIn)
 
 ## Deployment
 
 Hosted on Netlify as a static website.
 
-### To Deploy Your Own
-
-1. Fork this repository
-2. Sign up for Netlify
-3. Connect your GitHub repository
-4. Netlify will automatically deploy the site
-5. No build configuration needed
-
 ### Local Development
 
-Open `index.html` in your browser - no server required.
-
 ```bash
-# Windows
-start index.html
+python -m http.server 3000
 ```
 
-## Customization
-
-To use this template:
-
-1. Update personal info in `index.html` (name, bio, projects, contact links)
-2. Replace `snake-animation.gif` and `ZaidAhmadCV.pdf` in the `static/` folder
-3. Modify colors/styles in `static/styles.css`
-4. Adjust animation timing in the JavaScript section of `index.html`
+Then open http://localhost:3000
 
 ## License
 
