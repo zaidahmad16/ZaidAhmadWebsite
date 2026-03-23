@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zaid Ahmad — Software Developer</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231a0a2e'/><stop offset='1' stop-color='%233d1060'/></linearGradient></defs><rect width='100' height='100' rx='18' fill='url(%23g)'/><text x='50' y='74' text-anchor='middle' font-size='68' font-family='Inter,system-ui,sans-serif' font-weight='800' fill='%23e8e8e8'>Z</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -106,7 +106,7 @@
           <p>My focus is on developer experience and systems thinking: understanding the full stack, owning the outcome, and building things that work reliably under pressure. Actively seeking Summer 2026 internship opportunities in software engineering.</p>
           <div class="about-stats">
             <div class="about-stat">
-              <span class="about-stat-num" data-target="4">4</span>
+              <span class="about-stat-num" data-target="4">4+</span>
               <span class="about-stat-label">Projects</span>
             </div>
             <div class="about-stat">
@@ -223,12 +223,16 @@
         </div>
       </div>
 
+      <div class="edu-section-label">
+        <span class="label">Education</span>
+      </div>
       <div class="edu-block">
         <div class="edu-row">
           <span class="edu-degree">B.CS Honours — AI & Machine Learning, Co-op</span>
           <span class="edu-school">Carleton University · Ottawa · CGPA 7.2/12</span>
           <span class="edu-year">Expected 2028</span>
         </div>
+        <p class="edu-courses-label">Relevant Coursework</p>
         <div class="edu-courses">
           <span>Data Structures & Algorithms</span>
           <span>Systems Programming</span>
@@ -327,6 +331,15 @@
       <span class="footer-built">Designed & Built by Zaid Ahmad</span>
     </div>
   </footer>
+
+  <!-- Resume overlay -->
+  <div id="resume-overlay">
+    <div class="resume-overlay-bar">
+      <span class="resume-overlay-title">Resume — Zaid Ahmad</span>
+      <button id="resume-overlay-close"><kbd>ESC</kbd> Close</button>
+    </div>
+    <iframe src="ZaidAhmadCV.pdf" class="resume-overlay-frame" title="Zaid Ahmad Resume"></iframe>
+  </div>
 
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
