@@ -10,8 +10,8 @@ if (canvas) {
   const hint = document.getElementById('macbook-click-hint');
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
-  camera.position.set(0, 2, 5);
+  const camera = new THREE.PerspectiveCamera(45, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
+  camera.position.set(0, 2, 7);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(wrap.clientWidth, wrap.clientHeight);
@@ -52,7 +52,7 @@ if (canvas) {
   const ZOOM_DURATION = 0.75;
   const zoomFrom = new THREE.Vector3();
   const zoomTo = new THREE.Vector3();
-  const REST_POS = new THREE.Vector3(0, 2, 5);
+  const REST_POS = new THREE.Vector3(0, 2, 7);
   const SCREEN_POS = new THREE.Vector3(0, 0.5, 1.2);
 
   const loader = new GLTFLoader();
