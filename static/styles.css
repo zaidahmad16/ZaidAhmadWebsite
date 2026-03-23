@@ -339,7 +339,7 @@ body{
 .work-card-inner:hover{background:var(--gray-5)}
 
 .work-card-content{
-  padding:2.5rem 2rem 2.5rem 0;
+  padding:2.5rem 2rem 2.5rem 2rem;
   display:flex;flex-direction:column;justify-content:center;
 }
 .work-card-label{
@@ -502,9 +502,9 @@ body{
 .macbook-canvas-wrap{
   position:relative;
   width:100%;
-  max-width:800px;
+  max-width:1100px;
   margin:0 auto;
-  aspect-ratio:16/10;
+  aspect-ratio:16/9;
 }
 #macbook-canvas{
   width:100%;
