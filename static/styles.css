@@ -450,7 +450,7 @@ body {
 }
 
 .exp-date {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.85rem;
   color: var(--text-3);
   letter-spacing: 0.04em;
