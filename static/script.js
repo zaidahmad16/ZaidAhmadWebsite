@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  // Theme toggle
+  var themeBtn = document.getElementById('theme-toggle');
+  var sunIcon  = themeBtn && themeBtn.querySelector('.icon-sun');
+  var moonIcon = themeBtn && themeBtn.querySelector('.icon-moon');
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    if (sunIcon && moonIcon) {
+      sunIcon.style.display  = theme === 'light' ? 'none'  : '';
+      moonIcon.style.display = theme === 'light' ? ''      : 'none';
+    }
+  }
+
+  setTheme(localStorage.getItem('theme') || 'dark');
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    });
+  }
+
+
   // Active nav link via IntersectionObserver
   var sections = document.querySelectorAll('section[id]');
   var navLinks = document.querySelectorAll('.pn-link');

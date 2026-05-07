@@ -25,6 +25,19 @@ input, textarea { font: inherit; }
   --ease:     cubic-bezier(.4,0,.2,1);
 }
 
+[data-theme="light"] {
+  --bg:       #ffffff;
+  --surf:     #f8f9fa;
+  --surf-hi:  #f1f3f4;
+  --bdr:      #dadce0;
+  --bdr-hi:   #bdc1c6;
+  --text:     #202124;
+  --text-2:   #5f6368;
+  --text-3:   #80868b;
+  --accent:   #1a73e8;
+  --acc-dim:  rgba(26,115,232,.08);
+}
+
 /* ── Base ──────────────────────────────── */
 body {
   font-family: var(--sans);
@@ -137,6 +150,32 @@ body {
 }
 
 .cl-top { }
+
+.cl-topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--bdr);
+  color: var(--text-2);
+  background: none;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--bdr-hi);
+  background: var(--surf);
+}
 
 .cl-greeting {
   font-size: 1.05rem;
@@ -345,6 +384,7 @@ body {
 }
 
 .icon-dark { filter: invert(1) brightness(0.85); }
+[data-theme="light"] .icon-dark { filter: none; }
 
 .ts-item span {
   font-family: var(--mono);
@@ -362,7 +402,7 @@ body {
 }
 
 .pill-row span {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.85rem;
   font-weight: 500;
   padding: 0.25rem 0.7rem;
