@@ -3,349 +3,295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zaid Ahmad — Software Developer</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231a0a2e'/><stop offset='1' stop-color='%233d1060'/></linearGradient></defs><rect width='100' height='100' rx='18' fill='url(%23g)'/><text x='50' y='74' text-anchor='middle' font-size='68' font-family='Inter,system-ui,sans-serif' font-weight='800' fill='%23e8e8e8'>Z</text></svg>">
+  <title>Zaid Ahmad — DevOps &amp; Embedded Systems</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111111'/><text x='50' y='70' text-anchor='middle' font-size='52' font-family='monospace' font-weight='700' fill='%238ab4f8'>ZA</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
 
-  <div class="grain" aria-hidden="true"></div>
-
-  <!-- Nav -->
-  <nav class="nav">
-    <a href="#" class="nav-logo">Zaid Ahmad</a>
-    <div class="nav-links" id="nav-links">
+  <!-- Mobile header (hidden on desktop) -->
+  <header class="mobile-header" id="mobile-header">
+    <span class="mh-logo">Zaid Ahmad</span>
+    <div class="mh-right">
+      <a href="ZaidAhmadCV.pdf" target="_blank" class="mh-cv">Resume</a>
+      <button class="mh-toggle" id="mh-toggle" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+    <nav class="mh-nav" id="mh-nav">
       <a href="#about">About</a>
-      <a href="#work">Work</a>
       <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
-      <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank">LinkedIn</a>
-    </div>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
-      <span></span><span></span>
-    </button>
-  </nav>
+    </nav>
+  </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-meta">
-        <span class="label"><span class="dot"></span> Available for Internships</span>
-      </div>
-      <h1 class="hero-name" aria-label="Zaid Ahmad">
-        <span class="hero-line" data-reveal>Zaid</span>
-        <span class="hero-line" data-reveal>Ahmad</span>
-      </h1>
-      <div class="hero-footer">
-        <p class="hero-desc">Software developer & CS student at Carleton University. I build full-stack applications and developer tools.</p>
-        <div class="hero-actions">
-          <a href="#work" class="pill-btn">View Work <span class="arrow">&rarr;</span></a>
-          <a href="#contact" class="pill-btn pill-btn--outline">Get in Touch</a>
-          <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="pill-btn pill-btn--outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        </div>
-      </div>
-    </div>
-    <div class="hero-scroll">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
+  <!-- Page grid: left sticky + right scrollable -->
+  <div class="pg">
 
-  <!-- Marquee -->
-  <div class="marquee-section">
-    <div class="marquee-track">
-      <div class="marquee-content">
-        <span>Python</span><span class="marquee-dot">&middot;</span>
-        <span>JavaScript</span><span class="marquee-dot">&middot;</span>
-        <span>TypeScript</span><span class="marquee-dot">&middot;</span>
-        <span>Java</span><span class="marquee-dot">&middot;</span>
-        <span>C/C++</span><span class="marquee-dot">&middot;</span>
-        <span>React Native</span><span class="marquee-dot">&middot;</span>
-        <span>Next.js</span><span class="marquee-dot">&middot;</span>
-        <span>Node.js</span><span class="marquee-dot">&middot;</span>
-        <span>Express</span><span class="marquee-dot">&middot;</span>
-        <span>Firebase</span><span class="marquee-dot">&middot;</span>
-        <span>MongoDB</span><span class="marquee-dot">&middot;</span>
-        <span>Flask</span><span class="marquee-dot">&middot;</span>
-        <span>Git</span><span class="marquee-dot">&middot;</span>
-        <span>Linux</span><span class="marquee-dot">&middot;</span>
-        <span>React Flow</span><span class="marquee-dot">&middot;</span>
-        <span>Arduino</span><span class="marquee-dot">&middot;</span>
-        <span>Python</span><span class="marquee-dot">&middot;</span>
-        <span>JavaScript</span><span class="marquee-dot">&middot;</span>
-        <span>TypeScript</span><span class="marquee-dot">&middot;</span>
-        <span>Java</span><span class="marquee-dot">&middot;</span>
-        <span>C/C++</span><span class="marquee-dot">&middot;</span>
-        <span>React Native</span><span class="marquee-dot">&middot;</span>
-        <span>Next.js</span><span class="marquee-dot">&middot;</span>
-        <span>Node.js</span><span class="marquee-dot">&middot;</span>
-        <span>Express</span><span class="marquee-dot">&middot;</span>
-        <span>Firebase</span><span class="marquee-dot">&middot;</span>
-        <span>MongoDB</span><span class="marquee-dot">&middot;</span>
-        <span>Flask</span><span class="marquee-dot">&middot;</span>
-        <span>Git</span><span class="marquee-dot">&middot;</span>
-        <span>Linux</span><span class="marquee-dot">&middot;</span>
-        <span>React Flow</span><span class="marquee-dot">&middot;</span>
-        <span>Arduino</span><span class="marquee-dot">&middot;</span>
-      </div>
-    </div>
-  </div>
+    <!-- Left column -->
+    <aside class="col-l">
+      <div class="cl-top">
+        <p class="cl-greeting">Hi, I'm</p>
+        <h1 class="cl-name">Zaid Ahmad</h1>
+        <p class="cl-title">aspiring devops &amp; embedded systems engineer @ carleton</p>
+        <p class="cl-location">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Ottawa, ON
+        </p>
 
-  <!-- About -->
-  <section id="about" class="section about-section">
-    <div class="container">
-      <span class="label">About</span>
-      <div class="about-grid">
-        <h2 class="about-statement">CS student specializing in AI & systems — I build tools that developers and real users actually reach for.</h2>
-        <div class="about-body">
-          <p>Pursuing a B.CS Honours in AI & Machine Learning (Co-op) at Carleton University. I've shipped full-stack web apps, mobile apps, developer tooling, and low-level systems software — and I've done it in production environments, hackathons, and solo founder mode.</p>
-          <p>My focus is on developer experience and systems thinking: understanding the full stack, owning the outcome, and building things that work reliably under pressure. Actively seeking Summer 2026 internship opportunities in software engineering.</p>
-          <div class="about-stats">
-            <div class="about-stat">
-              <span class="about-stat-num" data-target="4">4+</span>
-              <span class="about-stat-label">Projects</span>
-            </div>
-            <div class="about-stat">
-              <span class="about-stat-num" data-target="3">3</span>
-              <span class="about-stat-label">Hackathons</span>
-            </div>
-            <div class="about-stat">
-              <span class="about-stat-num" data-target="16">16</span>
-              <span class="about-stat-label">Technologies</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Work -->
-  <section id="work" class="section work-section">
-    <div class="container">
-      <span class="label">Selected Work</span>
-      <h2 class="section-title">Projects</h2>
-    </div>
-    <div class="work-list">
-
-      <article class="work-card">
-        <a href="https://github.com/buildAtlasOrg" target="_blank" class="work-card-inner">
-          <div class="work-card-content">
-            <span class="work-card-label">01 — Founder Project</span>
-            <h3 class="work-card-title">BuildAtlas</h3>
-            <p class="work-card-desc">Identified a gap in how engineers debug CI/CD failures and built the solution from scratch. BuildAtlas turns opaque GitHub Actions pipelines into interactive visual graphs — every job, dependency, status, and duration, surfaced instantly. Architected and shipped end-to-end as a solo founder.</p>
-            <div class="work-card-tech">Next.js · TypeScript · Node.js · Express · React Flow · GitHub OAuth</div>
-          </div>
-          <div class="work-card-visual">
-            <div class="work-card-gradient" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"></div>
-            <span class="work-card-arrow">&nearr;</span>
-          </div>
-        </a>
-      </article>
-
-      <article class="work-card">
-        <a href="https://github.com/zaidahmad16/cuHacking-2025-Project" target="_blank" class="work-card-inner">
-          <div class="work-card-content">
-            <span class="work-card-label">02 — CUHacking 2025</span>
-            <h3 class="work-card-title">ShelterMatch Ottawa</h3>
-            <p class="work-card-desc">2nd place at CUHacking 2025. Designed and shipped a full mobile app in under 24 hours, targeting a real gap in shelter accessibility for Ottawa residents. Users can filter shelters by location, gender, and amenities — with a swipeable interface built for low-friction use in stressful situations.</p>
-            <div class="work-card-tech">React Native · Firebase · Node.js · Express</div>
-          </div>
-          <div class="work-card-visual">
-            <div class="work-card-gradient" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d1b3d 50%, #1a1a2e 100%);"></div>
-            <span class="work-card-arrow">&nearr;</span>
-          </div>
-        </a>
-      </article>
-
-      <article class="work-card">
-        <a href="https://github.com/zaidahmad16/DS_Business_Card" target="_blank" class="work-card-inner">
-          <div class="work-card-content">
-            <span class="work-card-label">03 — Hardware / Creative</span>
-            <h3 class="work-card-title">Nintendo DS Business Card</h3>
-            <p class="work-card-desc">An interactive business card that runs as a homebrew game on a Nintendo DS. Instead of handing over a piece of paper, you hand someone a cartridge — they boot it up and navigate a game to discover your contact info, skills, and links. Built at the hardware level, no game engine.</p>
-            <div class="work-card-tech">C · Nintendo DS SDK · ARM · Homebrew</div>
-          </div>
-          <div class="work-card-visual">
-            <div class="work-card-gradient" style="background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #3d1060 100%);"></div>
-            <span class="work-card-arrow">&nearr;</span>
-          </div>
-        </a>
-      </article>
-
-      <article class="work-card">
-        <a href="https://github.com/zaidahmad16/COMP2401-Final-Project" target="_blank" class="work-card-inner">
-          <div class="work-card-content">
-            <span class="work-card-label">04 — Systems Programming</span>
-            <h3 class="work-card-title">Multithreaded C Simulation</h3>
-            <p class="work-card-desc">Built a concurrent multi-agent simulation in C, implementing POSIX thread management, semaphore-based synchronization, and deadlock prevention from scratch. Demonstrates low-level systems fluency — no frameworks, no guardrails.</p>
-            <div class="work-card-tech">C · POSIX Threads · Semaphores · Linux</div>
-          </div>
-          <div class="work-card-visual">
-            <div class="work-card-gradient" style="background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #21262d 100%);"></div>
-            <span class="work-card-arrow">&nearr;</span>
-          </div>
-        </a>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- Experience -->
-  <section id="experience" class="section exp-section">
-    <div class="container">
-      <span class="label">Experience & Education</span>
-      <h2 class="section-title">Background</h2>
-
-      <div class="exp-table">
-        <div class="exp-row exp-row--header">
-          <span>Year</span>
-          <span>Role</span>
-          <span>Details</span>
-        </div>
-        <div class="exp-row">
-          <span class="exp-year">Mar 2026 —</span>
-          <span class="exp-role">Founder / Software Engineer <span class="exp-org">· BuildAtlas</span></span>
-          <span class="exp-desc">Building a developer tool that visualizes GitHub Actions CI/CD pipelines as interactive graphs. Architected full-stack with Next.js, TypeScript, Node.js, Express, React Flow, and GitHub OAuth.</span>
-        </div>
-        <div class="exp-row">
-          <span class="exp-year">Sep 2025 —</span>
-          <span class="exp-role">Logistics Coordinator <span class="exp-org">· cuHacking</span></span>
-          <span class="exp-desc">Coordinating logistics for Carleton University's largest hackathon. Managing venue operations, sponsor communications, and day-of event execution for 500+ attendees.</span>
-        </div>
-        <div class="exp-row">
-          <span class="exp-year">Mar 2025</span>
-          <span class="exp-role">Hackathon Hacker <span class="exp-org">· CUHacking 2025</span></span>
-          <span class="exp-desc">Built ShelterMatch Ottawa — a React Native mobile app helping users find local shelters by location, gender, and amenities. Designed and demoed in under 24 hours. Placed 2nd overall.</span>
-        </div>
+        <nav class="pg-nav">
+          <a href="#about"      class="pn-link" data-s="about">About</a>
+          <a href="#experience" class="pn-link" data-s="experience">Experience</a>
+          <a href="#projects"   class="pn-link" data-s="projects">Projects</a>
+          <a href="#contact"    class="pn-link" data-s="contact">Contact</a>
+        </nav>
       </div>
 
-      <div class="edu-section-label">
-        <span class="label">Education</span>
-        <h2 class="section-title">Education</h2>
-      </div>
-      <div class="edu-block">
-        <div class="edu-row">
-          <span class="edu-degree">B.CS Honours — AI & Machine Learning, Co-op</span>
-          <span class="edu-school">Carleton University · Ottawa · CGPA 7.2/12</span>
-          <span class="edu-year">Expected 2028</span>
-        </div>
-        <p class="edu-courses-label">Relevant Coursework</p>
-        <div class="edu-courses">
-          <span>Data Structures & Algorithms</span>
-          <span>Systems Programming</span>
-          <span>Software Engineering</span>
-          <span>Web Applications</span>
-          <span>Discrete Structures</span>
-          <span>Calculus</span>
-          <span>Linear Algebra</span>
-          <span>Statistical Modelling</span>
+      <div class="cl-bottom">
+        <div class="cl-icons">
+          <a href="https://github.com/zaidahmad16" target="_blank" class="cl-icon" aria-label="GitHub">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="cl-icon" aria-label="LinkedIn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="mailto:zaidahmad8060@gmail.com" class="cl-icon" aria-label="Email">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </aside>
 
-  <!-- Resume -->
-  <section id="resume" class="section resume-section">
-    <div class="container">
-      <span class="label">Resume</span>
-      <h2 class="section-title">Resume</h2>
-      <p class="resume-sub">Click the laptop screen to open my full resume.</p>
+    <!-- Right column -->
+    <main class="col-r">
 
-      <div class="macbook-canvas-wrap" id="macbook-canvas-wrap">
-        <canvas id="macbook-canvas"></canvas>
-        <div class="macbook-click-hint" id="macbook-click-hint">
-          <i class="fas fa-hand-pointer"></i>
-          <span>Click the screen</span>
-        </div>
-      </div>
+      <!-- About -->
+      <section id="about" class="r-sec">
+        <p class="r-body">
+          Third year CS student at Carleton University. Mostly interested in DevOps and low-level systems — currently digging into AWS and working towards building a bootloader from scratch.
+        </p>
+        <p class="r-body">
+          Outside of that, I weightlift and play tennis.
+        </p>
 
-      <div class="resume-actions-row">
-        <a href="ZaidAhmadCV.pdf" download class="pill-btn"><i class="fas fa-download"></i> Download PDF</a>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- Contact -->
-  <section id="contact" class="section contact-section">
-    <div class="container">
-      <span class="label">Contact</span>
-      <h2 class="contact-heading">Let's work<br>together.</h2>
-      <p class="contact-sub">Have a project in mind, want to collaborate, or just chat? Reach out.</p>
+      <!-- Experience -->
+      <section id="experience" class="r-sec">
+        <h2 class="r-heading">Experience</h2>
 
-      <div class="contact-grid">
-        <div class="contact-form-wrap">
-          <div id="contact-form-container">
-            <div id="contact-form" class="contact-form">
-              <input type="hidden" id="access_key" value="8561c428-050d-4d8b-8930-271525dbc678">
-              <div class="field">
-                <label for="contact-name">Name</label>
-                <input type="text" id="contact-name" placeholder="Your name">
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-accent"></div>
+            <div class="exp-body">
+              <div class="exp-header">
+                <h3 class="exp-role">Logistics Coordinator <span class="exp-sep">&middot;</span> <span class="exp-co">cuHacking</span></h3>
+                <span class="exp-date">Sep 2025 &mdash; Present</span>
               </div>
-              <div class="field">
-                <label for="contact-email">Email</label>
-                <input type="email" id="contact-email" placeholder="you@example.com">
-              </div>
-              <div class="field">
-                <label for="contact-message">Message</label>
-                <textarea id="contact-message" placeholder="Tell me about your project..." rows="5"></textarea>
-              </div>
-              <button type="button" id="contact-submit-btn" class="pill-btn pill-btn--full">Send Message <span class="arrow">&rarr;</span></button>
+              <p class="exp-detail">Helping run Carleton's annual hackathon. Mostly logistics — scheduling, rooms, making sure things don't fall apart on the day.</p>
             </div>
           </div>
-          <div id="contact-success" class="form-msg" style="display:none;">
-            <p>Message sent — I'll get back to you soon.</p>
-          </div>
-          <div id="contact-error" class="form-msg form-msg--error" style="display:none;">
-            <p>Something went wrong. Email me directly instead.</p>
+
+          <div class="exp-item">
+            <div class="exp-accent"></div>
+            <div class="exp-body">
+              <div class="exp-header">
+                <h3 class="exp-role">cuHacking 2025 <span class="exp-sep">&middot;</span> <span class="exp-co">2nd place</span></h3>
+                <span class="exp-date">Mar 2025</span>
+              </div>
+              <p class="exp-detail">Built ShelterMatch Ottawa in 24 hours — a shelter-finding app for Ottawa residents. Placed 2nd out of 40+ teams.</p>
+              <div class="pill-row">
+                <span>React Native</span><span>Node.js</span><span>Express</span><span>Firebase</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <h2 class="r-heading r-heading--mt">Education</h2>
+
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-accent"></div>
+            <div class="exp-body">
+              <div class="exp-header">
+                <h3 class="exp-role">B.Sc. Computer Science <span class="exp-sep">&middot;</span> <span class="exp-co">Carleton University</span></h3>
+                <span class="exp-date">2024 &mdash; 2028</span>
+              </div>
+              <p class="exp-detail">AI &amp; Machine Learning Co-op stream. Ottawa, ON.</p>
+              <div class="pill-row">
+                <span>Data Structures</span><span>Systems Programming</span>
+                <span>C/C++</span><span>Linear Algebra</span><span>Discrete Structures</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="r-sec">
+        <h2 class="r-heading">Projects</h2>
+
+        <div class="proj-grid">
+
+          <a href="https://github.com/zaidahmad16/mac80211-ht-downgrade-fix" target="_blank" class="proj-card">
+            <div class="pc-header">
+              <h3 class="pc-name">mac80211 HT Downgrade Fix</h3>
+              <span class="pc-arrow">&#8594;</span>
+            </div>
+            <p class="pc-desc">Diagnosed a beacon frame incompatibility between Intel AX200 cards and Rogers XB10 routers silently downgrading 802.11ac to 802.11n. Patch corrects the mac80211 wireless stack driver to restore full HT throughput.</p>
+            <div class="pill-row">
+              <span>C</span><span>Linux Kernel</span><span>Wireless Networking</span><span>mac80211</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/zaidahmad16/DS_Business_Card" target="_blank" class="proj-card">
+            <div class="pc-header">
+              <h3 class="pc-name">Nintendo DS Business Card</h3>
+              <span class="pc-arrow">&#8594;</span>
+            </div>
+            <p class="pc-desc">An interactive business card running as homebrew on a Nintendo DS cartridge. Built against the NDS SDK targeting bare-metal ARM9/ARM7 — no game engine, no OS. Hand someone a cartridge and they navigate a game to find your links.</p>
+            <div class="pill-row">
+              <span>C</span><span>NDS SDK</span><span>ARM</span><span>Homebrew</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/zaidahmad16/COMP2401-Final-Project" target="_blank" class="proj-card">
+            <div class="pc-header">
+              <h3 class="pc-name">Multithreaded C Simulation</h3>
+              <span class="pc-arrow">&#8594;</span>
+            </div>
+            <p class="pc-desc">Concurrent multi-agent simulation in C with POSIX thread management, semaphore synchronization, and deadlock prevention — no frameworks. 1,000+ simulated ticks, zero deadlocks or memory leaks.</p>
+            <div class="pill-row">
+              <span>C</span><span>POSIX Threads</span><span>Semaphores</span><span>Linux</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/zaidahmad16/cuHacking-2025-Project" target="_blank" class="proj-card">
+            <div class="pc-header">
+              <h3 class="pc-name">ShelterMatch Ottawa</h3>
+              <span class="pc-arrow">&#8594;</span>
+            </div>
+            <p class="pc-desc">Shelter-matching platform for 15 Ottawa shelters with gender, services, and accessibility filtering. Built in under 24 hours at cuHacking 2025, placed 2nd out of 40+ teams.</p>
+            <div class="pill-row">
+              <span>React Native</span><span>Node.js</span><span>Express</span><span>Firebase</span><span>JWT</span>
+            </div>
+          </a>
+
+        </div>
+
+        <h2 class="r-heading r-heading--mt">Technical Skills</h2>
+        <div class="tech-stack">
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/c/c-original.svg" alt="C">
+            <span>C</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/cplusplus/cplusplus-original.svg" alt="C++">
+            <span>C++</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/python/python-original.svg" alt="Python">
+            <span>Python</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/javascript/javascript-original.svg" alt="JavaScript">
+            <span>JavaScript</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/typescript/typescript-original.svg" alt="TypeScript">
+            <span>TypeScript</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/java/java-original.svg" alt="Java">
+            <span>Java</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/linux/linux-original.svg" alt="Linux">
+            <span>Linux</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/git/git-original.svg" alt="Git">
+            <span>Git</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nodejs/nodejs-original.svg" alt="Node.js">
+            <span>Node.js</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React">
+            <span>React</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nextjs/nextjs-original.svg" alt="Next.js" class="icon-dark">
+            <span>Next.js</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/firebase/firebase-plain.svg" alt="Firebase">
+            <span>Firebase</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/docker/docker-original.svg" alt="Docker">
+            <span>Docker</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
+            <span>Kubernetes</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/mongodb/mongodb-original.svg" alt="MongoDB">
+            <span>MongoDB</span>
+          </div>
+          <div class="ts-item">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/unity/unity-original.svg" alt="Unity" class="icon-dark">
+            <span>Unity</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="r-sec">
+        <h2 class="r-heading">Get in Touch</h2>
 
         <div class="contact-links">
-          <a href="mailto:zaidahmad8060@gmail.com" class="contact-link">
-            <span class="contact-link-label">Email</span>
-            <span class="contact-link-value">zaidahmad8060@gmail.com</span>
-            <span class="arrow">&rarr;</span>
+          <a href="mailto:zaidahmad8060@gmail.com" class="ct-link">
+            <span class="ct-type">Email</span>
+            <span class="ct-val">zaidahmad8060@gmail.com</span>
+            <span class="ct-arr">&#8599;</span>
           </a>
-          <a href="https://github.com/zaidahmad16" target="_blank" class="contact-link">
-            <span class="contact-link-label">GitHub</span>
-            <span class="contact-link-value">zaidahmad16</span>
-            <span class="arrow">&rarr;</span>
+          <a href="https://github.com/zaidahmad16" target="_blank" class="ct-link">
+            <span class="ct-type">GitHub</span>
+            <span class="ct-val">github.com/zaidahmad16</span>
+            <span class="ct-arr">&#8599;</span>
           </a>
-          <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="contact-link">
-            <span class="contact-link-label">LinkedIn</span>
-            <span class="contact-link-value">Zaid Ahmad</span>
-            <span class="arrow">&rarr;</span>
+          <a href="https://linkedin.com/in/zaid-ahmad-ba9b10224" target="_blank" class="ct-link">
+            <span class="ct-type">LinkedIn</span>
+            <span class="ct-val">Zaid Ahmad</span>
+            <span class="ct-arr">&#8599;</span>
           </a>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span class="footer-copy">&copy; 2026 Zaid Ahmad</span>
-      <span class="footer-built">Designed & Built by Zaid Ahmad</span>
-    </div>
-  </footer>
+      <footer class="pg-footer">
+        <p>Built by Zaid Ahmad &middot; &copy; 2026</p>
+        <a href="ZaidAhmadCV.pdf" target="_blank">View Resume &rarr;</a>
+      </footer>
+
+    </main>
+  </div>
 
   <!-- Resume overlay -->
   <div id="resume-overlay">
-    <div class="resume-overlay-bar">
-      <span class="resume-overlay-title">Resume — Zaid Ahmad</span>
-      <button id="resume-overlay-close"><kbd>ESC</kbd> Close</button>
+    <div class="ro-bar">
+      <span>Resume &mdash; Zaid Ahmad</span>
+      <button id="ro-close">Close &times;</button>
     </div>
-    <iframe src="ZaidAhmadCV.pdf" class="resume-overlay-frame" title="Zaid Ahmad Resume"></iframe>
+    <iframe src="ZaidAhmadCV.pdf" class="ro-frame" title="Resume"></iframe>
   </div>
 
-  <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
-  </script>
-  <script type="module" src="static/macbook.js?v=1"></script>
-  <script src="static/script.js?v=4"></script>
+  <script src="static/script.js"></script>
 </body>
 </html>
