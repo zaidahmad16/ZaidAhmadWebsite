@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/styles.css">
+  <link rel="stylesheet" href="static/styles.css?v=5">
 </head>
 <body>
 
@@ -78,10 +78,10 @@
       <!-- About -->
       <section id="about" class="r-sec">
         <p class="r-body">
-          Third year CS student at Carleton University. Mostly interested in DevOps and low-level systems — currently digging into AWS and working towards building a bootloader from scratch.
+          Third year at Carleton studying CS. I like how computers work at the hardware level — systems programming, embedded, that kind of thing. DevOps too.
         </p>
         <p class="r-body">
-          Outside of that, I weightlift and play tennis.
+          I lift and play tennis.
         </p>
 
       </section>
@@ -98,7 +98,7 @@
                 <h3 class="exp-role">Logistics Coordinator <span class="exp-sep">&middot;</span> <span class="exp-co">cuHacking</span></h3>
                 <span class="exp-date">Sep 2025 &mdash; Present</span>
               </div>
-              <p class="exp-detail">Helping run Carleton's annual hackathon. Mostly logistics — scheduling, rooms, making sure things don't fall apart on the day.</p>
+              <p class="exp-detail">Helping run Carleton's annual hackathon. Venues, schedules, sponsors — the stuff that has to work for everything else to work.</p>
             </div>
           </div>
 
@@ -109,7 +109,7 @@
                 <h3 class="exp-role">cuHacking 2025 <span class="exp-sep">&middot;</span> <span class="exp-co">2nd place</span></h3>
                 <span class="exp-date">Mar 2025</span>
               </div>
-              <p class="exp-detail">Built ShelterMatch Ottawa in 24 hours — a shelter-finding app for Ottawa residents. Placed 2nd out of 40+ teams.</p>
+              <p class="exp-detail">Built a shelter-finding app for Ottawa residents in 24 hours. Placed 2nd out of 40+ teams.</p>
               <div class="pill-row">
                 <span>React Native</span><span>Node.js</span><span>Express</span><span>Firebase</span>
               </div>
@@ -125,9 +125,9 @@
             <div class="exp-body">
               <div class="exp-header">
                 <h3 class="exp-role">B.Sc. Computer Science <span class="exp-sep">&middot;</span> <span class="exp-co">Carleton University</span></h3>
-                <span class="exp-date">2024 &mdash; 2028</span>
+                <span class="exp-date">2024 &mdash; 2029</span>
               </div>
-              <p class="exp-detail">AI &amp; Machine Learning Co-op stream. Ottawa, ON.</p>
+              <p class="exp-detail">AI &amp; Machine Learning Co-op stream. Heavy coursework in systems programming, algorithms, and math.</p>
               <div class="pill-row">
                 <span>Data Structures</span><span>Systems Programming</span>
                 <span>C/C++</span><span>Linear Algebra</span><span>Discrete Structures</span>
@@ -143,48 +143,52 @@
 
         <div class="proj-grid">
 
-          <a href="https://github.com/zaidahmad16/mac80211-ht-downgrade-fix" target="_blank" class="proj-card">
+          <a href="projects/linux-kernel-patch.html" class="proj-card">
             <div class="pc-header">
-              <h3 class="pc-name">mac80211 HT Downgrade Fix</h3>
+              <h3 class="pc-name">Linux Wireless Kernel Patch</h3>
               <span class="pc-arrow">&#8594;</span>
             </div>
-            <p class="pc-desc">Diagnosed a beacon frame incompatibility between Intel AX200 cards and Rogers XB10 routers silently downgrading 802.11ac to 802.11n. Patch corrects the mac80211 wireless stack driver to restore full HT throughput.</p>
+            <p class="pc-desc">My Wi-Fi was stuck at 54 Mbps when it should have been hitting 1 Gbps. Traced it to a bug in the Linux wireless driver and patched it in the kernel.</p>
             <div class="pill-row">
               <span>C</span><span>Linux Kernel</span><span>Wireless Networking</span><span>mac80211</span>
             </div>
+            <span class="pc-details">screenshots &amp; writeup ↗</span>
           </a>
 
-          <a href="https://github.com/zaidahmad16/DS_Business_Card" target="_blank" class="proj-card">
+          <a href="projects/nintendo-ds.html" class="proj-card">
             <div class="pc-header">
               <h3 class="pc-name">Nintendo DS Business Card</h3>
               <span class="pc-arrow">&#8594;</span>
             </div>
-            <p class="pc-desc">An interactive business card running as homebrew on a Nintendo DS cartridge. Built against the NDS SDK targeting bare-metal ARM9/ARM7 — no game engine, no OS. Hand someone a cartridge and they navigate a game to find your links.</p>
+            <p class="pc-desc">My business card is a Nintendo DS cartridge. Plug it in, play a short game, find my contact info at the end. Wrote the whole thing in C, no game engine.</p>
             <div class="pill-row">
               <span>C</span><span>NDS SDK</span><span>ARM</span><span>Homebrew</span>
             </div>
+            <span class="pc-details">screenshots &amp; writeup ↗</span>
           </a>
 
-          <a href="https://github.com/zaidahmad16/COMP2401-Final-Project" target="_blank" class="proj-card">
+          <a href="projects/c-simulation.html" class="proj-card">
             <div class="pc-header">
-              <h3 class="pc-name">Multithreaded C Simulation</h3>
+              <h3 class="pc-name">Ghost Hunting Simulation</h3>
               <span class="pc-arrow">&#8594;</span>
             </div>
-            <p class="pc-desc">Concurrent multi-agent simulation in C with POSIX thread management, semaphore synchronization, and deadlock prevention — no frameworks. 1,000+ simulated ticks, zero deadlocks or memory leaks.</p>
+            <p class="pc-desc">A ghost hunting game in C where every actor — hunter or ghost — is its own thread sharing the same memory. Zero deadlocks across 1,000+ ticks.</p>
             <div class="pill-row">
               <span>C</span><span>POSIX Threads</span><span>Semaphores</span><span>Linux</span>
             </div>
+            <span class="pc-details">screenshots &amp; writeup ↗</span>
           </a>
 
-          <a href="https://github.com/zaidahmad16/cuHacking-2025-Project" target="_blank" class="proj-card">
+          <a href="projects/shelter-match.html" class="proj-card">
             <div class="pc-header">
               <h3 class="pc-name">ShelterMatch Ottawa</h3>
               <span class="pc-arrow">&#8594;</span>
             </div>
-            <p class="pc-desc">Shelter-matching platform for 15 Ottawa shelters with gender, services, and accessibility filtering. Built in under 24 hours at cuHacking 2025, placed 2nd out of 40+ teams.</p>
+            <p class="pc-desc">Shelter finder for Ottawa, built in 24 hours at cuHacking 2025. Filter by gender, accessibility, and available beds. Placed 2nd out of 40+ teams.</p>
             <div class="pill-row">
               <span>React Native</span><span>Node.js</span><span>Express</span><span>Firebase</span><span>JWT</span>
             </div>
+            <span class="pc-details">screenshots &amp; writeup ↗</span>
           </a>
 
         </div>
@@ -285,8 +289,29 @@
         <p>Built by Zaid Ahmad &middot; &copy; 2026</p>
         <a href="ZaidAhmadCV.pdf" target="_blank">View Resume &rarr;</a>
       </footer>
+      <span class="term-hint">$ hint: try ctrl+shift+l</span>
 
     </main>
+  </div>
+
+  <!-- Terminal Easter Egg -->
+  <div id="term-overlay">
+    <div id="term-window">
+      <div class="term-titlebar">
+        <span class="term-dot term-dot--red"></span>
+        <span class="term-dot term-dot--yellow"></span>
+        <span class="term-dot term-dot--green"></span>
+        <span class="term-title">zaid@portfolio: ~</span>
+      </div>
+      <div id="term-body">
+        <div id="term-output"></div>
+        <canvas id="term-canvas"></canvas>
+        <div id="term-input-row">
+          <span id="term-prompt">zaid@portfolio:~$&nbsp;</span>
+          <input id="term-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Resume overlay -->
@@ -299,5 +324,6 @@
   </div>
 
   <script src="static/script.js"></script>
+  <script src="static/terminal.js"></script>
 </body>
 </html>

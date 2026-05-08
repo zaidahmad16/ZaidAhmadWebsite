@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux Wireless Kernel Patch — Zaid Ahmad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/styles.css?v=5">
+  <link rel="stylesheet" href="../static/project.css">
+</head>
+<body>
+  <div class="proj-page">
+    <div class="pp-topbar">
+      <a href="../index.html" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <h1 class="pp-title">Linux Wireless Kernel Patch</h1>
+      <div class="pp-meta">
+        <span class="pp-tag">C</span>
+        <span class="pp-tag">Linux Kernel</span>
+        <span class="pp-tag">Wireless Networking</span>
+        <span class="pp-tag">mac80211</span>
+      </div>
+      <a href="https://github.com/zaidahmad16/mac80211-ht-downgrade-fix" target="_blank" class="pp-github">View on GitHub &#8599;</a>
+    </header>
+
+    <section class="pp-section">
+      <h2>What it is</h2>
+      <p>My Wi-Fi was stuck at 54 Mbps when it should have been hitting 1 Gbps. The kernel was silently picking the slower mode with no indication anything was wrong. Went into the driver to find out why, then patched it.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The problem</h2>
+      <p>Intel AX200 cards and Rogers XB10 routers have a beacon frame incompatibility that causes the mac80211 driver to silently downgrade from 802.11ac to 802.11n. The result is a 54 Mbps connection instead of 1000+ Mbps. No error, no log entry, nothing.</p>
+    </section>
+
+    <section class="pp-section pp-images-section">
+      <h2>Before &amp; after</h2>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <a href="../images/before.png" target="_blank"><img src="../images/before.png" alt="Before patch — 54 Mbps"></a>
+          <figcaption>Before — 54 Mbps · click to enlarge</figcaption>
+        </figure>
+        <figure>
+          <a href="../images/after.png" target="_blank"><img src="../images/after.png" alt="After patch — 1020 Mbps"></a>
+          <figcaption>After — 1020 Mbps · click to enlarge</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>How I fixed it</h2>
+      <p>Traced through the mac80211 wireless stack until I found where the speed negotiation breaks. The driver was accepting the downgrade without validating it. Patched it to hold the correct HT mode.</p>
+    </section>
+  </div>
+  <script src="../static/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nintendo DS Business Card — Zaid Ahmad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/styles.css?v=5">
+  <link rel="stylesheet" href="../static/project.css">
+</head>
+<body>
+  <div class="proj-page">
+    <div class="pp-topbar">
+      <a href="../index.html" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <h1 class="pp-title">Nintendo DS Business Card</h1>
+      <div class="pp-meta">
+        <span class="pp-tag">C</span>
+        <span class="pp-tag">NDS SDK</span>
+        <span class="pp-tag">ARM</span>
+        <span class="pp-tag">Homebrew</span>
+      </div>
+      <a href="https://github.com/zaidahmad16/DS_Business_Card" target="_blank" class="pp-github">View on GitHub &#8599;</a>
+    </header>
+
+    <section class="pp-section">
+      <h2>What it is</h2>
+      <p>My business card is a Nintendo DS cartridge. Plug it in, play a short game, find my contact info at the end. Wrote the whole thing in C, no game engine.</p>
+    </section>
+
+    <section class="pp-section pp-images-section">
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../images/ds.jpg" alt="Nintendo DS showing the business card program">
+          <figcaption>Running on real hardware</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>How it works</h2>
+      <p>Built against the NDS SDK on bare-metal ARM9/ARM7. No OS, no game engine, just direct hardware registers. The top screen runs an animated bar chart; the bottom shows my contact info.</p>
+      <p>Works on any DS or DS Lite with a flash cart. Hand someone the cartridge and they plug it in like a regular game.</p>
+    </section>
+  </div>
+  <script src="../static/script.js"></script>
+</body>
+</html>
