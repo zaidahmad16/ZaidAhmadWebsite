@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
   var moonIcon = themeBtn && themeBtn.querySelector('.icon-moon');
 
   function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
     localStorage.setItem('theme', theme);
     if (sunIcon && moonIcon) {
       sunIcon.style.display  = theme === 'light' ? 'none'  : '';
@@ -14,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  setTheme(localStorage.getItem('theme') || 'dark');
+  setTheme(localStorage.getItem('theme') || 'light');
 
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {

@@ -38,7 +38,7 @@
   }
 
   function printWelcome() {
-    line('Ubuntu 22.04.4 LTS', 'tl-dim');
+    line('Linux Mint 22.1 Xia', 'tl-dim');
     line('');
     line("Welcome to Zaid's portfolio terminal.", 'tl');
     line('Type "help" for available commands.', 'tl-dim');
@@ -70,7 +70,7 @@
         line('  cat <file>      print file contents',           'tl');
         line('  git log         recent commits',                'tl');
         line('  git status      working tree status',           'tl');
-        line('  neofetch        system info (fancy)',           'tl');
+        line('  fastfetch       system info',                   'tl');
         line('  echo <text>     print text',                    'tl');
         line('  clear           clear terminal',                'tl');
         line('  exit            close terminal',                'tl');
@@ -91,7 +91,7 @@
         break;
 
       case 'uname':
-        line('Linux portfolio 6.1.0-21-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.90-1 x86_64 GNU/Linux', 'tl');
+        line('Linux portfolio 6.8.0-51-generic #52-Ubuntu SMP PREEMPT_DYNAMIC x86_64 GNU/Linux', 'tl');
         break;
 
       case 'date':
@@ -171,8 +171,8 @@
         line('> ',                                                      'tl');
         break;
 
-      case 'neofetch':
-        printNeofetch();
+      case 'fastfetch':
+        printFastfetch();
         break;
 
       case 'apt':
@@ -205,40 +205,67 @@
     }
   }
 
-  function printNeofetch() {
-    var art = [
-      '            .-/+oossssoo+/-.        ',
-      '        `:+ssssssssssssssssss+:`    ',
-      '      -+ssssssssssssssssssyyssss+-  ',
-      '    .ossssssssssssssssssdMMMNysssso.',
-      '   /ssssssssssshdmmNNmmyNMMMMhssssss',
-      '  +ssssssssshmydMMMMMMMNddddyssssssss',
-      ' /sssssssshNMMMyhhyyyyhmNMMMNhssssssss',
-      '.ssssssssdMMMNhsssssssssshNMMMdssssssss',
+
+
+  function printFastfetch() {
+    var artLines = [
+      '           -MMMMMMMMMMMMMMMM-          ',
+      '       .-MMMM  . : : : : : .  MMMM-.  ',
+      '    -:MMMM .:MMMMMMMMMMMMMM:. MMMM:-  ',
+      '  -MMMMMM-M- -MMMMMMMMMMMMMMMM-MMM-   ',
+      ' `MMM:MM`   :MMMM. . . .:- -MMMM:MMM:`',
+      ' :MMM:MMM`   :MM:`           :MMM:MMM:',
+      ' :MMM:MMM`  :MM.  -MM.   MM-  `MMM:MMM.',
+      ' MMM:MMM`   :MM.  -MM-   MM:  `MMM-MMM ',
+      ' MMM:MMM`   :MM.  -MM-  .MM:   MMM-MMM ',
+      ' MMM:MMM`   :MM.   MM-  .MM:  `MMM-MMM ',
+      ' MMM:MMM`   :MM. --MM:--MM:   `MMM-MMM ',
+      ' `MMM:MMM`  :MM.  -MMMMMMMMM. `MMM-MMM-',
+      '  :MMM:MMM.                :MM:MMM:    ',
+      '   `MMM.MMMM.         .:MMMMMMMM:     ',
+      '     `-MMMM.-MMMMMMMMMMMMMMM-.MMMM-`  ',
+      '       `.-MMMM  : : : : :  MMMM-.`   ',
+      '          `-MMMMMMMMMMMMMM-`          ',
+      '                : : : : :             ',
     ];
-    var info = [
-      'zaid@portfolio',
-      '--------------',
-      'OS: Ubuntu 22.04.4 LTS',
-      'Host: Carleton University',
-      'Year: 3rd — Computer Systems Engineering',
-      'Shell: bash 5.2.15',
-      'Languages: C, Python, JavaScript',
-      'Focus: DevOps, Embedded Systems',
+    var infoLines = [
+      { text: '',                               cls: 'tl' },
+      { text: '',                               cls: 'tl' },
+      { text: '',                               cls: 'tl' },
+      { text: 'zaid@portfolio',                 cls: 'tl-acc' },
+      { text: '--------------',                 cls: 'tl-dim' },
+      { text: 'OS: Linux Mint 22.1 Xia x86_64', cls: 'tl' },
+      { text: 'Kernel: 6.8.0-51-generic',       cls: 'tl' },
+      { text: 'Uptime: always on',               cls: 'tl' },
+      { text: 'Shell: bash 5.2.15',              cls: 'tl' },
+      { text: 'DE: Cinnamon 6.4',                cls: 'tl' },
+      { text: 'Terminal: kitty',                 cls: 'tl' },
+      { text: 'Languages: C · Python · JS',     cls: 'tl' },
+      { text: 'Focus: DevOps · Embedded',       cls: 'tl' },
+      { text: '',                               cls: 'tl' },
+      { text: '',                               cls: 'tl' },
+      { text: '',                               cls: 'tl' },
+      { text: '',                               cls: 'tl' },
+      { text: '',                               cls: 'tl' },
     ];
-    for (var i = 0; i < art.length; i++) {
+    var colW = Math.max.apply(null, artLines.map(function(s){ return s.length; }));
+    var rows = artLines.map(function(art, i) {
+      var inf = infoLines[i] || { text: '', cls: 'tl' };
+      return { art: art.padEnd(colW), info: inf.text, cls: inf.cls };
+    });
+    rows.forEach(function (r) {
       var d  = document.createElement('div');
       d.className = 'tl';
       var s1 = document.createElement('span');
-      s1.className   = 'tl-acc';
-      s1.textContent = art[i] || '';
+      s1.className   = 'tl-mint';
+      s1.textContent = r.art;
       var s2 = document.createElement('span');
-      s2.className   = 'tl-dim';
-      s2.textContent = '  ' + (info[i] || '');
+      s2.className   = r.cls;
+      s2.textContent = '  ' + r.info;
       d.appendChild(s1);
       d.appendChild(s2);
       termOutput.appendChild(d);
-    }
+    });
     termOutput.scrollTop = termOutput.scrollHeight;
   }
 
@@ -255,7 +282,7 @@
       [1250, '0 upgraded, 1 newly installed, 0 to remove and 212 not upgraded.',        'tl'],
       [1480, 'Need to get 42.0 kB of archives.',                                        'tl'],
       [1620, 'After this operation, 128 kB of additional disk space will be used.',     'tl'],
-      [1880, 'Get:1 http://archive.ubuntu.com/ubuntu jammy/universe amd64 snake 1.0.4 [42.0 kB]', 'tl-dim'],
+      [1880, 'Get:1 http://packages.linuxmint.com xia/universe amd64 snake 1.0.4 [42.0 kB]', 'tl-dim'],
       [2500, 'Fetched 42.0 kB in 0s (168 kB/s)',                                       'tl-dim'],
       [2700, 'Selecting previously unselected package snake.',                          'tl'],
       [2900, '(Reading database ... 347,682 files currently installed.)',               'tl-dim'],
@@ -456,7 +483,7 @@
       [450,  'Building dependency tree... Done',                           'tl'],
       [700,  ''],
       [800,  'Setting up zaid-ahmad (latest) ...',                         'tl'],
-      [1300, 'Processing triggers for career-db (2026.05) ...',            'tl'],
+      [1300, 'Processing triggers for career-db (2026.05) ...',             'tl'],
       [1700, ''],
       [1800, "✓ Package 'Zaid Ahmad' successfully installed.",        'tl-acc'],
       [2050, '  Skills: C · Python · Linux · React Native · AWS', 'tl-dim'],

@@ -7,25 +7,6 @@ input, textarea { font: inherit; }
 
 /* ── Tokens ────────────────────────────── */
 :root {
-  --bg:       #111111;
-  --surf:     #1a1a1a;
-  --surf-hi:  #222222;
-  --bdr:      #2a2a2a;
-  --bdr-hi:   #383838;
-  --text:     #f0f0f0;
-  --text-2:   #a0a0a0;
-  --text-3:   #606060;
-  --accent:   #8ab4f8;
-  --acc-dim:  rgba(138,180,248,.08);
-  --amber:    #fbbf24;
-  --blue:     #8ab4f8;
-  --purple:   #c084fc;
-  --sans:     'Inter', system-ui, -apple-system, sans-serif;
-  --mono:     'JetBrains Mono', monospace;
-  --ease:     cubic-bezier(.4,0,.2,1);
-}
-
-[data-theme="light"] {
   --bg:       #ffffff;
   --surf:     #f8f9fa;
   --surf-hi:  #f1f3f4;
@@ -36,6 +17,27 @@ input, textarea { font: inherit; }
   --text-3:   #80868b;
   --accent:   #1a73e8;
   --acc-dim:  rgba(26,115,232,.08);
+  --amber:    #fbbf24;
+  --blue:     #1a73e8;
+  --purple:   #9333ea;
+  --sans:     'Inter', system-ui, -apple-system, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --ease:     cubic-bezier(.4,0,.2,1);
+}
+
+[data-theme="dark"] {
+  --bg:       #111111;
+  --surf:     #1a1a1a;
+  --surf-hi:  #222222;
+  --bdr:      #2a2a2a;
+  --bdr-hi:   #383838;
+  --text:     #f0f0f0;
+  --text-2:   #a0a0a0;
+  --text-3:   #606060;
+  --accent:   #8ab4f8;
+  --acc-dim:  rgba(138,180,248,.08);
+  --blue:     #8ab4f8;
+  --purple:   #c084fc;
 }
 
 /* ── Base ──────────────────────────────── */
@@ -390,8 +392,8 @@ body {
   object-fit: contain;
 }
 
-.icon-dark { filter: invert(1) brightness(0.85); }
-[data-theme="light"] .icon-dark { filter: none; }
+.icon-dark { filter: none; }
+[data-theme="dark"] .icon-dark { filter: invert(1) brightness(0.85); }
 
 .ts-item span {
   font-family: var(--mono);
@@ -569,12 +571,16 @@ body {
 
 .pc-details {
   display: block;
-  font-size: 0.78rem;
-  color: var(--text-3);
-  margin-top: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bdr);
+  transition: opacity .15s var(--ease);
 }
 
-.proj-card:hover .pc-details { color: var(--accent); }
+.proj-card:hover .pc-details { opacity: 0.75; }
 
 /* ── Contact ───────────────────────────── */
 .contact-links {
@@ -755,6 +761,7 @@ body {
 .tl-err { color: #f85149; }
 .tl-dim { color: #6e7681; }
 .tl-acc { color: #58a6ff; }
+.tl-mint { color: #87cf3e; }
 
 #term-input-row {
   display: flex;
