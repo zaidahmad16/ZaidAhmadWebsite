@@ -7,21 +7,31 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/styles.css?v=6">
-  <link rel="stylesheet" href="../static/project.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=20">
+  <link rel="stylesheet" href="../static/css/project.css">
 </head>
 <body>
   <div class="proj-page">
+
     <div class="pp-topbar">
       <a href="../index.html" class="back-link">&#8592; Back</a>
-      <button class="theme-toggle" id="theme-toggle">
-        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
       </button>
     </div>
 
     <header class="pp-header">
-      <h1 class="pp-title">Ghost Hunting Simulation</h1>
+      <p class="pp-eyebrow">[ systems &middot; concurrency ]</p>
+      <h1 class="pp-title">Ghost Hunting<br>Simulation</h1>
       <div class="pp-meta">
         <span class="pp-tag">C</span>
         <span class="pp-tag">POSIX Threads</span>
@@ -33,25 +43,13 @@
 
     <section class="pp-section">
       <h2>What it is</h2>
-      <p>A ghost hunting game in C. A team of hunters explores Willow House, a 13-room building, while a ghost moves around dropping evidence. Hunters collect it; the program uses bitwise ops to match evidence against ghost types.</p>
-      <p>Everything runs concurrently. Each hunter is a thread. The ghost is a thread. They all share the same memory.</p>
-    </section>
-
-    <section class="pp-section pp-images-section">
-      <h2>Screenshots</h2>
-      <div class="pp-images pp-images--single">
-        <figure>
-          <a href="../images/c2401.png" target="_blank"><img src="../images/c2401.png" alt="Simulation setup"></a>
-        </figure>
-        <figure>
-          <a href="../images/c2401pt2.png" target="_blank"><img src="../images/c2401pt2.png" alt="Simulation running"></a>
-        </figure>
-        <figure>
-          <a href="../images/c2401pt3.png" target="_blank"><img src="../images/c2401pt3.png" alt="Simulation output"></a>
-        </figure>
-        <figure>
-          <a href="../images/c2401pt4.png" target="_blank"><img src="../images/c2401pt4.png" alt="Simulation results and cleanup"></a>
-        </figure>
+      <p>A ghost hunting game in C. A team of hunters explores Willow House, a 13-room building, while a ghost moves around dropping evidence. Hunters collect it and the program uses bitwise ops to match evidence against ghost types.</p>
+      <p>Everything runs concurrently. Each hunter is a POSIX thread. The ghost is a thread. They all share the same memory.</p>
+      <div class="pp-stats">
+        <div class="pp-stat">Rooms: <strong>13</strong></div>
+        <div class="pp-stat">Threads: <strong>5</strong></div>
+        <div class="pp-stat">Ticks tested: <strong>1,000+</strong></div>
+        <div class="pp-stat">Memory leaks: <strong>0</strong></div>
       </div>
     </section>
 
@@ -60,9 +58,37 @@
       <p>Each hunter and the ghost run on their own POSIX thread. Every room has a semaphore that a thread must acquire before entering. The shared evidence file and stdin have their own semaphores too.</p>
       <p>Deadlock prevention was the hard part. When a thread needs to lock multiple rooms, it sorts them by memory address first, then locks in that order. Every thread follows the same sequence, so circular waits can't form.</p>
       <p>Hunters navigate with a breadcrumb stack, pushing rooms as they go and popping back when they need to return to the van. The ghost wanders randomly and speeds up when hunters are close.</p>
-      <p>Ran 1,000+ simulated ticks with zero deadlocks or memory leaks, verified with Valgrind.</p>
     </section>
+
+    <section class="pp-section pp-images-section">
+      <h2>Screenshots</h2>
+      <div class="pp-images">
+        <figure>
+          <a href="../static/images/c2401.png" target="_blank"><img src="../static/images/c2401.png" alt="Simulation setup"></a>
+          <figcaption>Simulation setup</figcaption>
+        </figure>
+        <figure>
+          <a href="../static/images/c2401pt2.png" target="_blank"><img src="../static/images/c2401pt2.png" alt="Simulation running"></a>
+          <figcaption>Running</figcaption>
+        </figure>
+        <figure>
+          <a href="../static/images/c2401pt3.png" target="_blank"><img src="../static/images/c2401pt3.png" alt="Simulation output"></a>
+          <figcaption>Output</figcaption>
+        </figure>
+        <figure>
+          <a href="../static/images/c2401pt4.png" target="_blank"><img src="../static/images/c2401pt4.png" alt="Results and cleanup"></a>
+          <figcaption>Results &amp; cleanup</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Verified with Valgrind</h2>
+      <p>Ran 1,000+ simulated ticks with zero deadlocks or memory leaks, verified with Valgrind. The lock-ordering strategy completely eliminates circular waits without needing any retry or backoff logic.</p>
+    </section>
+
   </div>
-  <script src="../static/script.js"></script>
+  <script src="../static/js/storm-bg.js"></script>
+  <script src="../static/js/script.js"></script>
 </body>
 </html>

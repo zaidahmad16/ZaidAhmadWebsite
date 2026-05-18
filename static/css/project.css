@@ -1,0 +1,258 @@
+/* ── Project page shell ─────────────────── */
+.proj-page {
+  min-height: 100vh;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem 8rem;
+}
+
+/* ── Sticky topbar ──────────────────────── */
+.pp-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  margin-bottom: 5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--bdr);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  /* extend to page edges */
+  margin-left: -2rem;
+  margin-right: -2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--text-3);
+  transition: color .2s var(--spring), gap .2s var(--spring);
+}
+.back-link:hover { color: var(--accent); gap: 0.8rem; }
+
+.theme-toggle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--bdr);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2);
+  transition: color .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--bdr-hi); }
+
+/* ── Header ─────────────────────────────── */
+.pp-header {
+  margin-bottom: 4rem;
+  animation: ppFadeUp .7s cubic-bezier(0.23,1,0.32,1) both;
+}
+
+@keyframes ppFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pp-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.pp-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  text-shadow: 3px 3px 0 color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.pp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.pp-tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0.28rem 0.7rem;
+  border-radius: 0;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: var(--acc-dim);
+}
+
+.pp-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--text-2);
+  border: 1px solid var(--bdr);
+  padding: 0.45rem 1rem;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.pp-github:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--acc-dim);
+}
+
+/* ── Sections ───────────────────────────── */
+.pp-section {
+  margin-bottom: 3.5rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--bdr);
+  animation: ppFadeUp .6s cubic-bezier(0.23,1,0.32,1) both;
+  animation-delay: var(--delay, .1s);
+  transition: border-color .3s;
+}
+.pp-section:hover { border-left-color: var(--accent); }
+
+.pp-section h2 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+}
+
+.pp-section p {
+  font-size: 1rem;
+  color: var(--text-2);
+  line-height: 1.85;
+  margin-bottom: 0.9rem;
+}
+.pp-section p:last-child { margin-bottom: 0; }
+
+/* ── Code highlight block ───────────────── */
+.pp-code {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.25rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+/* ── Images ─────────────────────────────── */
+.pp-images-section {
+  border-left: none;
+  padding-left: 0;
+}
+
+.pp-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.pp-images--single { grid-template-columns: 1fr; }
+
+.pp-images figure {
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--bdr);
+  transition: border-color .3s var(--spring);
+}
+.pp-images figure:hover { border-color: var(--accent); }
+
+/* Pixel corner brackets */
+.pp-images figure::before,
+.pp-images figure::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  opacity: 0;
+  transition: opacity .3s, width .3s var(--spring), height .3s var(--spring);
+  z-index: 2;
+}
+.pp-images figure::before {
+  top: 0; left: 0;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+}
+.pp-images figure::after {
+  bottom: 0; right: 0;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+.pp-images figure:hover::before,
+.pp-images figure:hover::after { opacity: 1; width: 20px; height: 20px; }
+
+.pp-images img {
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+  transition: transform .4s var(--spring);
+}
+.pp-images figure:hover img { transform: scale(1.02); }
+
+.pp-images figcaption {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-3);
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--bdr);
+  background: var(--surf);
+}
+
+/* ── Stat chips ─────────────────────────── */
+.pp-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.pp-stat {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--bdr);
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.pp-stat strong { color: var(--accent); }
+
+/* ── Section stagger delays ─────────────── */
+.pp-section:nth-child(1) { --delay: .05s; }
+.pp-section:nth-child(2) { --delay: .12s; }
+.pp-section:nth-child(3) { --delay: .19s; }
+.pp-section:nth-child(4) { --delay: .26s; }
+.pp-section:nth-child(5) { --delay: .33s; }
+
+/* ── Mobile ─────────────────────────────── */
+@media (max-width: 600px) {
+  .proj-page { padding: 0 1.25rem 5rem; }
+  .pp-topbar { margin-left: -1.25rem; margin-right: -1.25rem; padding-left: 1.25rem; padding-right: 1.25rem; }
+  .pp-images, .pp-images--grid { grid-template-columns: 1fr; }
+  .pp-title { font-size: 1.8rem; }
+}

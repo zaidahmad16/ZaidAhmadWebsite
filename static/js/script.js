@@ -1,31 +1,109 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Theme toggle
+  // ── Animated theme toggler ──────────────
   var themeBtn = document.getElementById('theme-toggle');
-  var sunIcon  = themeBtn && themeBtn.querySelector('.icon-sun');
-  var moonIcon = themeBtn && themeBtn.querySelector('.icon-moon');
 
-  function setTheme(theme) {
-    if (theme === 'dark') {
+  // Sound (ported from animated-theme-toggler component)
+  var _actx = null, _abuf = null, _lastSnd = 0;
+  function _audioCtx() {
+    if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (_actx.state === 'suspended') _actx.resume();
+    return _actx;
+  }
+  function _playTick() {
+    var now = performance.now();
+    if (now - _lastSnd < 80) return;
+    _lastSnd = now;
+    try {
+      var ac  = _audioCtx();
+      if (!_abuf || _abuf.sampleRate !== ac.sampleRate) {
+        var rate = ac.sampleRate, len = Math.floor(rate * 0.006);
+        _abuf = ac.createBuffer(1, len, rate);
+        var ch = _abuf.getChannelData(0);
+        for (var i = 0; i < len; i++) {
+          var t = i / len;
+          ch[i] = (Math.sin(2 * Math.PI * 3400 * t) * 0.6 + (Math.random() * 2 - 1) * 0.4) * Math.pow(1 - t, 3);
+        }
+      }
+      var src = ac.createBufferSource(), gain = ac.createGain();
+      src.buffer = _abuf; gain.gain.value = 0.08;
+      src.connect(gain); gain.connect(ac.destination); src.start();
+    } catch(e) {}
+  }
+
+  // Update all theme toggle icons
+  function _updateIcon(isDark, animate) {
+    document.querySelectorAll('.att-svg').forEach(function (svg) {
+      var body = svg.querySelector('.att-body');
+      var mc   = svg.querySelector('.att-mc');
+      var rays = svg.querySelector('.att-rays');
+      if (!animate) svg.closest('button').classList.add('att-no-transition');
+      if (isDark) {
+        svg.style.transform  = 'rotate(270deg)';
+        body.setAttribute('r', '9');
+        mc.setAttribute('cx', '17');
+        mc.setAttribute('cy', '8');
+        rays.style.opacity   = '0';
+        rays.style.transform = 'scale(0) rotate(-30deg)';
+      } else {
+        svg.style.transform  = 'rotate(0deg)';
+        body.setAttribute('r', '5');
+        mc.setAttribute('cx', '33');
+        mc.setAttribute('cy', '0');
+        rays.style.opacity   = '1';
+        rays.style.transform = 'scale(1) rotate(0deg)';
+      }
+      if (!animate) {
+        requestAnimationFrame(function () {
+          svg.closest('button').classList.remove('att-no-transition');
+        });
+      }
+    });
+  }
+
+  function setTheme(theme, animate) {
+    var isDark = theme === 'dark';
+    if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
     localStorage.setItem('theme', theme);
-    if (sunIcon && moonIcon) {
-      sunIcon.style.display  = theme === 'light' ? 'none'  : '';
-      moonIcon.style.display = theme === 'light' ? ''      : 'none';
-    }
+    _updateIcon(isDark, animate);
   }
 
-  setTheme(localStorage.getItem('theme') || 'light');
+  setTheme(localStorage.getItem('theme') || 'dark', false);
 
-  if (themeBtn) {
-    themeBtn.addEventListener('click', function () {
-      setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  function _toggleTheme() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    setTheme(isDark ? 'light' : 'dark', true);
+    _playTick();
+  }
+
+  [themeBtn, document.getElementById('hero-theme-toggle')].forEach(function (btn) {
+    if (btn) btn.addEventListener('click', _toggleTheme);
+  });
+
+
+  // ── Scroll reveal ────────────────────────
+  var revealObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
     });
-  }
+  }, { threshold: 0.08 });
 
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el, i) {
+    // Set stagger index on children for reveal-stagger
+    if (el.classList.contains('reveal-stagger')) {
+      Array.from(el.children).forEach(function (child, j) {
+        child.style.setProperty('--i', j);
+      });
+    }
+    revealObs.observe(el);
+  });
 
   // Active nav link via IntersectionObserver
   var sections = document.querySelectorAll('section[id]');
