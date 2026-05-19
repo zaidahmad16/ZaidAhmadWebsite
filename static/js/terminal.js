@@ -475,7 +475,7 @@
     stopSnake();
 
     // Open resume — same as the existing target="_blank" links
-    window.open('ZaidAhmadCV.pdf', '_blank');
+    window.open('static/docs/ZaidAhmadCV.pdf', '_blank');
 
     var steps = [
       [0,    ''],
@@ -503,7 +503,7 @@
       var d = document.createElement('div');
       d.className = 'tl-acc';
       var a = document.createElement('a');
-      a.href   = 'ZaidAhmadCV.pdf';
+      a.href   = 'static/docs/ZaidAhmadCV.pdf';
       a.target = '_blank';
       a.style.cssText = 'color:#58a6ff; text-decoration:underline;';
       a.textContent   = '  → view resume';

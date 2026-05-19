@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/styles.css?v=20">
+  <link rel="stylesheet" href="static/css/pokemon-battle.css">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
   <header class="mobile-header" id="mobile-header">
     <span class="mh-logo">Zaid Ahmad</span>
     <div class="mh-right">
-      <a href="ZaidAhmadCV.pdf" target="_blank" class="mh-cv">Resume</a>
+      <a href="static/docs/ZaidAhmadCV.pdf" target="_blank" class="mh-cv">Resume</a>
       <button class="mh-toggle" id="mh-toggle" aria-label="Menu">
         <span></span><span></span>
       </button>
@@ -51,7 +52,7 @@
         <h1 class="hero-name">Zaid Ahmad</h1>
         <p class="hero-tagline">DevOps &amp; Embedded Systems<br>Carleton University &middot; 2029</p>
         <div class="hero-ctas">
-          <a href="ZaidAhmadCV.pdf" target="_blank" class="hero-btn hero-btn--primary">Resume ↗</a>
+          <a href="static/docs/ZaidAhmadCV.pdf" target="_blank" class="hero-btn hero-btn--primary">Resume ↗</a>
           <a href="#about" class="hero-btn hero-btn--secondary">View work ↓</a>
         </div>
       </div>
@@ -358,7 +359,7 @@
 
       <footer class="pg-footer">
         <p>Built by Zaid Ahmad &middot; &copy; 2026</p>
-        <a href="ZaidAhmadCV.pdf" target="_blank">View Resume &rarr;</a>
+        <a href="static/docs/ZaidAhmadCV.pdf" target="_blank">View Resume &rarr;</a>
       </footer>
       <span class="term-hint">$ hint: try ctrl+shift+l</span>
 
@@ -391,11 +392,13 @@
       <span>Resume &mdash; Zaid Ahmad</span>
       <button id="ro-close">Close &times;</button>
     </div>
-    <iframe src="ZaidAhmadCV.pdf" class="ro-frame" title="Resume"></iframe>
+    <iframe src="static/docs/ZaidAhmadCV.pdf" class="ro-frame" title="Resume"></iframe>
   </div>
 
   <script src="static/js/storm-bg.js"></script>
   <script src="static/js/script.js?v=8"></script>
   <script src="static/js/terminal.js?v=2"></script>
+  <script src="static/js/pokemon-battle.js"></script>
+  <script>initPokemonBattle();</script>
 </body>
 </html>
