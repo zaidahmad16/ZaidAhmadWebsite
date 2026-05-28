@@ -47,9 +47,9 @@
 
     <section class="pp-section">
       <h2>The problem</h2>
-      <p>My friend in Engineering showed me the course tree his department hands out to first-years. It was a PDF, just a grid — every required course, what unlocks what, four years on one page. His entire degree, legible at a glance.</p>
-      <p>My program didn't have one. Students without it were just expected to piece things together. Academic calendar in one tab, prerequisite lists in another, all written in paragraph form like nobody expected you to read them during registration. I'd done it. It takes longer than it should, you still miss things, and there's no good reason it works that way.</p>
-      <p>So I built a version for every Carleton program.</p>
+      <p>My friend in Engineering showed me the course tree his department gives to first-years. A PDF, just a grid. Every required course, what unlocks what, four years on one page. His whole degree, readable at a glance.</p>
+      <p>My program didn't have one. So you just pieced it together yourself. Academic calendar in one tab, prerequisite lists buried in paragraph form in another. I'd done it. It takes longer than it should, you still miss things, and it shouldn't work that way.</p>
+      <p>I built a map for every Carleton program. I had no idea how many things were going to break first.</p>
       <div class="pp-stats">
         <div class="pp-stat">Students helped: <strong>700+</strong></div>
         <div class="pp-stat">Programs indexed: <strong>304+</strong></div>
@@ -68,8 +68,8 @@
 
     <section class="pp-section">
       <h2>What it does</h2>
-      <p>Pick any Carleton program and you get a four-year prerequisite map. Courses sit in a grid by year and semester — Fall left, Winter right. Arrows show prerequisites. Dashed arrows mean concurrent. Color tells you the course type at a glance: black border for required, green for Math and Science, orange for electives, red for complementary studies. The scheme matches what Carleton's Engineering department already uses in their PDFs — students already know it, which meant one less thing to explain.</p>
-      <p>Click a course and you get the description, credit weight, which semesters it runs, and professor info with RateMyProfessors ratings that update monthly. Elective slots show up as placeholders so the grid doesn't look broken when a semester has flexibility in it. It works on mobile — a lot of students check it during registration, on their phones, trying to figure out whether they actually qualify for something.</p>
+      <p>Pick a program, get a four-year prerequisite map. Courses in a grid by year and semester. Fall left, Winter right. Arrows for prerequisites, dashed for concurrent. Color tells you the course type: black border for required, green for Math and Science, orange for electives, red for complementary studies. The scheme matches Carleton Engineering's own PDFs so students already know what it means.</p>
+      <p>Click a course and you get the description, credit weight, which semesters it runs, and professor info with RateMyProfessors ratings updated monthly. Elective slots show up as placeholders so the grid doesn't look wrong where a semester has open choices. It works on mobile. More students check it on their phones than I expected, mid-registration, trying to figure out whether they actually qualify for something.</p>
     </section>
 
 
@@ -106,40 +106,48 @@
 
     <section class="pp-section">
       <h2>Scraping Carleton Central</h2>
-      <p>All the data comes from Carleton Central. Getting it clean took way longer than expected and involved throwing away the first version of the scraper entirely.</p>
-      <p>I started with Beautiful Soup. Fine for simple scraping — well documented, gets you somewhere fast. But as the scraper grew and I was hitting more page structures, the selector syntax got clunky and performance started dragging. When you're parsing prerequisites formatted differently depending on which department wrote them and which year the course was added, "gets you somewhere fast" stops being enough.</p>
-      <p>I switched to Parsel, which is what Scrapy uses under the hood. The XPath support was the main thing — it let me navigate messy HTML precisely, without piling on workarounds every time a page didn't match the expected structure. Rewriting finished code is annoying. It was still the right call.</p>
-      <p>The prerequisite parsing nearly broke me. Prerequisites at Carleton come in every shape: AND chains, OR choices, nested combinations, minimum grade requirements, year standing thresholds — all written as plain English prose with no consistent format across departments. "Prerequisite: COMP 1405 or COMP 1406" from one. "Prerequisite(s): One of COMP 1405, COMP 1406 with a grade of C- or higher" from another. Some list year standing instead of specific courses. Some do both. Some use formats I only ever saw on one single course in the entire catalog.</p>
-      <p>Every time I thought I'd covered every case, I'd add a new program and find something that broke the parser in a way I hadn't seen before. I genuinely lost count of how many times I rewrote pieces of it. For semester offerings where explicit data didn't exist, I use a heuristic — odd course numbers tend to be Fall, even tend to be Winter. It holds up well enough that the map doesn't look half-empty. Where real offering data exists it takes priority.</p>
+      <p>All the data comes from Carleton Central. Getting it clean took way longer than expected and involved throwing away the first scraper entirely.</p>
+      <p>I started with Beautiful Soup. It's well documented and gets you somewhere fast, which is exactly what it did, until the scraper got complex enough that "somewhere fast" wasn't where I needed to be. Selector syntax got clunky. Performance dragged. When you're parsing prerequisites formatted differently per department and per year the course was added, you need more precision than Beautiful Soup gives you cleanly.</p>
+      <p>I switched to Parsel, which is what Scrapy runs on. XPath let me navigate inconsistent HTML without stacking workarounds on top of each other. Rewriting working code hurts. Still the right call.</p>
+      <p>The prerequisite parsing was the worst part. Prerequisites at Carleton come in every shape: AND chains, OR choices, nested combinations, minimum grades, year standing thresholds, all in plain English prose with no consistent format. "Prerequisite: COMP 1405 or COMP 1406" from one department. "Prerequisite(s): One of COMP 1405, COMP 1406 with a grade of C- or higher" from another. Some list year standing instead of specific courses. Some formats showed up exactly once in the entire catalog.</p>
+      <p>Every time I thought I'd handled every case, a new program found another one I hadn't. I lost count of how many times I rewrote pieces of the parser. For semester offerings, a lot of courses have no explicit data in the system. Rather than leaving them off the map, I use a heuristic. Odd course numbers tend to run in Fall, even in Winter. It holds up well enough across most departments. Real data takes priority where it exists.</p>
     </section>
 
     <section class="pp-section">
       <h2>Database &amp; backend</h2>
-      <p>Prerequisite logic doesn't fit neatly into rows and columns. A course can have multiple prerequisites, those prerequisites can be ANDed or ORed, and the combinations nest. A relational schema would've meant either a gnarly join structure or cutting corners on what the data could express. I used JSONB in PostgreSQL instead — stores the AND/OR tree directly in the database without needing a whole separate prerequisites table for it.</p>
-      <p>The database is on Neon. Backend is FastAPI. Both nearly killed me before they worked. At one point I was copying the database connection string into <code>.env</code> and accidentally pasted it twice, merging two URLs into one broken string. The error this produced didn't say anything useful — it just looked like the app was crashing. I spent a while staring at code that was completely fine before I finally checked the environment variable itself. Then there was the time I pasted my actual Neon password into a chat window while asking for help with something. Had to stop and rotate credentials immediately. Not a great afternoon.</p>
+      <p>Prerequisite logic doesn't map neatly to rows and columns. Courses can have multiple prerequisites that AND or OR together, and it nests. I used JSONB in PostgreSQL to store the AND/OR tree directly rather than building a separate prerequisites table with its own relationship logic. Database is on Neon, backend is FastAPI.</p>
+      <p>Setting them up had its moments. I once pasted a database connection string into <code>.env</code> twice, merging two URLs into one broken string. The error looked like an application crash. I stared at code that was completely fine for a while before thinking to check the environment variable itself. Another time I accidentally pasted my actual Neon password into a chat window while asking for help with something unrelated. Stopped everything and rotated credentials. The kind of afternoon where you just close the laptop for a bit.</p>
     </section>
 
     <section class="pp-section">
       <h2>Frontend</h2>
-      <p>The frontend is Next.js. The map uses React Flow for the canvas — node rendering, edges, zoom, pan. For placing courses on the grid I used dagre, which calculates positions from the prerequisite graph automatically. Without it I'd have been hardcoding coordinates for hundreds of courses.</p>
-      <p>Tailwind broke things early. I installed v4 because it was current. It has deep incompatibilities with Turbopack — classes weren't applying, builds were failing, the errors weren't pointing at Tailwind. I spent too long assuming I'd misconfigured Next.js. Downgraded to v3, fixed immediately. Still pinned there.</p>
-      <p>Then the RAM crashes. Somewhere during development I ended up with two <code>next.config.js</code> files in slightly different locations. Next.js loaded both. Turbopack spun up duplicate processes. The dev server kept dying mid-session. Once I found and deleted the duplicate I also capped the Node.js heap at 2GB, which kept a memory spike from crashing it again.</p>
-      <p>The arrow overlap problem is the one I haven't fully solved. When multiple courses share a prerequisite, the edges stack on top of each other and look like a single thick line instead of separate connections. I tried switching edge types — smoothstep, step. I built a custom component that drew right-angle paths and tried to fan edges out to different handle points along node height. Some things helped in some cases and made other cases worse. The issue is that React Flow's routing assumes edges connect to fixed handles, and spreading multiple edges gracefully from the same source means working against that. Every fix made the code messier. Eventually I accepted it was good enough to ship and moved on. Still bugs me though.</p>
+      <p>Frontend is Next.js. The map is React Flow. Node rendering, edges, zoom, pan. For positioning courses I used dagre, which calculates layout from the graph automatically. Without it I'd have been hardcoding positions for hundreds of nodes.</p>
+      <p>Tailwind v4 broke things early. Deep incompatibilities with Turbopack. Classes not applying, builds failing, nothing pointing clearly at Tailwind. I spent too long assuming the issue was in my Next.js config. Downgraded to v3, fixed. Still pinned there.</p>
+      <p>Then the dev server started dying randomly. Turned out I had two <code>next.config.js</code> files in different locations. Next.js loaded both, Turbopack spun up duplicate processes, and memory went sideways. Deleted the extra file, capped the Node.js heap at 2GB. Stable after that.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The arrow problem</h2>
+      <p>This took longer than anything else, and the fix ended up having nothing to do with what I kept trying to fix.</p>
+      <p>Edges from the same source node were stacking into one thick line. I tried different edge types, smoothstep and step. I built a custom component that drew right-angle paths and tried to spread edges to different handle positions along node height. Some things helped in some cases, made others worse, and the code got worse with every change.</p>
+      <p>What I eventually figured out was that some of the arrows were wrong, not just overlapping. A connection like COMP 1805 → MATH 1104 → STAT 2605 was appearing because I was generating arrows by regex-parsing the raw prerequisites text on each course. The parser found course codes mentioned in a description and drew an arrow whether the implied relationship actually existed or not. The map looked like a rendering bug. It was a data bug.</p>
+      <p>The fix was to stop generating arrows from text. I added a <code>program_edges</code> table. Source course, target course, edge type, per program. A seeding script populated initial edges from the official Carleton maps, getting roughly 70% right, with the rest fixable via a PUT endpoint per program. Once set, stored permanently.</p>
+      <p>With correct explicit edges and single centered handles, React Flow's smoothstep routing worked fine without any help. The custom edge component got deleted. The whole thing got shorter and cleaner. I'd spent days trying to fix a rendering problem that didn't exist.</p>
     </section>
 
     <section class="pp-section">
       <h2>Deployment</h2>
       <p>Three platforms. Two failures.</p>
-      <p>Vercel was first — obvious choice for Next.js. The monorepo needed explicit config so Vercel knew which directory to build from. I got it wrong. Fixed that, then hit Cloudflare proxy conflicts where errors were coming back that looked like application problems but weren't. At that point I'd spent enough time on it.</p>
-      <p>Render was next, for the backend. Earlier in the project I'd briefly tried Fly.io and generated a Dockerfile I never ended up using. It was still sitting in the repo. Render found it and tried to use it instead of detecting a Python app, which produced a broken deployment with unhelpful errors. I spent a long time looking at application code before I found the file. Deleting it fixed things immediately. By then I'd already started looking at Railway so I just went with that.</p>
-      <p>Railway handled everything cleanly. Simple config, stable since day one. I should've started there and saved myself a week.</p>
+      <p>Vercel first. The monorepo needed explicit config pointing to the right build directory. Got that wrong, fixed it, then hit Cloudflare proxy conflicts where the errors looked like application problems but weren't. Moved on after spending more time than I should have.</p>
+      <p>Render next, for the backend. I'd briefly tried Fly.io earlier and left a generated Dockerfile sitting in the repo. Render found it and used it instead of detecting a Python app. The deployment was broken in ways that didn't say why. Took a long time to find the file. Deleting it fixed everything immediately.</p>
+      <p>Railway just worked. Simple config, never had to think about it again.</p>
     </section>
 
     <section class="pp-section">
       <h2>What I learned</h2>
-      <p>The gap between scraped data and clean data is bigger than it looks. A lot of the total project time went into edge cases — weird prerequisite formats, missing semester data, course codes appearing in multiple formats depending on where you look. Getting the happy path working is fast. The long tail is not.</p>
-      <p>Switching scrapers mid-project was annoying and worth it. Keeping the repo clean matters — a forgotten Dockerfile and a duplicate config each cost hours of debugging for no good reason. And at some point you have to ship something that isn't perfect. The arrow problem isn't solved the way I want it to be. The site still works.</p>
-      <p>Over 700 students have used it. Feedback has come in from Engineering, CS, Business, and others. Some people have flagged issues with specific course data, which helps more than general feedback. Things still on the list: better mobile layout for the map itself, more nuanced handling for programs with complex elective structures, professor data visible directly on nodes. And the arrows. One day.</p>
+      <p>There's a pattern I kept running into. The arrow problem was in the data layer, not the rendering layer. The Render failure was in a forgotten file, not the application. The <code>.env</code> crash was a paste error, not a code bug. A lot of debugging time went to the right symptoms and the wrong cause.</p>
+      <p>Switching scrapers mid-project cost time upfront and saved more later. Keeping the repo clean isn't glamorous advice but a leftover Dockerfile genuinely cost me an afternoon. And at some point you ship something that isn't done. The site isn't perfect. It works, and 500+ students have found it useful.</p>
+      <p><a href="https://carletoncoursemap.ca" target="_blank" style="color:var(--accent);font-family:var(--mono);font-size:0.9rem;">carletoncoursemap.ca &#8599;</a></p>
     </section>
 
   </div>
