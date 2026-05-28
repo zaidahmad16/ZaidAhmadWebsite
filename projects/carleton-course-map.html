@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarletonCourseMap — Zaid Ahmad</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/styles.css?v=20">
+  <link rel="stylesheet" href="../static/css/project.css">
+</head>
+<body>
+  <div class="proj-page">
+
+    <div class="pp-topbar">
+      <a href="../index.html" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <p class="pp-eyebrow">[ web &middot; scraping &middot; fullstack ]</p>
+      <h1 class="pp-title">CarletonCourseMap</h1>
+      <div class="pp-meta">
+        <span class="pp-tag">Next.js</span>
+        <span class="pp-tag">FastAPI</span>
+        <span class="pp-tag">PostgreSQL</span>
+        <span class="pp-tag">Python</span>
+        <span class="pp-tag">Parsel</span>
+        <span class="pp-tag">React Flow</span>
+        <span class="pp-tag">Railway</span>
+      </div>
+      <a href="https://carletoncoursemap.ca" target="_blank" class="pp-github">carletoncoursemap.ca &#8599;</a>
+    </header>
+
+    <section class="pp-section">
+      <h2>The problem</h2>
+      <p>My friend in Engineering showed me the course tree his department hands out to first-years. It was a PDF, just a grid — every required course, what unlocks what, four years on one page. His entire degree, legible at a glance.</p>
+      <p>My program didn't have one. Students without it were just expected to piece things together. Academic calendar in one tab, prerequisite lists in another, all written in paragraph form like nobody expected you to read them during registration. I'd done it. It takes longer than it should, you still miss things, and there's no good reason it works that way.</p>
+      <p>So I built a version for every Carleton program.</p>
+      <div class="pp-stats">
+        <div class="pp-stat">Students helped: <strong>700+</strong></div>
+        <div class="pp-stat">Programs indexed: <strong>304+</strong></div>
+        <div class="pp-stat">Courses indexed: <strong>3,218+</strong></div>
+      </div>
+    </section>
+
+    <section class="pp-section pp-images-section">
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/coursemap/coursemap-screenshot-2.png" alt="CarletonCourseMap — CS AI and Machine Learning degree map">
+          <figcaption>Computer Science Artificial Intelligence and Machine Learning B.C.S. — four-year prerequisite map</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>What it does</h2>
+      <p>Pick any Carleton program and you get a four-year prerequisite map. Courses sit in a grid by year and semester — Fall left, Winter right. Arrows show prerequisites. Dashed arrows mean concurrent. Color tells you the course type at a glance: black border for required, green for Math and Science, orange for electives, red for complementary studies. The scheme matches what Carleton's Engineering department already uses in their PDFs — students already know it, which meant one less thing to explain.</p>
+      <p>Click a course and you get the description, credit weight, which semesters it runs, and professor info with RateMyProfessors ratings that update monthly. Elective slots show up as placeholders so the grid doesn't look broken when a semester has flexibility in it. It works on mobile — a lot of students check it during registration, on their phones, trying to figure out whether they actually qualify for something.</p>
+    </section>
+
+
+    <section class="pp-section pp-images-section">
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/coursemap/coursemap-screenshot-1.png" alt="CarletonCourseMap landing page">
+          <figcaption>Landing page — search any Carleton program to open its map</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section pp-images-section">
+      <h2 style="font-family:var(--mono);font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.9rem;">How it got here</h2>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/coursemap/coursemap-9.webp" alt="Early version of the course map">
+          <figcaption>Early version — basic grid layout, no dark theme, no legend</figcaption>
+        </figure>
+      </div>
+      <div class="pp-images pp-images--single" style="margin-top:1rem;">
+        <figure>
+          <img src="../static/images/coursemap/coursemap-7.webp" alt="Mid-development version with dark theme and arrows">
+          <figcaption>Mid-development — dark theme added, prerequisite arrows working, color coding in place</figcaption>
+        </figure>
+      </div>
+      <div class="pp-images pp-images--single" style="margin-top:1rem;">
+        <figure>
+          <img src="../static/images/coursemap/coursemap-screenshot-2.png" alt="Current version of CarletonCourseMap">
+          <figcaption>Current — polished nav, program tabs, search, and the full map below</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Scraping Carleton Central</h2>
+      <p>All the data comes from Carleton Central. Getting it clean took way longer than expected and involved throwing away the first version of the scraper entirely.</p>
+      <p>I started with Beautiful Soup. Fine for simple scraping — well documented, gets you somewhere fast. But as the scraper grew and I was hitting more page structures, the selector syntax got clunky and performance started dragging. When you're parsing prerequisites formatted differently depending on which department wrote them and which year the course was added, "gets you somewhere fast" stops being enough.</p>
+      <p>I switched to Parsel, which is what Scrapy uses under the hood. The XPath support was the main thing — it let me navigate messy HTML precisely, without piling on workarounds every time a page didn't match the expected structure. Rewriting finished code is annoying. It was still the right call.</p>
+      <p>The prerequisite parsing nearly broke me. Prerequisites at Carleton come in every shape: AND chains, OR choices, nested combinations, minimum grade requirements, year standing thresholds — all written as plain English prose with no consistent format across departments. "Prerequisite: COMP 1405 or COMP 1406" from one. "Prerequisite(s): One of COMP 1405, COMP 1406 with a grade of C- or higher" from another. Some list year standing instead of specific courses. Some do both. Some use formats I only ever saw on one single course in the entire catalog.</p>
+      <p>Every time I thought I'd covered every case, I'd add a new program and find something that broke the parser in a way I hadn't seen before. I genuinely lost count of how many times I rewrote pieces of it. For semester offerings where explicit data didn't exist, I use a heuristic — odd course numbers tend to be Fall, even tend to be Winter. It holds up well enough that the map doesn't look half-empty. Where real offering data exists it takes priority.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Database &amp; backend</h2>
+      <p>Prerequisite logic doesn't fit neatly into rows and columns. A course can have multiple prerequisites, those prerequisites can be ANDed or ORed, and the combinations nest. A relational schema would've meant either a gnarly join structure or cutting corners on what the data could express. I used JSONB in PostgreSQL instead — stores the AND/OR tree directly in the database without needing a whole separate prerequisites table for it.</p>
+      <p>The database is on Neon. Backend is FastAPI. Both nearly killed me before they worked. At one point I was copying the database connection string into <code>.env</code> and accidentally pasted it twice, merging two URLs into one broken string. The error this produced didn't say anything useful — it just looked like the app was crashing. I spent a while staring at code that was completely fine before I finally checked the environment variable itself. Then there was the time I pasted my actual Neon password into a chat window while asking for help with something. Had to stop and rotate credentials immediately. Not a great afternoon.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Frontend</h2>
+      <p>The frontend is Next.js. The map uses React Flow for the canvas — node rendering, edges, zoom, pan. For placing courses on the grid I used dagre, which calculates positions from the prerequisite graph automatically. Without it I'd have been hardcoding coordinates for hundreds of courses.</p>
+      <p>Tailwind broke things early. I installed v4 because it was current. It has deep incompatibilities with Turbopack — classes weren't applying, builds were failing, the errors weren't pointing at Tailwind. I spent too long assuming I'd misconfigured Next.js. Downgraded to v3, fixed immediately. Still pinned there.</p>
+      <p>Then the RAM crashes. Somewhere during development I ended up with two <code>next.config.js</code> files in slightly different locations. Next.js loaded both. Turbopack spun up duplicate processes. The dev server kept dying mid-session. Once I found and deleted the duplicate I also capped the Node.js heap at 2GB, which kept a memory spike from crashing it again.</p>
+      <p>The arrow overlap problem is the one I haven't fully solved. When multiple courses share a prerequisite, the edges stack on top of each other and look like a single thick line instead of separate connections. I tried switching edge types — smoothstep, step. I built a custom component that drew right-angle paths and tried to fan edges out to different handle points along node height. Some things helped in some cases and made other cases worse. The issue is that React Flow's routing assumes edges connect to fixed handles, and spreading multiple edges gracefully from the same source means working against that. Every fix made the code messier. Eventually I accepted it was good enough to ship and moved on. Still bugs me though.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Deployment</h2>
+      <p>Three platforms. Two failures.</p>
+      <p>Vercel was first — obvious choice for Next.js. The monorepo needed explicit config so Vercel knew which directory to build from. I got it wrong. Fixed that, then hit Cloudflare proxy conflicts where errors were coming back that looked like application problems but weren't. At that point I'd spent enough time on it.</p>
+      <p>Render was next, for the backend. Earlier in the project I'd briefly tried Fly.io and generated a Dockerfile I never ended up using. It was still sitting in the repo. Render found it and tried to use it instead of detecting a Python app, which produced a broken deployment with unhelpful errors. I spent a long time looking at application code before I found the file. Deleting it fixed things immediately. By then I'd already started looking at Railway so I just went with that.</p>
+      <p>Railway handled everything cleanly. Simple config, stable since day one. I should've started there and saved myself a week.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>What I learned</h2>
+      <p>The gap between scraped data and clean data is bigger than it looks. A lot of the total project time went into edge cases — weird prerequisite formats, missing semester data, course codes appearing in multiple formats depending on where you look. Getting the happy path working is fast. The long tail is not.</p>
+      <p>Switching scrapers mid-project was annoying and worth it. Keeping the repo clean matters — a forgotten Dockerfile and a duplicate config each cost hours of debugging for no good reason. And at some point you have to ship something that isn't perfect. The arrow problem isn't solved the way I want it to be. The site still works.</p>
+      <p>Over 700 students have used it. Feedback has come in from Engineering, CS, Business, and others. Some people have flagged issues with specific course data, which helps more than general feedback. Things still on the list: better mobile layout for the map itself, more nuanced handling for programs with complex elective structures, professor data visible directly on nodes. And the arrows. One day.</p>
+    </section>
+
+  </div>
+  <script src="../static/js/storm-bg.js"></script>
+  <script src="../static/js/script.js"></script>
+</body>
+</html>
