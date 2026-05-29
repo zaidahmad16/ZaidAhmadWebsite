@@ -321,6 +321,13 @@
   }
 
   window.addEventListener('resize', resize);
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    resize();
+    draw(0);
+    return;
+  }
+
   resize();
   requestAnimationFrame(draw);
 })();

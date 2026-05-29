@@ -4,23 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShelterMatch Ottawa — Zaid Ahmad</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/styles.css?v=6">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=21">
   <link rel="stylesheet" href="../static/css/project.css">
 </head>
 <body>
   <div class="proj-page">
     <div class="pp-topbar">
-      <a href="../index.html" class="back-link">&#8592; Back</a>
-      <button class="theme-toggle" id="theme-toggle">
-        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <a href="../index.html#work" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
       </button>
     </div>
 
     <header class="pp-header">
+      <p class="pp-eyebrow">[ mobile &middot; hackathon ]</p>
       <h1 class="pp-title">ShelterMatch Ottawa</h1>
       <div class="pp-meta">
         <span class="pp-tag">React Native</span>
@@ -34,7 +45,11 @@
 
     <section class="pp-section">
       <h2>What it is</h2>
-      <p>Shelter finder for Ottawa, built in 24 hours at cuHacking 2025. Filter by gender, accessibility, and available beds. Placed 2nd out of 40+ teams.</p>
+      <p>Shelter finder for Ottawa, built in 24 hours at cuHacking 2025. Filter by gender, accessibility, and available beds.</p>
+      <div class="pp-stats">
+        <div class="pp-stat">Built in: <strong>24 hours</strong></div>
+        <div class="pp-stat">Placement: <strong>2nd / 40+ teams</strong></div>
+      </div>
     </section>
 
     <section class="pp-section pp-images-section">
@@ -56,6 +71,9 @@
       <p>React Native frontend, Node.js/Express backend, Firebase for real-time bed availability. Users set their needs and get matched to shelters with open space.</p>
     </section>
   </div>
+  <script src="../static/js/cinematic.js"></script>
+  <script src="../static/js/cursor.js"></script>
   <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
 </body>
 </html>

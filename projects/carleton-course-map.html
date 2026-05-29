@@ -8,14 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/styles.css?v=20">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=21">
   <link rel="stylesheet" href="../static/css/project.css">
 </head>
 <body>
   <div class="proj-page">
 
     <div class="pp-topbar">
-      <a href="../index.html" class="back-link">&#8592; Back</a>
+      <a href="../index.html#work" class="back-link">&#8592; Back</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
         <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
           <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
@@ -51,7 +52,7 @@
       <p>My program didn't have one. So you just pieced it together yourself. Academic calendar in one tab, prerequisite lists buried in paragraph form in another. I'd done it. It takes longer than it should, you still miss things, and it shouldn't work that way.</p>
       <p>I built a map for every Carleton program. I had no idea how many things were going to break first.</p>
       <div class="pp-stats">
-        <div class="pp-stat">Students helped: <strong>700+</strong></div>
+        <div class="pp-stat">Students helped: <strong>800+</strong></div>
         <div class="pp-stat">Programs indexed: <strong>304+</strong></div>
         <div class="pp-stat">Courses indexed: <strong>3,218+</strong></div>
       </div>
@@ -82,20 +83,20 @@
     </section>
 
     <section class="pp-section pp-images-section">
-      <h2 style="font-family:var(--mono);font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.9rem;">How it got here</h2>
+      <h2>How it got here</h2>
       <div class="pp-images pp-images--single">
         <figure>
           <img src="../static/images/coursemap/coursemap-7.webp" alt="Early version of the course map">
           <figcaption>Early version — basic grid layout, no dark theme, no legend</figcaption>
         </figure>
       </div>
-      <div class="pp-images pp-images--single" style="margin-top:1rem;">
+      <div class="pp-images pp-images--single">
         <figure>
           <img src="../static/images/coursemap/coursemap-9.webp" alt="Mid-development version with dark theme and arrows">
           <figcaption>Mid-development — dark theme added, prerequisite arrows working, color coding in place</figcaption>
         </figure>
       </div>
-      <div class="pp-images pp-images--single" style="margin-top:1rem;">
+      <div class="pp-images pp-images--single">
         <figure>
           <img src="../static/images/coursemap/coursemap-screenshot-2.png" alt="Current version of CarletonCourseMap">
           <figcaption>Current — polished nav, program tabs, search, and the full map below</figcaption>
@@ -145,12 +146,14 @@
     <section class="pp-section">
       <h2>What I learned</h2>
       <p>There's a pattern I kept running into. The arrow problem was in the data layer, not the rendering layer. The Render failure was in a forgotten file, not the application. The <code>.env</code> crash was a paste error, not a code bug. A lot of debugging time went to the right symptoms and the wrong cause.</p>
-      <p>Switching scrapers mid-project cost time upfront and saved more later. Keeping the repo clean isn't glamorous advice but a leftover Dockerfile genuinely cost me an afternoon. And at some point you ship something that isn't done. The site isn't perfect. It works, and 500+ students have found it useful.</p>
+      <p>Switching scrapers mid-project cost time upfront and saved more later. Keeping the repo clean isn't glamorous advice but a leftover Dockerfile genuinely cost me an afternoon. And at some point you ship something that isn't done. The site isn't perfect. It works, and 800+ students have found it useful.</p>
       <p><a href="https://carletoncoursemap.ca" target="_blank" style="color:var(--accent);font-family:var(--mono);font-size:0.9rem;">carletoncoursemap.ca &#8599;</a></p>
     </section>
 
   </div>
-  <script src="../static/js/storm-bg.js"></script>
+  <script src="../static/js/cinematic.js"></script>
+  <script src="../static/js/cursor.js"></script>
   <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
 </body>
 </html>

@@ -905,72 +905,10 @@ async function endBattle(result) {
   closeBattle();
 }
 
-// ── Trigger ─────────────────────────────────────────────────────────────────
-
-let clicks = 0, clickTimer = null;
-
-function initTrigger() {
-  const wrap = document.querySelector('.hero-zekrom');
-  if (!wrap) return;
-
-  if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative';
-
-  const ball = document.createElement('div');
-  ball.className = 'pb-hero-ball';
-  ball.id = 'pb-hero-ball';
-  wrap.appendChild(ball);
-
-  wrap.addEventListener('mouseenter', () => ball.classList.add('pb-ball-visible'));
-  wrap.addEventListener('mouseleave', () => ball.classList.remove('pb-ball-visible'));
-
-  wrap.querySelectorAll('.hz-light,.hz-dark').forEach(img => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', onGifClick);
-  });
-  document.addEventListener('keydown', e => { if(e.key==='Escape') closeBattle(); });
-}
-
-function onGifClick() {
-  try { getAC(); } catch(e) {}
-  clicks++;
-  const ball = document.getElementById('pb-hero-ball');
-
-  if (clicks >= 5) {
-    clicks = 0;
-    clearTimeout(clickTimer);
-    if (ball) {
-      ball.classList.remove('pb-ball-rock');
-      ball.classList.add('pb-ball-open');
-      setTimeout(startBattle, 450);
-    } else {
-      startBattle();
-    }
-    return;
-  }
-
-  // Rock the ball on each click (restart animation)
-  if (ball) {
-    ball.classList.remove('pb-ball-rock');
-    void ball.offsetWidth;
-    ball.classList.add('pb-ball-rock');
-    setTimeout(() => ball.classList.remove('pb-ball-rock'), 700);
-  }
-
-  clearTimeout(clickTimer);
-  clickTimer = setTimeout(() => {
-    clicks = 0;
-    const b = document.getElementById('pb-hero-ball');
-    if (b) {
-      const vis = b.classList.contains('pb-ball-visible');
-      b.className = 'pb-hero-ball' + (vis ? ' pb-ball-visible' : '');
-    }
-  }, 5000);
-}
+// ── Battle start / close ──────────────────────────────────────────────────
 
 function startBattle() {
   if (document.getElementById('pb-overlay')) return;
-  const ball = document.getElementById('pb-hero-ball');
-  if (ball) ball.className = 'pb-hero-ball';
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   const pKey   = isDark ? 'zekrom'   : 'reshiram';
   const oKey   = isDark ? 'reshiram' : 'zekrom';
@@ -990,7 +928,10 @@ function closeBattle() {
 
 // ── Public init ─────────────────────────────────────────────────────────────
 
-function initPokemonBattle() { initTrigger(); }
+function initPokemonBattle() {
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBattle(); });
+}
 window.initPokemonBattle = initPokemonBattle;
+window.startPokemonBattle = startBattle;
 
 })();

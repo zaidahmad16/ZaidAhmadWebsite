@@ -62,19 +62,21 @@
     switch (cmd) {
       case 'help':
         line('');
-        line('  ls              list directory',                'tl');
-        line('  pwd             print working directory',       'tl');
-        line('  whoami          current user',                  'tl');
-        line('  uname -a        system info',                   'tl');
-        line('  date            current date/time',             'tl');
-        line('  cat <file>      print file contents',           'tl');
-        line('  git log         recent commits',                'tl');
-        line('  git status      working tree status',           'tl');
-        line('  fastfetch       system info',                   'tl');
-        line('  echo <text>     print text',                    'tl');
-        line('  clear           clear terminal',                'tl');
-        line('  exit            close terminal',                'tl');
-        line('  sudo apt install snake   ...', 'tl');
+        line('  ls                        list directory',          'tl');
+        line('  pwd                       print working directory', 'tl');
+        line('  whoami                    current user',            'tl');
+        line('  uname -a                  system info',             'tl');
+        line('  date                      current date/time',       'tl');
+        line('  cat <file>                print file contents',     'tl');
+        line('  git log                   recent commits',          'tl');
+        line('  git status                working tree status',     'tl');
+        line('  fastfetch                 system info (ascii art)', 'tl');
+        line('  echo <text>               print text',              'tl');
+        line('  clear                     clear terminal',          'tl');
+        line('  exit                      close terminal',          'tl');
+        line('  sudo apt install snake    unlock a mini-game',      'tl');
+        line('  sudo apt install pokemon  start a Pokémon battle',  'tl');
+        line('  pokemon                   start a Pokémon battle',  'tl');
         line('');
         break;
 
@@ -183,6 +185,8 @@
       case 'sudo':
         if (args[0] === 'apt' && args[1] === 'install' && args[2] === 'snake') {
           fakeAptInstall();
+        } else if (args[0] === 'apt' && args[1] === 'install' && args[2] === 'pokemon') {
+          fakeAptInstallPokemon();
         } else if (args[0] === 'apt' && args[1] === 'install') {
           setTimeout(function () {
             line('E: Unable to locate package ' + (args[2] || ''), 'tl-err');
@@ -197,6 +201,16 @@
           line('[sudo] password for zaid: ', 'tl');
           setTimeout(function () { line('Sorry, try again.', 'tl-err'); }, 900);
         }
+        break;
+
+      case 'pokemon':
+        line('Starting Pokémon battle...', 'tl-acc');
+        setTimeout(function () {
+          closeTerm();
+          if (typeof window.startPokemonBattle === 'function') {
+            window.startPokemonBattle();
+          }
+        }, 600);
         break;
 
       default:
@@ -299,6 +313,43 @@
     });
 
     setTimeout(startSnake, 5300);
+  }
+
+  // ── Fake apt install — pokemon ────────────────────────────────
+  function fakeAptInstallPokemon() {
+    termInputRow.style.display = 'none';
+
+    var steps = [
+      [0,    'Reading package lists... Done',                                              'tl'],
+      [350,  'Building dependency tree... Done',                                           'tl'],
+      [600,  'Reading state information... Done',                                          'tl'],
+      [850,  'The following NEW packages will be installed:',                              'tl'],
+      [1000, '  pokemon',                                                                  'tl-acc'],
+      [1250, '0 upgraded, 1 newly installed, 0 to remove and 212 not upgraded.',           'tl'],
+      [1480, 'Need to get 649.0 kB of archives.',                                          'tl'],
+      [1620, 'After this operation, 1,024 kB of additional disk space will be used.',      'tl'],
+      [1880, 'Get:1 http://packages.linuxmint.com xia/universe amd64 pokemon 1.0.0 [649.0 kB]', 'tl-dim'],
+      [2500, 'Fetched 649.0 kB in 0s (1,337 kB/s)',                                       'tl-dim'],
+      [2700, 'Selecting previously unselected package pokemon.',                           'tl'],
+      [2900, '(Reading database ... 347,682 files currently installed.)',                  'tl-dim'],
+      [3150, 'Preparing to unpack .../pokemon_1.0.0_amd64.deb ...',                       'tl'],
+      [3500, 'Unpacking pokemon (1.0.0) ...',                                              'tl'],
+      [3950, 'Setting up pokemon (1.0.0) ...',                                             'tl'],
+      [4350, 'Processing triggers for man-db (2.10.2-1) ...',                             'tl-dim'],
+      [4700, ''],
+      [4800, 'Launching Pokémon battle...',                                                'tl-acc'],
+    ];
+
+    steps.forEach(function (s) {
+      setTimeout(function () { line(s[1], s[2]); }, s[0]);
+    });
+
+    setTimeout(function () {
+      closeTerm();
+      if (typeof window.startPokemonBattle === 'function') {
+        window.startPokemonBattle();
+      }
+    }, 5600);
   }
 
   // ── Snake game ────────────────────────────────────────────────
@@ -517,6 +568,8 @@
       termInput.focus();
     }, 3200);
   }
+
+  window.openPortfolioTerm = openTerm;
 
   // ── Global keyboard ───────────────────────────────────────────
   document.addEventListener('keydown', function (e) {

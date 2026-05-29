@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     _updateIcon(isDark, animate);
   }
 
-  setTheme(localStorage.getItem('theme') || 'dark', false);
+  setTheme(localStorage.getItem('theme') || 'light', false);
 
   function _toggleTheme() {
     var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -139,51 +139,56 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      var target = document.querySelector(this.getAttribute('href'));
-      if (!target) return;
+  // ── Scroll progress bar ──────────────────
+  var progressBar = document.querySelector('.scroll-progress');
+  if (progressBar) {
+    window.addEventListener('scroll', function () {
+      var scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+      var docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }, { passive: true });
+  }
+
+  // ── Copy email to clipboard ───────────────
+  var emailLink = document.querySelector('.ct-link[href^="mailto:"]');
+  if (emailLink && navigator.clipboard) {
+    emailLink.addEventListener('click', function (e) {
       e.preventDefault();
-      var offset = window.innerWidth <= 900 ? 60 : 0;
-      window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+      var email = 'zaidahmad8060@gmail.com';
+      navigator.clipboard.writeText(email).then(function () {
+        var val = emailLink.querySelector('.ct-val');
+        if (!val) return;
+        var orig = val.textContent;
+        val.textContent = 'Copied!';
+        val.style.color = 'var(--color-accent)';
+        setTimeout(function () {
+          val.textContent = orig;
+          val.style.color = '';
+        }, 1800);
+      });
     });
-  });
+  }
 
   // Contact form
-  var submitBtn = document.getElementById('contact-submit');
-  if (submitBtn) {
-    submitBtn.addEventListener('click', function () {
-      var inner   = document.getElementById('cf-inner');
-      var success = document.getElementById('cf-success');
-      var error   = document.getElementById('cf-error');
-      var name    = document.getElementById('contact-name').value.trim();
-      var email   = document.getElementById('contact-email').value.trim();
-      var message = document.getElementById('contact-message').value.trim();
+  var contactForm = document.getElementById('contact-form');
+  var cfStatus    = document.getElementById('cf-status');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name  = document.getElementById('cf-name').value.trim();
+      var email = document.getElementById('cf-email').value.trim();
+      var msg   = document.getElementById('cf-msg').value.trim();
+      if (!name || !email || !msg) return;
 
-      if (!name || !email || !message) { alert('Please fill in all fields.'); return; }
+      var subject = encodeURIComponent('Portfolio contact from ' + name);
+      var body    = encodeURIComponent('From: ' + name + ' <' + email + '>\n\n' + msg);
+      window.location.href = 'mailto:zaidahmad8060@gmail.com?subject=' + subject + '&body=' + body;
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          access_key: '8561c428-050d-4d8b-8930-271525dbc678',
-          subject: 'New message from portfolio',
-          name: name, email: email, message: message
-        })
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-          inner.style.display = 'none';
-          (res.success ? success : error).style.display = 'block';
-        })
-        .catch(function () {
-          inner.style.display = 'none';
-          error.style.display = 'block';
-        });
+      if (cfStatus) {
+        cfStatus.textContent = 'Opening your email client…';
+        setTimeout(function () { cfStatus.textContent = ''; }, 4000);
+      }
     });
   }
 
