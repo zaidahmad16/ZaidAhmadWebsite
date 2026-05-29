@@ -68,11 +68,11 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
-    localStorage.setItem('theme', theme);
     _updateIcon(isDark, animate);
   }
 
-  setTheme(localStorage.getItem('theme') || 'light', false);
+  // Always default to light; dark is session-only (toggle resets on next visit)
+  setTheme('light', false);
 
   function _toggleTheme() {
     var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
