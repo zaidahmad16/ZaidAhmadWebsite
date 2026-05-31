@@ -12,8 +12,7 @@
     document.addEventListener('mousemove', function (e) {
       mx = e.clientX;
       my = e.clientY;
-      dot.style.left = mx + 'px';
-      dot.style.top  = my + 'px';
+      dot.style.transform = 'translate(' + (mx - 3) + 'px, ' + (my - 3) + 'px)';
       if (!dot.classList.contains('visible')) dot.classList.add('visible');
     }, { passive: true });
 
