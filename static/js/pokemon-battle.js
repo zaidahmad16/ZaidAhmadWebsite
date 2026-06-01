@@ -108,7 +108,8 @@ function showStatus(side, st) {
   S[side].status = st;
   const el = R[side + 'Status'];
   if (!el) return;
-  el.textContent = st === 'burn' ? '🔥' : st === 'para' ? '⚡' : st === 'conf' ? '💜' : '';
+  el.textContent = st === 'burn' ? 'BRN' : st === 'para' ? 'PAR' : st === 'conf' ? 'CNF' : '';
+  el.className = 'pb-status-icon' + (st ? ' pb-st-' + st : '');
 }
 
 async function shakePanel(strong) {
@@ -126,6 +127,20 @@ async function flashSprite(side, times = 3) {
     img.style.filter = '';
     await sleep(75);
   }
+}
+
+function showDamageNum(side, dmg, mult) {
+  const bar = side === 'opp' ? R.oppFill : R.playerFill;
+  if (!bar) return;
+  const br = bar.getBoundingClientRect();
+  const pbr = R.panel.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'pb-dmg-num' + (mult >= 2 ? ' pb-dmg-super' : mult < 1 ? ' pb-dmg-weak' : '');
+  el.textContent = '-' + dmg;
+  el.style.left = (br.left - pbr.left + br.width / 2 - 20) + 'px';
+  el.style.top  = (br.top  - pbr.top  - 10) + 'px';
+  R.panel.appendChild(el);
+  setTimeout(() => el.remove(), 1200);
 }
 
 function tmp(styles) {
@@ -157,6 +172,182 @@ function sc(side) {
   };
 }
 
+// ── Canvas / Particle system ──────────────────────────────────────────────
+
+let _bgCanvas = null, _bgCtx = null, _bgRaf = null, _bgParts = [], _bgPlayerKey = null;
+let _fxCanvas = null, _fxCtx = null, _fxRaf = null, _fxParts = [];
+
+function _mkBgPart(W, H) {
+  return {
+    x: Math.random() * W, y: H * 0.25 + Math.random() * H * 0.55,
+    vx: (Math.random() - 0.5) * 0.22, vy: -(0.08 + Math.random() * 0.2),
+    size: 0.5 + Math.random() * 1.3, alpha: 0.05 + Math.random() * 0.12,
+    blue: Math.random() < 0.55,
+  };
+}
+
+function initBgCanvas(playerKey) {
+  _bgPlayerKey = playerKey;
+  _bgCanvas = document.createElement('canvas');
+  _bgCanvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;display:block;';
+  R.ba.prepend(_bgCanvas);
+  _bgCanvas.width  = R.ba.clientWidth  || 800;
+  _bgCanvas.height = R.ba.clientHeight || 480;
+  _bgCtx = _bgCanvas.getContext('2d');
+  _bgParts = Array.from({length: 38}, () => _mkBgPart(_bgCanvas.width, _bgCanvas.height));
+  _drawBg();
+}
+
+function _drawBg() {
+  if (!_bgCtx) return;
+  const ctx = _bgCtx, W = _bgCanvas.width, H = _bgCanvas.height;
+  const groundY = H * 0.60;
+
+  // Sky gradient
+  const sky = ctx.createLinearGradient(0, 0, 0, H);
+  sky.addColorStop(0, '#04070e'); sky.addColorStop(0.55, '#080d18'); sky.addColorStop(1, '#0c1220');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+
+  // Ground plane
+  const grd = ctx.createLinearGradient(0, groundY, 0, H);
+  grd.addColorStop(0, '#101520'); grd.addColorStop(1, '#080c14');
+  ctx.fillStyle = grd; ctx.fillRect(0, groundY, W, H);
+
+  // Perspective grid
+  ctx.save(); ctx.globalAlpha = 0.055; ctx.strokeStyle = '#4a70aa'; ctx.lineWidth = 0.6;
+  const vx = W / 2;
+  for (let i = 0; i <= 12; i++) {
+    const bx = (i / 12) * W;
+    ctx.beginPath(); ctx.moveTo(vx, groundY); ctx.lineTo(bx, H); ctx.stroke();
+  }
+  for (let r = 0; r < 5; r++) {
+    const y = groundY + (H - groundY) * Math.pow((r + 1) / 5, 1.6);
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+  ctx.restore();
+
+  // Horizon glow line
+  ctx.save();
+  ctx.shadowColor = '#2a5090'; ctx.shadowBlur = 22;
+  ctx.strokeStyle = 'rgba(60,100,180,0.28)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+  ctx.restore();
+
+  // Player (left) ambient glow
+  const plColor = _bgPlayerKey === 'zekrom' ? [91, 154, 245] : [245, 125, 50];
+  const pg = ctx.createRadialGradient(W * 0.30, H * 0.80, 5, W * 0.30, H * 0.80, 210);
+  pg.addColorStop(0, `rgba(${plColor},0.09)`); pg.addColorStop(1, 'transparent');
+  ctx.fillStyle = pg; ctx.fillRect(0, H * 0.4, W * 0.72, H);
+
+  // Opponent (right) ambient glow
+  const opColor = _bgPlayerKey === 'zekrom' ? [245, 125, 50] : [91, 154, 245];
+  const og = ctx.createRadialGradient(W * 0.74, H * 0.40, 5, W * 0.74, H * 0.40, 170);
+  og.addColorStop(0, `rgba(${opColor},0.08)`); og.addColorStop(1, 'transparent');
+  ctx.fillStyle = og; ctx.fillRect(W * 0.38, 0, W, H * 0.78);
+
+  // Floating dust particles
+  _bgParts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < groundY * 0.08) Object.assign(p, _mkBgPart(W, H));
+    if (p.x < -2 || p.x > W + 2) p.x = Math.random() * W;
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle   = p.blue ? '#7aacf8' : '#f0a060';
+    ctx.shadowColor = p.blue ? '#5a90e8' : '#e08840';
+    ctx.shadowBlur  = 3;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  });
+
+  _bgRaf = requestAnimationFrame(_drawBg);
+}
+
+function stopBgCanvas() {
+  if (_bgRaf) { cancelAnimationFrame(_bgRaf); _bgRaf = null; }
+  _bgCanvas = null; _bgCtx = null; _bgParts = [];
+}
+
+// FX canvas — particle effects layer (z-index 7, above sprites)
+function initFxCanvas() {
+  if (_fxCanvas) return;
+  _fxCanvas = document.createElement('canvas');
+  _fxCanvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:7;display:block;';
+  R.ba.appendChild(_fxCanvas);
+  _fxCanvas.width  = R.ba.clientWidth  || 800;
+  _fxCanvas.height = R.ba.clientHeight || 480;
+  _fxCtx = _fxCanvas.getContext('2d');
+  _fxLoop();
+}
+
+function stopFxCanvas() {
+  if (_fxRaf) { cancelAnimationFrame(_fxRaf); _fxRaf = null; }
+  _fxCanvas = null; _fxCtx = null; _fxParts = [];
+}
+
+function fx(cfg) {
+  if (!_fxCanvas) return;
+  _fxParts.push({
+    x: cfg.x, y: cfg.y, vx: cfg.vx ?? 0, vy: cfg.vy ?? 0,
+    size: cfg.size ?? 4, color: cfg.color ?? '#fff', glow: cfg.glow ?? 0,
+    decay: cfg.decay ?? 0.04, gravity: cfg.gravity ?? 0.07, drag: cfg.drag ?? 0.97, life: 1,
+  });
+}
+
+function fxBurst(cx, cy, count, colors, spdMin, spdMax, szMin, szMax, glow, gravity, drag, decay) {
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2, spd = spdMin + Math.random() * (spdMax - spdMin);
+    fx({ x: cx, y: cy, vx: Math.cos(a) * spd, vy: Math.sin(a) * spd,
+      size: szMin + Math.random() * (szMax - szMin),
+      color: colors[Math.floor(Math.random() * colors.length)],
+      glow, gravity, drag, decay: decay + Math.random() * 0.02 });
+  }
+}
+
+function _fxLoop() {
+  if (!_fxCtx) return;
+  const ctx = _fxCtx, W = _fxCanvas.width, H = _fxCanvas.height;
+  ctx.clearRect(0, 0, W, H);
+  _fxParts = _fxParts.filter(p => {
+    p.vx *= p.drag; p.vy *= p.drag; p.vy += p.gravity;
+    p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+    if (p.life <= 0) return false;
+    ctx.save();
+    if (p.glow > 0) { ctx.shadowColor = p.color; ctx.shadowBlur = p.glow; }
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.5, p.size * Math.sqrt(p.life)), 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    return true;
+  });
+  _fxRaf = requestAnimationFrame(_fxLoop);
+}
+
+function fxFlash(color, alpha, ms) {
+  if (!_fxCtx) return;
+  const ctx = _fxCtx, W = _fxCanvas.width, H = _fxCanvas.height, t0 = performance.now();
+  (function frame(now) {
+    const t = Math.min(1, (now - t0) / ms);
+    ctx.save(); ctx.globalAlpha = alpha * (1 - t);
+    ctx.fillStyle = color; ctx.fillRect(0, 0, W, H); ctx.restore();
+    if (t < 1) requestAnimationFrame(frame);
+  })(performance.now());
+}
+
+function fxRing(cx, cy, r0, r1, color, ms) {
+  if (!_fxCtx) return;
+  const ctx = _fxCtx, t0 = performance.now();
+  (function frame(now) {
+    const t = Math.min(1, (now - t0) / ms);
+    const r = r0 + (r1 - r0) * t;
+    ctx.save(); ctx.globalAlpha = 0.85 * (1 - t);
+    ctx.strokeStyle = color; ctx.shadowColor = color; ctx.shadowBlur = 14;
+    ctx.lineWidth = 3.5 * (1 - t * 0.6);
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+    if (t < 1) requestAnimationFrame(frame);
+  })(performance.now());
+}
+
 // ── Audio ─────────────────────────────────────────────────────────────────
 
 let _ac = null;
@@ -183,63 +374,118 @@ function stopBattleMusic() {
   _bgm = null;
 }
 
-function playHit() {
+function _noise(ctx, dur, gain, lpFreq) {
+  const len = Math.floor(ctx.sampleRate * dur);
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = ctx.createBufferSource(); src.buffer = buf;
+  const g = ctx.createGain(); g.gain.value = gain;
+  if (lpFreq) {
+    const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = lpFreq;
+    src.connect(f); f.connect(g);
+  } else { src.connect(g); }
+  g.connect(ctx.destination); src.start(ctx.currentTime);
+  return { src, g };
+}
+
+function _osc(ctx, type, freq0, freq1, dur, gain0, freqAtT) {
+  const now = ctx.currentTime;
+  const o = ctx.createOscillator(); o.type = type;
+  o.frequency.setValueAtTime(freq0, now);
+  if (freqAtT) freqAtT.forEach(([t, f]) => o.frequency.setValueAtTime(f, now + t));
+  if (freq1) o.frequency.exponentialRampToValueAtTime(freq1, now + dur);
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(gain0, now);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now + dur + 0.02);
+}
+
+function playHit(strong) {
   try {
     const ctx = getAC(), now = ctx.currentTime;
-    // Sharp crack — loud white noise envelope
-    const bufLen = Math.floor(ctx.sampleRate * 0.18);
-    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    // Noise crack
+    const blen = Math.floor(ctx.sampleRate * (strong ? 0.22 : 0.15));
+    const buf = ctx.createBuffer(1, blen, ctx.sampleRate);
     const d = buf.getChannelData(0);
-    for (let i = 0; i < bufLen; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/bufLen, 0.4);
+    for (let i = 0; i < blen; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/blen, 0.35);
     const src = ctx.createBufferSource(); src.buffer = buf;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.75, now);
-    g.gain.exponentialRampToValueAtTime(0.001, now+0.18);
+    const g = ctx.createGain(); g.gain.setValueAtTime(strong ? 0.9 : 0.65, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + (strong ? 0.22 : 0.15));
     src.connect(g); g.connect(ctx.destination); src.start(now);
-    // Mid-punch square wave
-    const osc = ctx.createOscillator(), g2 = ctx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(220, now);
-    osc.frequency.exponentialRampToValueAtTime(55, now+0.14);
-    g2.gain.setValueAtTime(0.5, now);
-    g2.gain.exponentialRampToValueAtTime(0.001, now+0.14);
-    osc.connect(g2); g2.connect(ctx.destination);
-    osc.start(now); osc.stop(now+0.16);
+    // Thud
+    _osc(ctx, 'sine', strong ? 180 : 220, strong ? 28 : 45, strong ? 0.2 : 0.14, strong ? 0.7 : 0.5);
+    if (strong) _osc(ctx, 'square', 120, 20, 0.18, 0.4);
   } catch(e) {}
 }
 
-function playMoveSound(type) {
+function playMoveSound(type, powered) {
   try {
     const ctx = getAC(), now = ctx.currentTime;
-    const osc = ctx.createOscillator(), g = ctx.createGain();
-    osc.connect(g); g.connect(ctx.destination);
-    switch(type) {
-      case 'fire':
-        osc.type='sawtooth';
-        osc.frequency.setValueAtTime(320,now); osc.frequency.exponentialRampToValueAtTime(75,now+0.38);
-        g.gain.setValueAtTime(0.18,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.38);
-        osc.start(now); osc.stop(now+0.42); break;
-      case 'electric':
-        osc.type='square';
-        osc.frequency.setValueAtTime(1200,now); osc.frequency.setValueAtTime(800,now+0.04);
-        osc.frequency.setValueAtTime(1600,now+0.09); osc.frequency.exponentialRampToValueAtTime(200,now+0.3);
-        g.gain.setValueAtTime(0.14,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.3);
-        osc.start(now); osc.stop(now+0.35); break;
-      case 'dragon':
-        osc.type='sawtooth';
-        osc.frequency.setValueAtTime(90,now); osc.frequency.exponentialRampToValueAtTime(35,now+0.5);
-        g.gain.setValueAtTime(0.22,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.5);
-        osc.start(now); osc.stop(now+0.55); break;
-      case 'ground':
-        osc.type='sine';
-        osc.frequency.setValueAtTime(60,now); osc.frequency.exponentialRampToValueAtTime(18,now+0.35);
-        g.gain.setValueAtTime(0.3,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.35);
-        osc.start(now); osc.stop(now+0.4); break;
-      case 'rock':
-        osc.type='sawtooth';
-        osc.frequency.setValueAtTime(220,now); osc.frequency.exponentialRampToValueAtTime(55,now+0.28);
-        g.gain.setValueAtTime(0.2,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.28);
-        osc.start(now); osc.stop(now+0.32); break;
+    switch (type) {
+      case 'fire': {
+        // Roar: lowpass noise whoosh
+        const len = Math.floor(ctx.sampleRate * 0.5);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        const src = ctx.createBufferSource(); src.buffer = buf;
+        const lp = ctx.createBiquadFilter(); lp.type = 'bandpass'; lp.frequency.value = 900; lp.Q.value = 0.8;
+        const g = ctx.createGain(); g.gain.setValueAtTime(powered ? 0.38 : 0.25, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+        src.connect(lp); lp.connect(g); g.connect(ctx.destination); src.start(now);
+        // Sub rumble
+        _osc(ctx, 'sawtooth', powered ? 240 : 190, powered ? 30 : 50, 0.42, 0.22);
+        // Crack
+        _osc(ctx, 'sawtooth', 1400, 200, 0.1, 0.12);
+        break;
+      }
+      case 'electric': {
+        // Crackle: rapid freq jumps
+        _osc(ctx, 'square', 1600, 180, 0.38, 0.15,
+          [[0.03, 900], [0.07, 2000], [0.12, 600], [0.17, 1800], [0.22, 400]]);
+        // Static noise
+        _noise(ctx, 0.32, 0.13, 5000);
+        // Charge-up sine
+        _osc(ctx, 'sine', 80, powered ? 2400 : 1600, 0.22, 0.1);
+        // Zap snap
+        setTimeout(() => { try { _noise(ctx, 0.08, 0.25); } catch(e) {} }, 280);
+        break;
+      }
+      case 'dragon': {
+        // Deep sub rumble
+        _osc(ctx, 'sine', powered ? 38 : 50, 12, 0.65, powered ? 0.45 : 0.32);
+        // Roar sweep
+        _osc(ctx, 'sawtooth', 110, 20, 0.58, 0.28);
+        // Thunder noise
+        _noise(ctx, 0.45, 0.18, 280);
+        // High metallic ring
+        _osc(ctx, 'sine', 1800, 400, 0.3, 0.08);
+        break;
+      }
+      case 'ground': {
+        // Seismic sub
+        _osc(ctx, 'sine', 28, 8, 0.48, 0.42);
+        // Rumble noise
+        _noise(ctx, 0.45, 0.28, 220);
+        // Staggered impact transients
+        [0, 80, 160].forEach(delay => {
+          setTimeout(() => { try { _noise(ctx, 0.1, 0.2, 300); } catch(e) {} }, delay);
+        });
+        break;
+      }
+      case 'rock': {
+        // Crack
+        _osc(ctx, 'sawtooth', 360, 42, 0.3, 0.22);
+        // Impact noise
+        _noise(ctx, 0.18, 0.28, 400);
+        // Low thud
+        _osc(ctx, 'sine', 75, 18, 0.28, 0.18);
+        // Staggered secondary impacts
+        [110, 220].forEach(d => setTimeout(() => { try { _noise(ctx, 0.1, 0.14, 350); } catch(e) {} }, d));
+        break;
+      }
     }
   } catch(e) {}
 }
@@ -310,233 +556,410 @@ async function playIntro(oppData, playerData) {
 // ── Move animations ────────────────────────────────────────────────────────
 
 async function anim_BlueFlare(atkSide, defSide) {
-  playMoveSound('fire');
+  playMoveSound('fire', false);
+  const atkImg = atkSide === 'player' ? R.playerSprite : R.oppSprite;
+  // Build-up glow on attacker
+  atkImg.style.filter = 'drop-shadow(0 0 32px #ff6010) brightness(1.35)';
+  await sleep(160);
+  atkImg.style.filter = '';
   await lunge(atkSide);
-  const ba = R.ba;
-  const ap = sc(atkSide);
-  const flare = tmp({ left:(ap.x-10)+'px', top:(ap.y-10)+'px', width:'20px', height:'20px',
-    borderRadius:'50%', background:'radial-gradient(circle,#ff8c00,#c83200)',
-    boxShadow:'0 0 18px #ff6a00', transition:'all .42s ease', opacity:'0.95' });
-  ba.appendChild(flare);
-  await sleep(20);
-  flare.style.width='500px'; flare.style.height='500px';
-  flare.style.left=(ap.x-250)+'px'; flare.style.top=(ap.y-250)+'px';
-  flare.style.opacity='0';
-  await sleep(420);
-  flare.remove();
-  for (let i = 0; i < 7; i++) {
-    const e = tmp({ width:'5px', height:'5px', borderRadius:'1px',
-      background: i%2 ? '#ff6a00' : '#ff3200',
-      left:(ap.x+(Math.random()-.5)*40)+'px', top:ap.y+'px',
-      transition:`all ${.28+Math.random()*.25}s ease` });
-    ba.appendChild(e);
-    await sleep(10);
-    e.style.transform=`translate(${(Math.random()-.5)*100}px,${-70-Math.random()*90}px)`;
-    e.style.opacity='0';
-    setTimeout(() => e.remove(), 550);
+
+  const ap = sc(atkSide), dp = sc(defSide);
+  const angleBase = Math.atan2(dp.y - ap.y, dp.x - ap.x);
+
+  // Fire projectile particles flying toward defender
+  for (let i = 0; i < 32; i++) {
+    const a = angleBase + (Math.random() - 0.5) * 0.6;
+    const spd = 9 + Math.random() * 7;
+    const colors = ['#ff7010','#ff4000','#ffb030','#fff8e0','#ff2000'];
+    fx({ x: ap.x, y: ap.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd,
+      size: 3 + Math.random()*5, color: colors[Math.floor(Math.random()*5)],
+      glow: 20, gravity: 0, drag: 0.95, decay: 0.022 });
   }
-  await flashSprite(defSide);
-  await shakePanel();
+  await sleep(280);
+
+  // Impact explosion at defender
+  fxBurst(dp.x, dp.y, 80, ['#ff6010','#ff9030','#ffb840','#fff6d0','#ff2500'], 2, 15, 2, 8, 24, 0.05, 0.94, 0.028);
+  // Floating embers
+  for (let i = 0; i < 22; i++) {
+    fx({ x: dp.x + (Math.random()-0.5)*70, y: dp.y,
+      vx: (Math.random()-0.5)*1.8, vy: -(1.8+Math.random()*2.5),
+      size: 1.5+Math.random()*2.5, color: '#ff8020', glow: 10, gravity: -0.015, drag: 0.985, decay: 0.015 });
+  }
+  fxRing(dp.x, dp.y, 8, 140, '#ff5010', 480);
+  fxFlash('#ff4010', 0.5, 280);
+  await flashSprite(defSide, 4);
+  await shakePanel(false);
 }
 
 async function anim_FusionFlare(atkSide, defSide, powered) {
-  playMoveSound('fire');
+  playMoveSound('fire', powered);
   const ba = R.ba;
   if (powered) {
-    const fl = tmp({ inset:'0', background:'rgba(255,255,200,.85)', zIndex:'8', transition:'opacity .2s' });
-    ba.appendChild(fl); await sleep(200); fl.style.opacity='0'; await sleep(200); fl.remove();
+    // Full arena flash before beam
+    fxFlash('#fffacc', 0.88, 220);
+    await sleep(220);
   }
   await lunge(atkSide);
   const ap = sc(atkSide), dp = sc(defSide);
   const dx = dp.x - ap.x, dy = dp.y - ap.y;
   const angle = Math.atan2(dy, dx) * 180 / Math.PI;
   const dist  = Math.sqrt(dx*dx + dy*dy);
-  const bh = powered ? '16px' : '5px';
+  const bh = powered ? '20px' : '7px';
+
+  // SVG beam
   const beam = tmp({ left:ap.x+'px', top:ap.y+'px', width:'0', height:bh,
-    background:'#fff', boxShadow:'0 0 14px #fff9c4',
-    transformOrigin:'left center',
-    transform:`rotate(${angle}deg) translateY(-50%)`,
-    transition:'width .28s ease' });
-  ba.appendChild(beam); await sleep(20); beam.style.width=dist+'px';
+    background: powered ? 'linear-gradient(to right,#fff,#fff8c0,#ff8020)' : 'linear-gradient(to right,#fff,#ff9030)',
+    boxShadow: powered ? '0 0 28px #fff6a0, 0 0 8px #fff' : '0 0 14px #fff9c4',
+    transformOrigin:'left center', transform:`rotate(${angle}deg) translateY(-50%)`,
+    transition:'width .3s ease', zIndex:'8' });
+  ba.appendChild(beam);
+  await sleep(20); beam.style.width = dist + 'px';
   await sleep(320);
-  const defImg = defSide==='opp' ? R.oppSprite : R.playerSprite;
-  defImg.style.filter='drop-shadow(0 0 24px rgba(255,250,160,.9)) brightness(2.5)';
-  await sleep(280); defImg.style.filter='';
+
+  // Fire particles along beam path
+  for (let i = 0; i < (powered ? 55 : 28); i++) {
+    const t = Math.random();
+    const spread = (Math.random()-0.5) * (powered ? 55 : 28);
+    const radAngle = Math.atan2(dy, dx);
+    const perpAngle = radAngle + Math.PI/2;
+    const cx = ap.x + dx*t + Math.cos(perpAngle)*spread;
+    const cy = ap.y + dy*t + Math.sin(perpAngle)*spread;
+    fx({ x: cx, y: cy, vx: (Math.random()-0.5)*2, vy: -(1+Math.random()*3),
+      size: 2+Math.random()*4, color: powered ? '#fff' : '#ff9030', glow: 14, gravity: -0.01, drag: 0.97, decay: 0.04 });
+  }
+
+  const defImg = defSide === 'opp' ? R.oppSprite : R.playerSprite;
+  defImg.style.filter = 'drop-shadow(0 0 32px rgba(255,240,140,.9)) brightness(3)';
+  await sleep(240); defImg.style.filter = '';
   beam.remove();
-  await flashSprite(defSide); await shakePanel();
+  if (powered) { fxBurst(dp.x, dp.y, 60, ['#fff','#fffacc','#ff9020'], 3, 14, 3, 8, 26, 0.04, 0.94, 0.025); }
+  fxRing(dp.x, dp.y, 6, 110, '#ffaa30', 400);
+  await flashSprite(defSide, 4); await shakePanel(powered);
 }
 
 async function anim_DracoMeteor(atkSide, defSide) {
-  playMoveSound('dragon');
-  const ba = R.ba;
-  const dp = sc(defSide);
-  const meteors = [];
-  for (let i = 0; i < 4; i++) {
-    const mx = dp.x - 20 + Math.random()*50;
-    const m = tmp({ width:'16px', height:'16px', borderRadius:'50%',
-      background:'radial-gradient(circle,#fff 0%,#ff9800 55%,transparent 100%)',
-      top:'-20px', left:mx+'px',
-      transition:`top ${.4+i*.07}s ease-in` });
-    ba.appendChild(m); meteors.push({ el:m, x:mx });
+  playMoveSound('dragon', false);
+  const ba = R.ba, dp = sc(defSide);
+
+  // 5 comets fall from above, staggered
+  const colors = ['#9060f0','#c090ff','#ffffff','#ff9800'];
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      const mx = dp.x - 60 + Math.random() * 120;
+      const startY = -30 - Math.random() * 40;
+      const cometDiv = tmp({ width:'16px', height:'16px', borderRadius:'50%',
+        background:'radial-gradient(circle,#fff 0%,#b060ff 55%,transparent 100%)',
+        boxShadow:'0 0 16px #9060f0',
+        top: startY + 'px', left: mx + 'px',
+        transition: `top ${0.38 + i*0.06}s cubic-bezier(0.55,0,1,0.45)`,
+        zIndex: '6' });
+      ba.appendChild(cometDiv);
+
+      // Trailing particles during fall
+      const fallDist = dp.y - startY;
+      const steps = 12;
+      for (let s = 0; s < steps; s++) {
+        setTimeout(() => {
+          const fy = startY + (fallDist * s / steps);
+          fx({ x: mx + 8, y: fy, vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2,
+            size: 2+Math.random()*3, color: colors[Math.floor(Math.random()*4)],
+            glow: 10, gravity: 0.02, drag: 0.96, decay: 0.06 });
+        }, (s / steps) * (380 + i*60));
+      }
+
+      setTimeout(() => {
+        cometDiv.style.top = dp.y + 'px';
+        setTimeout(() => {
+          cometDiv.remove();
+          // Impact burst
+          fxBurst(mx + 8, dp.y, 28, ['#9060f0','#c090ff','#ffffff','#6040d0'],
+            2, 10, 2, 5, 16, 0.05, 0.93, 0.04);
+          fxRing(mx + 8, dp.y, 4, 65, '#9060f0', 300);
+        }, 380 + i * 60);
+      }, 20);
+    }, i * 130);
   }
-  await sleep(30);
-  meteors.forEach(({ el, x }, i) => {
-    setTimeout(async () => {
-      el.style.top = dp.y+'px';
-      await sleep(460 + i*70);
-      const fl = tmp({ width:'22px', height:'22px', borderRadius:'50%',
-        background:'rgba(255,255,255,.85)', top:(dp.y-11)+'px', left:(x-5)+'px', transition:'opacity .18s' });
-      ba.appendChild(fl); await sleep(20); fl.style.opacity='0';
-      setTimeout(() => { fl.remove(); el.remove(); }, 220);
-    }, i*110);
-  });
-  await sleep(760); await flashSprite(defSide); await shakePanel();
+
+  await sleep(800);
+  fxFlash('#6030c0', 0.35, 220);
+  await flashSprite(defSide, 4); await shakePanel(true);
 }
 
 async function anim_EarthPower(atkSide, defSide) {
-  playMoveSound('ground');
+  playMoveSound('ground', false);
   const ba = R.ba;
   await lunge(atkSide);
   const dp = sc(defSide);
-  const groundY = dp.y + dp.h * 0.3;
-  for (let i = 0; i < 3; i++) {
-    const c = tmp({ height:'2px', width:'0', background:'#7a5010',
-      top:groundY+'px', left:dp.x+'px', transformOrigin:'left center',
-      transform:`rotate(${(i-1)*22}deg)`, transition:'width .22s ease' });
-    ba.appendChild(c);
-    setTimeout(() => { c.style.width='130px'; }, 20+i*40);
-    setTimeout(() => { c.style.opacity='0'; setTimeout(()=>c.remove(),200); }, 600);
-  }
-  for (let i = 0; i < 7; i++) {
-    const d = tmp({ width:'5px', height:'5px',
-      background: i%2 ? '#c8a060' : '#8b6010',
-      top:groundY+'px', left:(dp.x+(Math.random()-.5)*60)+'px',
-      transition:`all ${.32+Math.random()*.22}s ease` });
-    ba.appendChild(d);
+  const groundY = dp.y + dp.h * 0.28;
+  const cracks = 5;
+
+  // Draw radiating cracks as SVG lines
+  const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgEl.style.cssText = `position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;overflow:visible;`;
+  ba.appendChild(svgEl);
+
+  for (let i = 0; i < cracks; i++) {
+    const angle = ((i / cracks) * Math.PI * 2) + (Math.random() - 0.5) * 0.5;
+    const len   = 80 + Math.random() * 90;
+    const x2 = dp.x + Math.cos(angle) * len;
+    const y2 = groundY + Math.sin(angle) * len * 0.5;
     setTimeout(() => {
-      d.style.transform=`translate(${(Math.random()-.5)*90}px,${-55-Math.random()*70}px)`;
-      d.style.opacity='0'; setTimeout(()=>d.remove(),560);
-    }, 30+i*28);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', dp.x); line.setAttribute('y1', groundY);
+      line.setAttribute('x2', dp.x); line.setAttribute('y2', groundY);
+      line.setAttribute('stroke', '#c08030'); line.setAttribute('stroke-width', '2.5');
+      line.setAttribute('stroke-linecap', 'round');
+      svgEl.appendChild(line);
+      // Animate crack growing
+      const t0 = performance.now();
+      (function grow(now) {
+        const t = Math.min(1, (now - t0) / 200);
+        line.setAttribute('x2', dp.x + (x2 - dp.x) * t);
+        line.setAttribute('y2', groundY + (y2 - groundY) * t);
+        if (t < 1) requestAnimationFrame(grow);
+        else {
+          // Glow version
+          const glow = line.cloneNode();
+          glow.setAttribute('stroke', '#f0a040'); glow.setAttribute('stroke-width', '1'); glow.setAttribute('opacity', '0.5');
+          svgEl.appendChild(glow);
+          // Magma particles from tip
+          for (let p = 0; p < 10; p++) {
+            setTimeout(() => {
+              fx({ x: parseFloat(line.getAttribute('x2')), y: parseFloat(line.getAttribute('y2')),
+                vx: (Math.random()-0.5)*3, vy: -(2 + Math.random()*4),
+                size: 2+Math.random()*4, color: p%2 ? '#e08020' : '#c06010', glow: 14,
+                gravity: 0.06, drag: 0.96, decay: 0.03 });
+            }, p * 35);
+          }
+        }
+      })(performance.now());
+    }, i * 55);
   }
-  await sleep(440); await flashSprite(defSide); await shakePanel();
+
+  // Central eruption
+  await sleep(120);
+  fxBurst(dp.x, groundY, 50, ['#d07020','#e09030','#f0b040','#c05010','#804010'],
+    2, 10, 2, 6, 18, -0.08, 0.95, 0.028);
+  await sleep(380);
+  svgEl.remove();
+  fxFlash('#804010', 0.3, 200);
+  await flashSprite(defSide, 3); await shakePanel(false);
 }
 
 async function anim_BoltStrike(atkSide, defSide) {
-  playMoveSound('electric');
+  playMoveSound('electric', false);
   const ba = R.ba;
-  await lunge(atkSide, 55);
-  const ap = sc(atkSide), dp = sc(defSide);
-  const minX = Math.min(ap.x,dp.x)-40, minY = Math.min(ap.y,dp.y)-40;
-  const w = Math.abs(dp.x-ap.x)+80,  h = Math.abs(dp.y-ap.y)+80;
-  for (let f = 0; f < 3; f++) {
+  const ap = sc(atkSide);
+
+  // Charge-up: sparks radiate from attacker
+  for (let i = 0; i < 50; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = 18 + Math.random() * 55;
+    fx({ x: ap.x + Math.cos(a)*r, y: ap.y + Math.sin(a)*r,
+      vx: Math.cos(a)*2, vy: Math.sin(a)*2,
+      size: 1.5+Math.random()*2.5, color: '#5b9af5', glow: 14, gravity: 0, drag: 0.88, decay: 0.07 });
+  }
+  const atkImg = atkSide === 'player' ? R.playerSprite : R.oppSprite;
+  atkImg.style.filter = 'brightness(2) drop-shadow(0 0 24px #5b9af5)';
+  await lunge(atkSide, 58);
+  atkImg.style.filter = '';
+
+  const dp = sc(defSide);
+  const minX = Math.min(ap.x,dp.x)-50, minY = Math.min(ap.y,dp.y)-50;
+  const bW = Math.abs(dp.x-ap.x)+100, bH = Math.abs(dp.y-ap.y)+100;
+
+  // 4 layered lightning bolts
+  for (let f = 0; f < 4; f++) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.setAttribute('width', w); svg.setAttribute('height', h);
-    svg.style.cssText=`position:absolute;left:${minX}px;top:${minY}px;z-index:6;pointer-events:none;`;
+    svg.setAttribute('width', bW); svg.setAttribute('height', bH);
+    svg.style.cssText = `position:absolute;left:${minX}px;top:${minY}px;z-index:8;pointer-events:none;`;
     const x1=ap.x-minX, y1=ap.y-minY, x2=dp.x-minX, y2=dp.y-minY;
     const pts=[[x1,y1]];
-    for (let i=1;i<8;i++) {
-      pts.push([ x1+(x2-x1)*(i/8)+(Math.random()-.5)*45, y1+(y2-y1)*(i/8)+(Math.random()-.5)*20 ]);
-    }
+    const segs = 10;
+    for (let s=1;s<segs;s++) pts.push([x1+(x2-x1)*(s/segs)+(Math.random()-.5)*58, y1+(y2-y1)*(s/segs)+(Math.random()-.5)*26]);
     pts.push([x2,y2]);
-    const pl=document.createElementNS('http://www.w3.org/2000/svg','polyline');
-    pl.setAttribute('points',pts.map(p=>p.join(',')).join(' '));
-    pl.setAttribute('stroke','#64b4ff'); pl.setAttribute('stroke-width','4');
-    pl.setAttribute('fill','none'); pl.setAttribute('stroke-linecap','round');
-    svg.appendChild(pl);
-    const pl2=pl.cloneNode();
-    pl2.setAttribute('stroke','#c8e8ff'); pl2.setAttribute('stroke-width','1.5'); pl2.setAttribute('opacity','0.6');
-    svg.appendChild(pl2);
+    const pStr = pts.map(p=>p.join(',')).join(' ');
+    // Outer glow, mid layer, core
+    for (const [col, w, op] of [['#1a3a88',18,0.15],['#4080d8',8,0.4],['#90c8ff',3.5,0.75],['#ffffff',1.5,1]]) {
+      const pl=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      pl.setAttribute('points',pStr); pl.setAttribute('stroke',col);
+      pl.setAttribute('stroke-width',w.toString()); pl.setAttribute('fill','none');
+      pl.setAttribute('stroke-linecap','round'); pl.setAttribute('opacity',op.toString());
+      svg.appendChild(pl);
+    }
     ba.appendChild(svg);
-    await sleep(80); svg.remove(); await sleep(45);
+    await sleep(68); svg.remove(); await sleep(40);
   }
-  const fl=tmp({ inset:'0', background:'rgba(100,180,255,.28)', zIndex:'7', transition:'opacity .15s' });
-  ba.appendChild(fl); await sleep(150); fl.style.opacity='0'; setTimeout(()=>fl.remove(),160);
-  await flashSprite(defSide); await shakePanel();
+
+  // Impact explosion
+  fxBurst(dp.x, dp.y, 90, ['#5b9af5','#c8e8ff','#ffffff','#1a4aaa','#8ac8ff','#e0f0ff'],
+    3, 17, 2, 7, 22, 0.03, 0.93, 0.024);
+  // Spark rays
+  for (let i=0;i<14;i++) {
+    const a = (i/14)*Math.PI*2;
+    fx({ x: dp.x, y: dp.y, vx: Math.cos(a)*13, vy: Math.sin(a)*13,
+      size: 3.5, color: '#fff', glow: 18, gravity: 0.015, drag: 0.86, decay: 0.065 });
+  }
+  fxRing(dp.x, dp.y, 5, 115, '#5b9af5', 400);
+  fxFlash('#5b9af5', 0.42, 220);
+  await flashSprite(defSide, 4); await shakePanel(true);
 }
 
 async function anim_FusionBolt(atkSide, defSide, powered) {
-  playMoveSound('electric');
+  playMoveSound('electric', powered);
   const ba = R.ba;
-  const atkImg = atkSide==='player' ? R.playerSprite : R.oppSprite;
-  for (let i=0;i<3;i++) {
-    atkImg.style.filter='brightness(2.2) drop-shadow(0 0 18px #64b4ff)';
-    await sleep(110); atkImg.style.filter=''; await sleep(90);
+  const atkImg = atkSide === 'player' ? R.playerSprite : R.oppSprite;
+
+  // Attacker charge-up pulse
+  for (let i = 0; i < 3; i++) {
+    atkImg.style.filter = 'brightness(2.5) drop-shadow(0 0 24px #5b9af5)';
+    await sleep(100); atkImg.style.filter = ''; await sleep(85);
   }
-  const ap=sc(atkSide), dp=sc(defSide);
-  const orbSize = powered ? '36px' : '14px';
-  const orb=tmp({ width:orbSize, height:orbSize, borderRadius:'50%',
-    background:'radial-gradient(circle,#fff 0%,#64b4ff 65%,transparent 100%)',
-    boxShadow:'0 0 20px #64b4ff',
-    left:ap.x+'px', top:ap.y+'px', transform:'translate(-50%,-50%)',
-    transition:'left .32s ease, top .32s ease' });
-  ba.appendChild(orb);
-  const trails=[];
-  if (powered) {
-    for (let i=0;i<4;i++) {
-      const t=tmp({ width:'9px', height:'9px', borderRadius:'50%', background:'#4090d8',
-        left:ap.x+'px', top:ap.y+'px', transform:'translate(-50%,-50%)', opacity:'0.65',
-        transition:`left ${.32+i*.05}s ease, top ${.32+i*.05}s ease` });
-      ba.appendChild(t); trails.push(t);
+
+  const ap = sc(atkSide), dp = sc(defSide);
+
+  // Plasma orb: orbiting particles around a center moving toward defender
+  let orbX = ap.x, orbY = ap.y;
+  const duration = 340;
+  const t0 = performance.now();
+  (function spawnOrb(now) {
+    const t = Math.min(1, (now - t0) / duration);
+    orbX = ap.x + (dp.x - ap.x) * t;
+    orbY = ap.y + (dp.y - ap.y) * t;
+    const a = (now * 0.015) % (Math.PI * 2);
+    const r = powered ? 20 : 8;
+    for (let j = 0; j < (powered ? 3 : 2); j++) {
+      const ja = a + (j / (powered ? 3 : 2)) * Math.PI * 2;
+      fx({ x: orbX + Math.cos(ja)*r, y: orbY + Math.sin(ja)*r,
+        vx: 0, vy: 0, size: powered ? 4 : 2.5, color: j===0 ? '#fff' : '#5b9af5',
+        glow: 16, gravity: 0, drag: 1, decay: 0.18 });
     }
+    // Central glow
+    fx({ x: orbX, y: orbY, vx:0, vy:0, size: powered ? 9 : 5, color: '#c8e8ff', glow: 20, gravity:0, drag:1, decay:0.22 });
+    if (t < 1) requestAnimationFrame(spawnOrb);
+  })(performance.now());
+
+  await sleep(duration + 20);
+
+  // Impact burst + spike rays
+  fxBurst(dp.x, dp.y, powered ? 90 : 55, ['#5b9af5','#c8e8ff','#fff','#3070c0'],
+    2, powered ? 18 : 12, 2, powered ? 8 : 5, 20, 0.03, 0.93, 0.025);
+  for (let i = 0; i < (powered ? 14 : 8); i++) {
+    const a = (i / (powered ? 14 : 8)) * Math.PI * 2;
+    fx({ x: dp.x, y: dp.y, vx: Math.cos(a)*14, vy: Math.sin(a)*14,
+      size: powered ? 4 : 2.5, color: '#fff', glow: 18, gravity: 0.01, drag: 0.87, decay: 0.06 });
   }
-  await sleep(20);
-  orb.style.left=dp.x+'px'; orb.style.top=dp.y+'px';
-  trails.forEach((t,i)=>setTimeout(()=>{t.style.left=dp.x+'px';t.style.top=dp.y+'px';t.style.opacity='0';},i*55));
-  await sleep(360); orb.remove(); trails.forEach(t=>t.remove());
-  for (let i=0;i<8;i++) {
-    const ang=(i/8)*Math.PI*2;
-    const s=tmp({ width:'2px', height:'14px', background:'#64b4ff',
-      left:dp.x+'px', top:dp.y+'px', transform:`translate(-50%,-50%) rotate(${ang}rad) scaleY(0)`,
-      transformOrigin:'center center', transition:'transform .18s ease, opacity .18s' });
-    ba.appendChild(s);
-    setTimeout(()=>{ s.style.transform=`translate(-50%,-50%) rotate(${ang}rad) scaleY(1)`;
-      setTimeout(()=>{s.style.opacity='0';setTimeout(()=>s.remove(),200);},200);},15);
-  }
-  await flashSprite(defSide); await shakePanel(); await sleep(200);
+  fxRing(dp.x, dp.y, 4, powered ? 130 : 80, '#5b9af5', powered ? 450 : 320);
+  if (powered) fxFlash('#5b9af5', 0.52, 260);
+  await flashSprite(defSide, 4); await shakePanel(powered); await sleep(180);
 }
 
 async function anim_Outrage(atkSide, defSide, consecutive) {
-  playMoveSound('dragon');
+  playMoveSound('dragon', consecutive >= 1);
   const ba = R.ba;
-  await lunge(atkSide, 60);
-  const rp=tmp({ inset:'0', boxShadow:'inset 0 0 60px red', zIndex:'7', transition:'opacity .2s' });
-  ba.appendChild(rp); await sleep(220);
+  const atkImg = atkSide === 'player' ? R.playerSprite : R.oppSprite;
+  const dp = sc(defSide);
+
+  // Rage energy: dragon-purple particles emanating from attacker center
+  const ap = sc(atkSide);
+  for (let i = 0; i < 55; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const spd = 4 + Math.random() * 8;
+    fx({ x: ap.x, y: ap.y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd,
+      size: 2+Math.random()*6, color: i%3===0?'#ff2020':i%3===1?'#9030c0':'#ff6030',
+      glow: 18, gravity: 0.04, drag: 0.93, decay: 0.03 });
+  }
+
+  // Inset red glow overlay
+  const rp = tmp({ inset:'0', background:'radial-gradient(ellipse at center, rgba(160,0,0,0.42) 0%, transparent 70%)',
+    zIndex:'6', transition:'opacity .18s' });
+  ba.appendChild(rp);
+  await lunge(atkSide, 65);
+
+  // Slash marks on target area
+  const slashColors = ['rgba(255,60,60,0.85)','rgba(200,30,200,0.7)'];
+  for (let s = 0; s < 4; s++) {
+    setTimeout(() => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.style.cssText = `position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none;overflow:visible;`;
+      ba.appendChild(svg);
+      const sx = dp.x + (Math.random()-0.5)*80, sy = dp.y + (Math.random()-0.5)*60;
+      const angle = -30 + Math.random()*60;
+      const len = 60 + Math.random()*50;
+      const rad = angle * Math.PI / 180;
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1', sx - Math.cos(rad)*len/2); line.setAttribute('y1', sy - Math.sin(rad)*len/2);
+      line.setAttribute('x2', sx + Math.cos(rad)*len/2); line.setAttribute('y2', sy + Math.sin(rad)*len/2);
+      line.setAttribute('stroke', slashColors[s%2]); line.setAttribute('stroke-width','3');
+      line.setAttribute('stroke-linecap','round');
+      svg.appendChild(line);
+      setTimeout(() => svg.remove(), 380);
+    }, s * 75);
+  }
+
   if (consecutive >= 1) {
-    rp.style.opacity='0'; await sleep(120); rp.style.opacity='1'; await sleep(200);
-    const atkImg=atkSide==='player' ? R.playerSprite : R.oppSprite;
-    for (let i=0;i<5;i++) { atkImg.style.transform=`translateX(${i%2?6:-6}px)`; await sleep(55); }
+    // Extra rage pulse
+    await sleep(120);
+    fxFlash('#600020', 0.5, 180);
+    for (let i=0;i<5;i++) { atkImg.style.transform=`translateX(${i%2?8:-8}px)`; await sleep(48); }
     atkImg.style.transform='';
   }
-  rp.style.opacity='0'; setTimeout(()=>rp.remove(),220);
-  await flashSprite(defSide); await shakePanel();
+
+  rp.style.opacity='0';
+  setTimeout(() => rp.remove(), 220);
+  fxBurst(dp.x, dp.y, 40, ['#ff3030','#cc20a0','#ff8030'], 2, 9, 2, 5, 16, 0.04, 0.94, 0.038);
+  await flashSprite(defSide, 4); await shakePanel(consecutive >= 1);
 }
 
 async function anim_RockSlide(atkSide, defSide) {
-  playMoveSound('rock');
+  playMoveSound('rock', false);
   const ba = R.ba;
   const dp = sc(defSide);
-  for (let i=0;i<3;i++) {
-    setTimeout(async()=>{
-      const bx = dp.x - 20 + Math.random()*50;
-      const b=tmp({ width:'22px', height:'17px', borderRadius:'4px',
-        background:'radial-gradient(circle at 30% 30%,#bbb,#666)',
-        top:'-20px', left:bx+'px',
-        transform:`rotate(${Math.random()*30-15}deg)`,
-        transition:`top ${.42+i*.06}s ease-in` });
-      ba.appendChild(b); await sleep(20); b.style.top=dp.y+'px';
-      await sleep(480+i*65); b.remove();
-      for (let d=0;d<4;d++) {
-        const ds=tmp({ width:'5px', height:'5px', background:'#999',
-          top:dp.y+'px', left:(bx+Math.random()*30)+'px', transition:'all .28s ease' });
-        ba.appendChild(ds);
-        setTimeout(()=>{
-          ds.style.transform=`translate(${(Math.random()-.5)*55}px,${-Math.random()*28}px)`;
-          ds.style.opacity='0'; setTimeout(()=>ds.remove(),300);
-        },15);
+  const rockColors = [['#9a8870','#6a5840'],['#b8a088','#887060'],['#aaa090','#787060']];
+
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      const bx = dp.x - 80 + Math.random() * 160;
+      const startY = -25 - Math.random() * 30;
+      const rot = Math.random() * 40 - 20;
+      const [c1, c2] = rockColors[i % 3];
+      const rock = tmp({ width:'24px', height:'19px', borderRadius:'3px',
+        background:`radial-gradient(circle at 30% 28%, ${c1}, ${c2})`,
+        boxShadow:`inset -2px -2px 4px rgba(0,0,0,0.4)`,
+        top: startY + 'px', left: bx + 'px',
+        transform: `rotate(${rot}deg)`,
+        transition: `top ${0.4 + i*0.055}s cubic-bezier(0.55,0,1,0.45), transform ${0.4+i*0.055}s linear`,
+        zIndex:'6' });
+      ba.appendChild(rock);
+
+      // Shadow trailing particles during fall
+      const fallTime = 400 + i * 55;
+      for (let t = 0; t < 8; t++) {
+        setTimeout(() => {
+          const prog = t / 8;
+          fx({ x: bx + 12, y: startY + (dp.y - startY) * prog,
+            vx: (Math.random()-0.5)*1.2, vy: 0,
+            size: 3 + Math.random()*2.5, color: c1, glow: 0, gravity: 0.04, drag: 0.97, decay: 0.08 });
+        }, prog * fallTime);
       }
-    }, i*120);
+
+      rock.style.top = dp.y + 'px';
+      rock.style.transform = `rotate(${rot + 180}deg)`;
+
+      setTimeout(() => {
+        rock.remove();
+        // Dust + debris burst
+        fxBurst(bx + 12, dp.y, 20, ['#b0a090','#d0c0a8','#807060'], 1.5, 7, 2, 5, 0, 0.04, 0.94, 0.045);
+        // Dust cloud: expanding translucent circle via fxRing
+        fxRing(bx+12, dp.y, 2, 45, '#c0b09a', 280);
+        // Stagger the hit sound
+        setTimeout(() => { try { _noise(getAC(), 0.1, 0.18, 400); } catch(e){} }, 0);
+      }, fallTime);
+    }, i * 115);
   }
-  await sleep(760); await flashSprite(defSide); await shakePanel();
+
+  await sleep(820); await flashSprite(defSide, 3); await shakePanel(false);
 }
 
 // ── Damage ─────────────────────────────────────────────────────────────────
@@ -649,6 +1072,7 @@ async function execMove(atkSide, moveIdx) {
   } else if (mult < 1) {
     await typeText("It's not very effective..."); await sleep(600);
   }
+  showDamageNum(defSide, dmg, mult);
   defMon.hp = Math.max(0, defMon.hp - dmg);
   updateBar(defSide);
   playHit();
@@ -770,7 +1194,7 @@ function buildUI(playerKey, oppKey) {
     hprow.appendChild(hpl); hprow.appendChild(tr);
 
     const nums = document.createElement('div'); nums.className='pb-hp-nums'; nums.id='pb-nums-'+side;
-    nums.textContent = side==='player' ? data.hp+'/'+data.hp : '';
+    nums.textContent = data.hp + '/' + data.hp;
 
     hpsec.appendChild(hprow); hpsec.appendChild(nums);
     box.appendChild(nr); box.appendChild(hpsec);
@@ -780,6 +1204,13 @@ function buildUI(playerKey, oppKey) {
   ba.appendChild(makeInfoBox(oData,'opp'));
   ba.appendChild(makeInfoBox(pData,'player'));
 
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'pb-close';
+  closeBtn.textContent = 'esc ×';
+  closeBtn.setAttribute('aria-label', 'Close battle');
+  closeBtn.addEventListener('click', closeBattle);
+  ba.appendChild(closeBtn);
+
   const osw = document.createElement('div'); osw.className='pb-opp-sprite-wrap';
   const osi = document.createElement('img'); osi.className='pb-opp-sprite'; osi.src=oData.front;
   osw.appendChild(osi); ba.appendChild(osw);
@@ -787,6 +1218,11 @@ function buildUI(playerKey, oppKey) {
   const psw = document.createElement('div'); psw.className='pb-player-sprite-wrap';
   const psi = document.createElement('img'); psi.className='pb-player-sprite'; psi.src=pData.back;
   psw.appendChild(psi); ba.appendChild(psw);
+
+  setTimeout(function() {
+    osi.style.animation = 'pb-entry-opp 0.55s cubic-bezier(0.23,1,0.32,1) both, pb-idle-opp 2.4s ease-in-out 0.55s infinite';
+    psi.style.animation = 'pb-entry-player 0.55s cubic-bezier(0.23,1,0.32,1) both, pb-idle-player 2.8s ease-in-out 0.55s infinite';
+  }, 50);
 
   // Ground shadows
   const oppShadow = document.createElement('div'); oppShadow.className='pb-poke-shadow';
@@ -816,6 +1252,12 @@ function buildUI(playerKey, oppKey) {
     playerStatus:document.getElementById('pb-st-player'),
     log:lt, moves:mg,
   };
+
+  // Start canvas layers (needs R.ba to exist)
+  requestAnimationFrame(() => {
+    initBgCanvas(playerKey);
+    initFxCanvas();
+  });
 }
 
 // ── Battle flow ─────────────────────────────────────────────────────────────
@@ -840,10 +1282,11 @@ function showMoves() {
   mon.moves.forEach((mv, i) => {
     const btn = document.createElement('button'); btn.className='pb-move-btn';
     const nm  = document.createElement('span');  nm.className='pb-move-name';  nm.textContent=mv.name;
+    const cat = document.createElement('span');  cat.className='pb-move-cat pb-move-cat-' + mv.cat;
     const rt  = document.createElement('div');   rt.className='pb-move-right';
     const tp  = document.createElement('span');  tp.className=`pb-move-type pb-type-${mv.type}`; tp.textContent=mv.type;
     const pp  = document.createElement('span');  pp.className='pb-move-pp'; pp.textContent=`PP ${mv.curPP}/${mv.pp}`;
-    rt.appendChild(tp); rt.appendChild(pp);
+    rt.appendChild(cat); rt.appendChild(tp); rt.appendChild(pp);
     btn.appendChild(nm); btn.appendChild(rt);
     btn.addEventListener('click', () => onPlayerMove(i));
     R.moves.appendChild(btn);
@@ -914,12 +1357,16 @@ function startBattle() {
   const oKey   = isDark ? 'reshiram' : 'zekrom';
   initState(pKey, oKey);
   buildUI(pKey, oKey);
+  document.documentElement.classList.add('pb-battle-active');
   startBattleMusic();
   runBattle();
 }
 
 function closeBattle() {
+  document.documentElement.classList.remove('pb-battle-active');
   stopBattleMusic();
+  stopBgCanvas();
+  stopFxCanvas();
   const ov = document.getElementById('pb-overlay');
   if (ov) ov.remove();
   document.querySelectorAll('.pb-pokehint,.pb-sparkle').forEach(e => e.remove());

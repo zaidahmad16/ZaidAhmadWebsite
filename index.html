@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="static/css/styles.css?v=22">
   <link rel="stylesheet" href="static/css/pokemon-battle.css">
+  <link rel="stylesheet" href="static/css/snake.css">
 </head>
 <body>
 
@@ -48,9 +49,9 @@
         <div class="id-text">
           <h1 class="id-name cin-line">Zaid Ahmad</h1>
           <p class="id-title cin-line">CS @ Carleton University &middot; 2029</p>
-          <p class="id-bio cin-line">I build from the kernel up — bootloaders, drivers, APIs, and the interfaces people actually use.</p>
+          <p class="id-bio cin-line">Full stack &amp; embedded developer.</p>
           <div class="id-ctas cin-group">
-            <a class="id-btn id-btn--primary" href="#" onclick="window._switchPage&&window._switchPage('contact');return false;">Get in touch ↓</a>
+            <a class="id-btn id-btn--primary" href="#" onclick="window._switchPage&&window._switchPage('contact');return false;">Get in touch →</a>
             <a href="static/docs/ZaidAhmadCV.pdf" target="_blank" class="id-btn id-btn--secondary">Resume ↗</a>
           </div>
           <div class="highlights cin-group" style="--ci:2" aria-live="polite">
@@ -60,11 +61,15 @@
               <p class="hl-slide">Traced a wireless bug through the Linux mac80211 stack and fixed it in the kernel.</p>
               <p class="hl-slide">Wrote a bare-metal bootloader from scratch — no HAL, no SDK, SPI on STM32F4.</p>
               <p class="hl-slide">Government of Canada Reliability Status security clearance.</p>
+              <p class="hl-slide">Built a business card that boots on a Nintendo DS. Play a short game, get my contact info at the end.</p>
+              <p class="hl-slide">Ghost hunting simulation in C — every actor its own POSIX thread. Zero deadlocks across 1,000+ ticks.</p>
+              <p class="hl-slide">Helping run cuHacking, Carleton's annual hackathon. Venues, schedules, sponsors.</p>
+              <p class="hl-slide">Wrote Python automation for IRCC's IT Capacity Management team. Reports made it to senior management briefings.</p>
             </div>
-            <span class="hl-counter"><span class="hl-n">01</span> / 04</span>
+            <span class="hl-counter"><span class="hl-n">01</span> / 08</span>
           </div>
 
-          <p class="easter-hint cin-group" style="--ci:3" onclick="window.openPortfolioTerm&&window.openPortfolioTerm()" title="Open terminal">$ try ctrl+shift+l</p>
+          <p class="easter-hint cin-group" style="--ci:3" onclick="window.openPortfolioTerm&&window.openPortfolioTerm()" title="Open terminal">$ ctrl+shift+l &nbsp;·&nbsp; ctrl+k</p>
 
           <div class="id-social cin-group" style="--ci:4">
             <a href="https://github.com/zaidahmad16" target="_blank" class="id-social-link" aria-label="GitHub">
@@ -81,6 +86,23 @@
             </a>
           </div>
         </div>
+
+        <!-- Hero terminal (right column) -->
+        <div class="hero-term" role="region" aria-label="Interactive terminal">
+          <div class="ht-titlebar" aria-hidden="true">
+            <span class="ht-title">~/portfolio</span>
+            <button class="ht-expand" onclick="window.openPortfolioTerm&&window.openPortfolioTerm()" aria-label="Open full terminal">expand ↗</button>
+          </div>
+          <div class="ht-body">
+            <div id="ht-output" role="log" aria-live="polite"></div>
+            <div class="ht-input-row">
+              <span class="ht-prompt" aria-hidden="true">zaid@portfolio:~$&nbsp;</span>
+              <input id="ht-input" type="text" autocomplete="off" spellcheck="false"
+                     autocorrect="off" autocapitalize="none" aria-label="Terminal input">
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -93,10 +115,13 @@
           <li class="proj-row">
             <a href="projects/carleton-course-map.html" class="proj-row-link">
               <div class="proj-row-main">
-                <div class="proj-row-name">Carleton Course Map</div>
-                <p class="proj-row-hook">My program didn't have a course map. I built one for every program at Carleton &mdash; prerequisites as a DAG, REST API, drag-and-drop semester planner.</p>
+                <div class="proj-row-namerow">
+                  <div class="proj-row-name">Carleton Course Map</div>
+                  <span class="proj-row-year">2024</span>
+                </div>
+                <p class="proj-row-hook">My program didn't have a course map. I built one for every program at Carleton &mdash; prerequisites as a DAG, REST API, drag-and-drop semester planner. 800+ students use it.</p>
                 <div class="proj-row-pills">
-                  <span>Python</span><span>Parsel</span><span>FastAPI</span><span>PostgreSQL</span><span>Next.js</span><span>React Flow</span>
+                  <span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>Next.js</span><span>React Flow</span>
                 </div>
               </div>
               <span class="proj-row-arrow" aria-hidden="true">&#8599;</span>
@@ -106,10 +131,13 @@
           <li class="proj-row">
             <a href="https://github.com/zaidahmad16/stm32-doom-loader" target="_blank" class="proj-row-link">
               <div class="proj-row-main">
-                <div class="proj-row-name">STM32 Doom Bootloader</div>
-                <p class="proj-row-hook">I wanted to understand how something actually boots, so I wrote a bootloader from scratch. No HAL, no game engine &mdash; bare-metal SPI on an STM32F4 loading shareware Doom off an SD card.</p>
+                <div class="proj-row-namerow">
+                  <div class="proj-row-name">STM32 Doom Bootloader</div>
+                  <span class="proj-row-year">2025</span>
+                </div>
+                <p class="proj-row-hook">Bare-metal bootloader on an STM32F4. No HAL, no SDK. Loads shareware Doom off an SD card over SPI.</p>
                 <div class="proj-row-pills">
-                  <span>C</span><span>ARM Cortex-M4</span><span>Linker Scripts</span><span>OpenOCD</span><span>STM32F4</span>
+                  <span>C</span><span>ARM Cortex-M4</span><span>Linker Scripts</span><span>OpenOCD</span>
                 </div>
               </div>
               <span class="proj-row-arrow" aria-hidden="true">&#8599;</span>
@@ -119,10 +147,13 @@
           <li class="proj-row">
             <a href="projects/linux-kernel-patch.html" class="proj-row-link">
               <div class="proj-row-main">
-                <div class="proj-row-name">Linux Wireless Kernel Patch</div>
-                <p class="proj-row-hook">My Wi-Fi was capped at 54 Mbps. Should have been 1 Gbps. I traced the bug through the mac80211 stack, wrote the patch, and fixed it in the kernel.</p>
+                <div class="proj-row-namerow">
+                  <div class="proj-row-name">Linux Wireless Kernel Patch</div>
+                  <span class="proj-row-year">2024</span>
+                </div>
+                <p class="proj-row-hook">Wi-Fi capped at 54 Mbps. Should have been 1 Gbps. Traced the bug through mac80211, wrote the patch, fixed it in the kernel.</p>
                 <div class="proj-row-pills">
-                  <span>C</span><span>Linux Kernel</span><span>Wireless Networking</span><span>mac80211</span>
+                  <span>C</span><span>Linux Kernel</span><span>mac80211</span><span>Wireless Networking</span>
                 </div>
               </div>
               <span class="proj-row-arrow" aria-hidden="true">&#8594;</span>
@@ -132,8 +163,11 @@
           <li class="proj-row">
             <a href="projects/nintendo-ds.html" class="proj-row-link">
               <div class="proj-row-main">
-                <div class="proj-row-name">Nintendo DS Business Card</div>
-                <p class="proj-row-hook">My business card boots on a Nintendo DS. Plug it in, play a short game, get my contact info at the end. Pure C, no SDK game engine, runs on real hardware.</p>
+                <div class="proj-row-namerow">
+                  <div class="proj-row-name">Nintendo DS Business Card</div>
+                  <span class="proj-row-year">2025</span>
+                </div>
+                <p class="proj-row-hook">A business card that boots on a Nintendo DS. Play a short game, get my contact info at the end. Pure C, no game engine, runs on real hardware.</p>
                 <div class="proj-row-pills">
                   <span>C</span><span>NDS SDK</span><span>ARM</span><span>Homebrew</span>
                 </div>
@@ -145,8 +179,11 @@
           <li class="proj-row">
             <a href="projects/c-simulation.html" class="proj-row-link">
               <div class="proj-row-main">
-                <div class="proj-row-name">Ghost Hunting Simulation</div>
-                <p class="proj-row-hook">A ghost hunting simulation in C where every actor is its own POSIX thread on shared memory. Spent a while on the deadlock prevention. Zero deadlocks across 1,000+ ticks.</p>
+                <div class="proj-row-namerow">
+                  <div class="proj-row-name">Ghost Hunting Simulation</div>
+                  <span class="proj-row-year">2024</span>
+                </div>
+                <p class="proj-row-hook">Ghost hunting simulation in C. Every actor is its own POSIX thread on shared memory. Zero deadlocks across 1,000+ ticks.</p>
                 <div class="proj-row-pills">
                   <span>C</span><span>POSIX Threads</span><span>Semaphores</span><span>Linux</span>
                 </div>
@@ -261,24 +298,26 @@
           </a>
         </div>
         <form class="contact-form" id="contact-form" novalidate>
+          <input type="hidden" name="access_key" value="8561c428-050d-4d8b-8930-271525dbc678">
           <div class="cf-row">
             <div class="cf-field">
               <label class="cf-label" for="cf-name">Name</label>
-              <input class="cf-input" id="cf-name" type="text" placeholder="Your name" required>
+              <input class="cf-input" id="cf-name" name="name" type="text" placeholder="Your name" required>
             </div>
             <div class="cf-field">
               <label class="cf-label" for="cf-email">Email</label>
-              <input class="cf-input" id="cf-email" type="email" placeholder="you@example.com" required>
+              <input class="cf-input" id="cf-email" name="email" type="email" placeholder="you@example.com" required>
             </div>
           </div>
           <div class="cf-field">
             <label class="cf-label" for="cf-msg">Message</label>
-            <textarea class="cf-input cf-textarea" id="cf-msg" rows="4" placeholder="What's on your mind?" required></textarea>
+            <textarea class="cf-input cf-textarea" id="cf-msg" name="message" rows="4" placeholder="What's on your mind?" required></textarea>
           </div>
           <div class="cf-actions">
             <button class="cf-submit" type="submit">Send message →</button>
             <span class="cf-status" id="cf-status" aria-live="polite"></span>
           </div>
+          <p class="cf-note">Or email directly: <a href="mailto:zaidahmad8060@gmail.com" class="cf-note-link">zaidahmad8060@gmail.com</a></p>
         </form>
 
         <footer class="site-footer-inline">
@@ -292,6 +331,26 @@
     </section>
 
   </div><!-- /.pages-wrap -->
+
+  <!-- Mobile bottom nav (visible < 600px) -->
+  <nav class="mobile-nav" aria-label="Page navigation">
+    <a href="#about"      class="mn-link" data-s="about">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>About</span>
+    </a>
+    <a href="#work"       class="mn-link" data-s="work">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Work</span>
+    </a>
+    <a href="#experience" class="mn-link" data-s="experience">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      <span>Experience</span>
+    </a>
+    <a href="#contact"    class="mn-link" data-s="contact">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span>Contact</span>
+    </a>
+  </nav>
 
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="grain-overlay" aria-hidden="true"></div>
@@ -331,6 +390,8 @@
   <script src="static/js/cursor.js"></script>
   <script src="static/js/terminal.js?v=2"></script>
   <script src="static/js/pokemon-battle.js"></script>
+  <script src="static/js/cmd-palette.js"></script>
+  <script src="static/js/hero-term.js" defer></script>
   <script>
     initPokemonBattle();
     // Expose page switcher for inline onclick
