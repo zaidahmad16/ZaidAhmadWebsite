@@ -100,13 +100,15 @@ function switchPage(id) {
   // Resume highlights when returning to About
   if (id === 'about' && window._hlStart) window._hlStart();
 
-  document.querySelectorAll('.sn-link').forEach(function (l) {
+  document.querySelectorAll('.sn-link, .mn-link').forEach(function (l) {
     l.classList.toggle('active', l.dataset.s === id);
   });
+
+  history.pushState(null, '', '#' + id);
 }
 
 function initPageNav() {
-  document.querySelectorAll('.sn-link[data-s]').forEach(function (link) {
+  document.querySelectorAll('.sn-link[data-s], .mn-link[data-s]').forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
       switchPage(link.dataset.s);
@@ -117,6 +119,11 @@ function initPageNav() {
   if (wordmark) wordmark.addEventListener('click', function (e) {
     e.preventDefault();
     switchPage('about');
+  });
+
+  window.addEventListener('popstate', function () {
+    var hash = window.location.hash.slice(1);
+    if (hash && document.getElementById(hash)) switchPage(hash);
   });
 }
 

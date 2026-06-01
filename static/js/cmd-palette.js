@@ -150,9 +150,7 @@
   }
 
   function jumpTo(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    window.scrollTo({ top: el.offsetTop - 90, behavior: 'smooth' });
+    if (window.__cinSwitchPage) window.__cinSwitchPage(id);
   }
 
   function open() {

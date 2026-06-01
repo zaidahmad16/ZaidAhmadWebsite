@@ -32,14 +32,19 @@
     </div>
 
     <header class="pp-header">
-      <p class="pp-eyebrow">[ web &middot; scraping &middot; fullstack ]</p>
-      <h1 class="pp-title">CarletonCourseMap</h1>
+      <div class="pp-header-kicker">
+        <span>2024</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>web &middot; fullstack</span>
+      </div>
+      <h1 class="pp-title">Carleton Course Map</h1>
+      <p class="pp-lead">My program didn't have a course map. I built one for every program at Carleton &mdash; prerequisites as a DAG, REST API, drag-and-drop semester planner. 800+ students use it.</p>
       <div class="pp-meta">
-        <span class="pp-tag">Next.js</span>
-        <span class="pp-tag">FastAPI</span>
-        <span class="pp-tag">PostgreSQL</span>
         <span class="pp-tag">Python</span>
         <span class="pp-tag">Parsel</span>
+        <span class="pp-tag">FastAPI</span>
+        <span class="pp-tag">PostgreSQL</span>
+        <span class="pp-tag">Next.js</span>
         <span class="pp-tag">React Flow</span>
         <span class="pp-tag">Railway</span>
       </div>
@@ -52,9 +57,9 @@
       <p>My program didn't have one. So you just pieced it together yourself. Academic calendar in one tab, prerequisite lists buried in paragraph form in another. I'd done it. It takes longer than it should, you still miss things, and it shouldn't work that way.</p>
       <p>I built a map for every Carleton program. I had no idea how many things were going to break first.</p>
       <div class="pp-stats">
-        <div class="pp-stat">Students helped: <strong>800+</strong></div>
-        <div class="pp-stat">Programs indexed: <strong>304+</strong></div>
-        <div class="pp-stat">Courses indexed: <strong>3,218+</strong></div>
+        <div class="pp-stat"><strong>800+</strong><span>students</span></div>
+        <div class="pp-stat"><strong>304+</strong><span>programs indexed</span></div>
+        <div class="pp-stat"><strong>3,218+</strong><span>courses indexed</span></div>
       </div>
     </section>
 
@@ -147,7 +152,7 @@
       <h2>What I learned</h2>
       <p>There's a pattern I kept running into. The arrow problem was in the data layer, not the rendering layer. The Render failure was in a forgotten file, not the application. The <code>.env</code> crash was a paste error, not a code bug. A lot of debugging time went to the right symptoms and the wrong cause.</p>
       <p>Switching scrapers mid-project cost time upfront and saved more later. Keeping the repo clean isn't glamorous advice but a leftover Dockerfile genuinely cost me an afternoon. And at some point you ship something that isn't done. The site isn't perfect. It works, and 800+ students have found it useful.</p>
-      <p><a href="https://carletoncoursemap.ca" target="_blank" style="color:var(--accent);font-family:var(--mono);font-size:0.9rem;">carletoncoursemap.ca &#8599;</a></p>
+      <p><a href="https://carletoncoursemap.ca" target="_blank">carletoncoursemap.ca &#8599;</a></p>
     </section>
 
   </div>

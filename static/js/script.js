@@ -71,12 +71,14 @@ document.addEventListener('DOMContentLoaded', function () {
     _updateIcon(isDark, animate);
   }
 
-  // Always default to light; dark is session-only (toggle resets on next visit)
-  setTheme('light', false);
+  // Restore saved theme, default to light
+  setTheme(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light', false);
 
   function _toggleTheme() {
     var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    setTheme(isDark ? 'light' : 'dark', true);
+    var next = isDark ? 'light' : 'dark';
+    setTheme(next, true);
+    localStorage.setItem('theme', next);
     _playTick();
   }
 
@@ -170,24 +172,45 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Contact form
+  // Contact form — Web3Forms
   var contactForm = document.getElementById('contact-form');
   var cfStatus    = document.getElementById('cf-status');
   if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
+    contactForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-      var name  = document.getElementById('cf-name').value.trim();
-      var email = document.getElementById('cf-email').value.trim();
-      var msg   = document.getElementById('cf-msg').value.trim();
-      if (!name || !email || !msg) return;
+      var submitBtn = contactForm.querySelector('button[type="submit"]');
+      var original  = submitBtn.textContent;
 
-      var subject = encodeURIComponent('Portfolio contact from ' + name);
-      var body    = encodeURIComponent('From: ' + name + ' <' + email + '>\n\n' + msg);
-      window.location.href = 'mailto:zaidahmad8060@gmail.com?subject=' + subject + '&body=' + body;
+      submitBtn.textContent = 'Sending…';
+      submitBtn.disabled    = true;
+      if (cfStatus) { cfStatus.textContent = ''; cfStatus.style.color = ''; }
 
-      if (cfStatus) {
-        cfStatus.textContent = 'Opening your email client…';
-        setTimeout(function () { cfStatus.textContent = ''; }, 4000);
+      try {
+        var formData = new FormData(contactForm);
+        var response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+        var data     = await response.json();
+
+        if (response.ok) {
+          if (cfStatus) {
+            cfStatus.textContent = 'Message sent.';
+            cfStatus.style.color = 'var(--color-accent)';
+            setTimeout(function () { cfStatus.textContent = ''; cfStatus.style.color = ''; }, 5000);
+          }
+          contactForm.reset();
+        } else {
+          if (cfStatus) {
+            cfStatus.textContent = data.message || 'Something went wrong.';
+            cfStatus.style.color = 'oklch(60% 0.18 25)';
+          }
+        }
+      } catch (err) {
+        if (cfStatus) {
+          cfStatus.textContent = 'Could not send. Try the email link below.';
+          cfStatus.style.color = 'oklch(60% 0.18 25)';
+        }
+      } finally {
+        submitBtn.textContent = original;
+        submitBtn.disabled    = false;
       }
     });
   }

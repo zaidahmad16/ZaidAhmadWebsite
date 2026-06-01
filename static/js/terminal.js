@@ -352,28 +352,90 @@
     }, 5600);
   }
 
-  // ── Snake game ────────────────────────────────────────────────
-  var CELL         = 20;
+  // ── Snake game — full redesign ────────────────────────────────
+  var CELL         = 18;
   var FOOD_LETTERS = ['Z','A','I','D','A','H','M','A','D'];
+
+  var particles  = [];
+  var sScore     = 0;
+  var sHighScore = parseInt(localStorage.getItem('snakeHighScore') || '0', 10);
+  var paused     = false;
+  var snakeOverlay = null, skCanvas = null, skScoreEl = null, skBestEl = null;
 
   var sSnake, sDir, sNextDir, sFood, sFoodIdx, sCols, sRows;
 
+  /* ── Build the dedicated game overlay ──── */
+  function buildSnakeOverlay() {
+    var ov = document.createElement('div');
+    ov.className = 'sk-overlay'; ov.id = 'sk-overlay';
+
+    var panel = document.createElement('div');
+    panel.className = 'sk-panel';
+
+    /* Header */
+    var hdr = document.createElement('header');
+    hdr.className = 'sk-header';
+
+    var exitBtn = document.createElement('button');
+    exitBtn.className = 'sk-btn-exit';
+    exitBtn.textContent = 'esc';
+    exitBtn.addEventListener('click', function () { stopSnake(); });
+
+    var lbl = document.createElement('span');
+    lbl.className = 'sk-title';
+    lbl.textContent = 'snake';
+
+    var hud = document.createElement('div');
+    hud.className = 'sk-hud';
+
+    skScoreEl = document.createElement('span');
+    skScoreEl.className = 'sk-hud-score';
+    skScoreEl.textContent = '0';
+
+    var sep = document.createElement('span');
+    sep.className = 'sk-hud-sep';
+    sep.textContent = '\xb7';
+
+    skBestEl = document.createElement('span');
+    skBestEl.className = 'sk-hud-best';
+    skBestEl.textContent = 'best: ' + sHighScore;
+
+    hud.appendChild(skScoreEl); hud.appendChild(sep); hud.appendChild(skBestEl);
+    hdr.appendChild(exitBtn); hdr.appendChild(lbl); hdr.appendChild(hud);
+
+    /* Canvas wrap */
+    var wrap = document.createElement('div');
+    wrap.className = 'sk-canvas-wrap';
+    skCanvas = document.createElement('canvas');
+    wrap.appendChild(skCanvas);
+
+    /* Footer */
+    var ftr = document.createElement('footer');
+    ftr.className = 'sk-footer';
+    ftr.textContent = 'arrows \xb7 wasd \xb7 space = pause \xb7 esc = quit';
+
+    panel.appendChild(hdr); panel.appendChild(wrap); panel.appendChild(ftr);
+    ov.appendChild(panel);
+    document.body.appendChild(ov);
+    snakeOverlay = ov;
+  }
+
   function startSnake() {
-    termOutput.style.display   = 'none';
-    termInputRow.style.display = 'none';
-    termCanvas.style.display   = 'block';
+    sScore = 0; paused = false; particles = [];
+    buildSnakeOverlay();
 
     requestAnimationFrame(function () {
-      sCols = Math.floor(termCanvas.clientWidth  / CELL);
-      sRows = Math.floor(termCanvas.clientHeight / CELL);
-      termCanvas.width  = sCols * CELL;
-      termCanvas.height = sRows * CELL;
+      var wrap = skCanvas.parentElement;
+      sCols = Math.floor(wrap.clientWidth  / CELL);
+      sRows = Math.floor(wrap.clientHeight / CELL);
+      skCanvas.width  = sCols * CELL;
+      skCanvas.height = sRows * CELL;
 
       var cx = Math.floor(sCols / 2);
       var cy = Math.floor(sRows / 2);
-      sSnake   = [{x: cx, y: cy}, {x: cx-1, y: cy}, {x: cx-2, y: cy}];
-      sDir     = {x: 1, y: 0};
-      sNextDir = {x: 1, y: 0};
+      sSnake   = [{x:cx,y:cy},{x:cx-1,y:cy},{x:cx-2,y:cy}];
+      sDir     = {x:1,y:0};
+      sNextDir = {x:1,y:0};
       sFoodIdx = 0;
       placeFood();
 
@@ -386,186 +448,246 @@
 
   function stopSnake() {
     if (!snakeRunning) return;
-    snakeRunning = false;
+    snakeRunning  = false;
     clearInterval(snakeInterval);
     snakeInterval = null;
     document.removeEventListener('keydown', snakeKeys);
-    termCanvas.style.display   = 'none';
-    termOutput.style.display   = '';
+    if (snakeOverlay) { snakeOverlay.remove(); snakeOverlay = skCanvas = skScoreEl = skBestEl = null; }
     termInputRow.style.display = '';
   }
 
   function placeFood() {
     var pos;
-    do {
-      pos = {
-        x: Math.floor(Math.random() * sCols),
-        y: Math.floor(Math.random() * sRows)
-      };
-    } while (sSnake.some(function (s) { return s.x === pos.x && s.y === pos.y; }));
+    do { pos = { x: Math.floor(Math.random()*sCols), y: Math.floor(Math.random()*sRows) }; }
+    while (sSnake.some(function(s){ return s.x===pos.x && s.y===pos.y; }));
     sFood = pos;
+  }
+
+  function playEat() {
+    try {
+      var ac = new (window.AudioContext || window.webkitAudioContext)();
+      var o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine'; o.frequency.value = 900;
+      g.gain.setValueAtTime(0.09, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.11);
+      o.connect(g); g.connect(ac.destination);
+      o.start(); o.stop(ac.currentTime + 0.13);
+    } catch(e) {}
+  }
+
+  function spawnParticles(x, y, color) {
+    for (var i = 0; i < 14; i++) {
+      var angle = (i/14)*Math.PI*2 + Math.random()*0.3;
+      var spd   = 1.5 + Math.random()*4;
+      particles.push({ x:x, y:y, vx:Math.cos(angle)*spd, vy:Math.sin(angle)*spd,
+        life:1, decay:0.05+Math.random()*0.04, size:1.5+Math.random()*2.5, color:color });
+    }
+  }
+
+  function updateParticles() {
+    particles = particles.filter(function(p){
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.1; p.life-=p.decay; return p.life>0;
+    });
+  }
+
+  /* Snake color: head (t=0) = electric blue, tail (t=1) = dark navy */
+  function snakeColor(t) {
+    var r = Math.round(91*(1-t) + 13*t);
+    var g = Math.round(154*(1-t) + 28*t);
+    var b = Math.round(245*(1-t) + 70*t);
+    return 'rgb('+r+','+g+','+b+')';
   }
 
   function snakeKeys(e) {
     if (!snakeRunning) return;
+    if (e.key === 'Escape') {
+      e.stopImmediatePropagation();
+      stopSnake();
+      return;
+    }
+    if (e.key === ' ' || e.key === 'p' || e.key === 'P') {
+      e.preventDefault();
+      paused = !paused;
+      if (!paused) drawFrame();
+      return;
+    }
+    if (paused) return;
     var map = {
-      ArrowUp:    {x:  0, y: -1},
-      ArrowDown:  {x:  0, y:  1},
-      ArrowLeft:  {x: -1, y:  0},
-      ArrowRight: {x:  1, y:  0},
-      w: {x:0,y:-1}, W: {x:0,y:-1},
-      s: {x:0,y:1},  S: {x:0,y:1},
-      a: {x:-1,y:0}, A: {x:-1,y:0},
-      d: {x:1,y:0},  D: {x:1,y:0},
+      ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1},
+      ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0},
+      w:{x:0,y:-1}, W:{x:0,y:-1}, s:{x:0,y:1}, S:{x:0,y:1},
+      a:{x:-1,y:0}, A:{x:-1,y:0}, d:{x:1,y:0}, D:{x:1,y:0},
     };
     var nd = map[e.key];
-    if (nd && !(nd.x === -sDir.x && nd.y === -sDir.y)) {
-      sNextDir = nd;
-      e.preventDefault();
-    }
+    if (nd && !(nd.x===-sDir.x && nd.y===-sDir.y)) { sNextDir=nd; e.preventDefault(); }
   }
 
   function snakeTick() {
+    if (paused) return;
     sDir = sNextDir;
-    var head = {x: sSnake[0].x + sDir.x, y: sSnake[0].y + sDir.y};
+    var head = {x: sSnake[0].x+sDir.x, y: sSnake[0].y+sDir.y};
 
-    if (head.x < 0 || head.x >= sCols || head.y < 0 || head.y >= sRows) {
-      return gameOver();
-    }
-    if (sSnake.some(function (s) { return s.x === head.x && s.y === head.y; })) {
-      return gameOver();
-    }
+    if (head.x<0 || head.x>=sCols || head.y<0 || head.y>=sRows) return gameOver();
+    if (sSnake.some(function(s){ return s.x===head.x && s.y===head.y; })) return gameOver();
 
     sSnake.unshift(head);
 
-    if (head.x === sFood.x && head.y === sFood.y) {
+    if (head.x===sFood.x && head.y===sFood.y) {
+      sScore++;
+      if (sScore > sHighScore) { sHighScore=sScore; localStorage.setItem('snakeHighScore',String(sHighScore)); }
+      playEat();
+      spawnParticles(sFood.x*CELL+CELL/2, sFood.y*CELL+CELL/2, '#f09040');
+      if (skScoreEl) skScoreEl.textContent = String(sScore);
+      if (skBestEl)  skBestEl.textContent  = 'best: '+sHighScore;
       sFoodIdx++;
-      if (sFoodIdx >= FOOD_LETTERS.length) {
-        drawFrame();
-        return snakeWin();
-      }
+      if (sFoodIdx >= FOOD_LETTERS.length) { drawFrame(); return snakeWin(); }
       placeFood();
+      clearInterval(snakeInterval);
+      snakeInterval = setInterval(snakeTick, Math.max(55, 115-(sSnake.length-3)*4));
     } else {
       sSnake.pop();
     }
-
     drawFrame();
   }
 
   function drawFrame() {
-    var ctx = termCanvas.getContext('2d');
-    var W   = termCanvas.width;
-    var H   = termCanvas.height;
+    if (!skCanvas) return;
+    var ctx = skCanvas.getContext('2d');
+    var W = skCanvas.width, H = skCanvas.height;
 
-    ctx.fillStyle = '#0d1117';
+    /* Background */
+    ctx.fillStyle = '#050d1a';
     ctx.fillRect(0, 0, W, H);
 
-    // Subtle dot grid
-    ctx.fillStyle = '#161b22';
-    for (var gx = 0; gx < sCols; gx++) {
-      for (var gy = 0; gy < sRows; gy++) {
-        ctx.fillRect(gx * CELL + CELL/2 - 1, gy * CELL + CELL/2 - 1, 2, 2);
+    /* Dot grid */
+    ctx.fillStyle = '#0b1628';
+    for (var gx=0; gx<sCols; gx++) {
+      for (var gy=0; gy<sRows; gy++) {
+        ctx.fillRect(gx*CELL+CELL/2-0.5, gy*CELL+CELL/2-0.5, 1, 1);
       }
     }
 
-    // Snake body
-    sSnake.forEach(function (seg, i) {
-      ctx.fillStyle = i === 0 ? '#3fb950' : '#238636';
-      rr(ctx, seg.x * CELL + 2, seg.y * CELL + 2, CELL - 4, CELL - 4, 3);
-    });
-
-    // Food tile + letter
-    if (sFood) {
-      ctx.fillStyle = '#f0883e';
-      rr(ctx, sFood.x * CELL + 2, sFood.y * CELL + 2, CELL - 4, CELL - 4, 3);
-      ctx.fillStyle    = '#0d1117';
-      ctx.font         = 'bold ' + (CELL - 5) + 'px "JetBrains Mono", monospace';
-      ctx.textAlign    = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(FOOD_LETTERS[sFoodIdx], sFood.x * CELL + CELL/2, sFood.y * CELL + CELL/2 + 1);
+    if (paused) {
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.fillRect(0,0,W,H);
+      ctx.fillStyle = '#5b9af5';
+      ctx.font = '12px "JetBrains Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('paused \xb7 space to resume', W/2, H/2);
+      return;
     }
 
-    // HUD
-    ctx.fillStyle    = '#6e7681';
-    ctx.font         = '11px "JetBrains Mono", monospace';
-    ctx.textAlign    = 'left';
-    ctx.textBaseline = 'top';
-    var eaten = FOOD_LETTERS.slice(0, sFoodIdx).join('') || '...';
-    ctx.fillText('collected: ' + eaten + '  next: ' + FOOD_LETTERS[sFoodIdx], 6, 5);
-    ctx.textAlign = 'right';
-    ctx.fillText('len: ' + sSnake.length, W - 6, 5);
-    ctx.textAlign    = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText('arrow keys / wasd  ·  esc to quit', W / 2, H - 4);
+    /* Food — pulsing circle with glow */
+    if (sFood) {
+      var fx = sFood.x*CELL+CELL/2, fy = sFood.y*CELL+CELL/2;
+      var pulse = 0.87 + 0.13*Math.sin(Date.now()/260);
+      ctx.save();
+      ctx.shadowColor='#f09040'; ctx.shadowBlur=18;
+      ctx.fillStyle='#f09040';
+      ctx.beginPath(); ctx.arc(fx, fy, CELL*0.46*pulse, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+      ctx.fillStyle='#080e1c';
+      ctx.font='bold '+Math.round(CELL*0.6)+'px "JetBrains Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(FOOD_LETTERS[sFoodIdx], fx, fy+1);
+    }
+
+    /* Snake — draw connections first, then segments on top */
+    var segW = CELL*0.66, hw = segW/2;
+
+    for (var i=0; i<sSnake.length-1; i++) {
+      var a=sSnake[i], b=sSnake[i+1];
+      ctx.fillStyle = snakeColor((i+0.5)/Math.max(1,sSnake.length-1));
+      var ax=a.x*CELL+CELL/2, ay=a.y*CELL+CELL/2;
+      var bx=b.x*CELL+CELL/2, by=b.y*CELL+CELL/2;
+      if (a.x!==b.x) ctx.fillRect(Math.min(ax,bx), ay-hw, Math.abs(ax-bx), segW);
+      else            ctx.fillRect(ax-hw, Math.min(ay,by), segW, Math.abs(ay-by));
+    }
+
+    for (var i=sSnake.length-1; i>=0; i--) {
+      var seg=sSnake[i], t=i/Math.max(1,sSnake.length-1);
+      ctx.fillStyle = snakeColor(t);
+      if (i===0) { ctx.save(); ctx.shadowColor='#5b9af5'; ctx.shadowBlur=22; }
+      var r = i===0 ? CELL*0.4 : CELL*0.29;
+      rr(ctx, seg.x*CELL+CELL/2-hw, seg.y*CELL+CELL/2-hw, segW, segW, r);
+      if (i===0) ctx.restore();
+    }
+    ctx.shadowBlur=0;
+
+    /* Particles */
+    updateParticles();
+    particles.forEach(function(p){
+      ctx.globalAlpha = Math.max(0,p.life);
+      ctx.fillStyle = p.color; ctx.shadowColor=p.color; ctx.shadowBlur=5;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha=1; ctx.shadowBlur=0;
   }
 
   function rr(ctx, x, y, w, h, r) {
     ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.arcTo(x + w, y,     x + w, y + r,     r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-    ctx.lineTo(x + r, y + h);
-    ctx.arcTo(x, y + h,     x, y + h - r,     r);
-    ctx.lineTo(x, y + r);
-    ctx.arcTo(x, y,         x + r, y,         r);
-    ctx.closePath();
-    ctx.fill();
+    ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y);
+    ctx.arcTo(x+w,y, x+w,y+r, r); ctx.lineTo(x+w,y+h-r);
+    ctx.arcTo(x+w,y+h, x+w-r,y+h, r); ctx.lineTo(x+r,y+h);
+    ctx.arcTo(x,y+h, x,y+h-r, r); ctx.lineTo(x,y+r);
+    ctx.arcTo(x,y, x+r,y, r);
+    ctx.closePath(); ctx.fill();
   }
 
   function gameOver() {
-    stopSnake();
-    line('');
-    line('Game over. Snake collided.', 'tl-err');
-    line('Run "sudo apt install snake" to play again.', 'tl-dim');
-    termInput.focus();
+    if (!skCanvas) return;
+    var ctx = skCanvas.getContext('2d');
+    var W=skCanvas.width, H=skCanvas.height, fl=0;
+    var iv = setInterval(function(){
+      ctx.fillStyle = fl%2===0 ? 'rgba(180,18,18,0.42)' : 'transparent';
+      ctx.fillRect(0,0,W,H); fl++;
+      if (fl>=6) {
+        clearInterval(iv);
+        var sc=sScore, bst=sHighScore;
+        stopSnake();
+        line('');
+        line('game over \xb7 score: '+sc+' \xb7 best: '+bst, 'tl-err');
+        line('type "sudo apt install snake" to play again', 'tl-dim');
+        termInput.focus();
+      }
+    }, 82);
   }
 
   function snakeWin() {
+    var finalScore = sScore;
     stopSnake();
-
-    // Open resume — same as the existing target="_blank" links
     window.open('static/docs/ZaidAhmadCV.pdf', '_blank');
 
     var steps = [
       [0,    ''],
-      [150,  'Reading package lists... Done',                              'tl'],
-      [450,  'Building dependency tree... Done',                           'tl'],
+      [150,  'Reading package lists... Done',                         'tl'],
+      [450,  'Building dependency tree... Done',                      'tl'],
       [700,  ''],
-      [800,  'Setting up zaid-ahmad (latest) ...',                         'tl'],
-      [1300, 'Processing triggers for career-db (2026.05) ...',             'tl'],
+      [800,  'Setting up zaid-ahmad (latest) ...',                    'tl'],
+      [1300, 'Processing triggers for career-db (2026.05) ...',        'tl'],
       [1700, ''],
-      [1800, "✓ Package 'Zaid Ahmad' successfully installed.",        'tl-acc'],
-      [2050, '  Skills: C · Python · Linux · React Native · AWS', 'tl-dim'],
-      [2250, '  Location: Ottawa, ON',                                     'tl-dim'],
-      [2450, '  Status: actively looking for internships',                 'tl-dim'],
+      [1800, "✓ Package 'Zaid Ahmad' successfully installed.",    'tl-acc'],
+      [2050, '  Skills: C \xb7 Python \xb7 Linux \xb7 React \xb7 ARM', 'tl-dim'],
+      [2250, '  Status: actively seeking internships',                 'tl-dim'],
       [2700, ''],
-      [2800, 'Resume opened in a new tab.',                                'tl'],
+      [2800, 'Resume opened in a new tab.',                            'tl'],
       [2900, ''],
     ];
 
-    steps.forEach(function (s) {
-      setTimeout(function () { line(s[1], s[2]); }, s[0]);
-    });
+    steps.forEach(function(s){ setTimeout(function(){ line(s[1],s[2]); }, s[0]); });
 
-    // Fallback clickable link in case popup was blocked
-    setTimeout(function () {
-      var d = document.createElement('div');
-      d.className = 'tl-acc';
-      var a = document.createElement('a');
-      a.href   = 'static/docs/ZaidAhmadCV.pdf';
-      a.target = '_blank';
-      a.style.cssText = 'color:#58a6ff; text-decoration:underline;';
-      a.textContent   = '  → view resume';
-      d.appendChild(a);
-      termOutput.appendChild(d);
-      termOutput.scrollTop = termOutput.scrollHeight;
+    setTimeout(function(){
+      var d=document.createElement('div'); d.className='tl-acc';
+      var a=document.createElement('a');
+      a.href='static/docs/ZaidAhmadCV.pdf'; a.target='_blank';
+      a.style.cssText='color:#58a6ff;text-decoration:underline;';
+      a.textContent='  → view resume';
+      d.appendChild(a); termOutput.appendChild(d);
+      termOutput.scrollTop=termOutput.scrollHeight;
     }, 3000);
 
-    setTimeout(function () {
-      termInputRow.style.display = '';
-      termInput.focus();
+    setTimeout(function(){
+      termInputRow.style.display=''; termInput.focus();
     }, 3200);
   }
 
@@ -578,7 +700,7 @@
       overlay.classList.contains('open') ? closeTerm() : openTerm();
       return;
     }
-    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+    if (e.key === 'Escape' && overlay.classList.contains('open') && !snakeRunning) {
       closeTerm();
     }
   });

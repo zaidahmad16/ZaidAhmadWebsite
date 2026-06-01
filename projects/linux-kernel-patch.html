@@ -32,8 +32,13 @@
     </div>
 
     <header class="pp-header">
-      <p class="pp-eyebrow">[ kernel &middot; networking ]</p>
-      <h1 class="pp-title">Linux Wireless<br>Kernel Patch</h1>
+      <div class="pp-header-kicker">
+        <span>2024</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>kernel &middot; networking</span>
+      </div>
+      <h1 class="pp-title">Linux Wireless Kernel Patch</h1>
+      <p class="pp-lead">Wi-Fi capped at 54 Mbps. Should have been 1 Gbps. I traced the bug through the mac80211 stack, wrote the patch, and fixed it in the kernel.</p>
       <div class="pp-meta">
         <span class="pp-tag">C</span>
         <span class="pp-tag">Linux Kernel</span>
@@ -44,39 +49,42 @@
     </header>
 
     <section class="pp-section">
-      <h2>What it is</h2>
-      <p>My Wi-Fi was stuck at 54 Mbps when it should have been hitting 1 Gbps. The kernel was silently picking the slower mode with no indication anything was wrong. I went into the driver to find out why, then patched it.</p>
+      <h2>The result</h2>
       <div class="pp-stats">
-        <div class="pp-stat">Before: <strong>54 Mbps</strong></div>
-        <div class="pp-stat">After: <strong>1020 Mbps</strong></div>
-        <div class="pp-stat">Gain: <strong>~19×</strong></div>
+        <div class="pp-stat"><strong>54 Mbps</strong><span>before</span></div>
+        <div class="pp-stat"><strong>1020 Mbps</strong><span>after</span></div>
+        <div class="pp-stat"><strong>~19&times;</strong><span>throughput gain</span></div>
       </div>
-    </section>
-
-    <section class="pp-section">
-      <h2>The problem</h2>
-      <p>Intel AX200 cards and Rogers XB10 routers have a beacon frame incompatibility that causes the mac80211 driver to silently downgrade from 802.11ac to 802.11n. The result is a 54 Mbps connection instead of 1000+ Mbps — no error, no log entry, nothing.</p>
     </section>
 
     <section class="pp-section pp-images-section">
       <h2>Before &amp; after</h2>
       <div class="pp-images">
         <figure>
-          <a href="../static/images/before.png" target="_blank"><img src="../static/images/before.png" alt="Before patch — 54 Mbps"></a>
-          <figcaption>Before — 54 Mbps</figcaption>
+          <a href="../static/images/before.png" target="_blank">
+            <img src="../static/images/before.png" alt="Speed test before patch — 54 Mbps">
+          </a>
+          <figcaption>Before &mdash; 54 Mbps</figcaption>
         </figure>
         <figure>
-          <a href="../static/images/after.png" target="_blank"><img src="../static/images/after.png" alt="After patch — 1020 Mbps"></a>
-          <figcaption>After — 1020 Mbps</figcaption>
+          <a href="../static/images/after.png" target="_blank">
+            <img src="../static/images/after.png" alt="Speed test after patch — 1020 Mbps">
+          </a>
+          <figcaption>After &mdash; 1020 Mbps</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="pp-section">
+      <h2>The problem</h2>
+      <p>Intel AX200 cards and Rogers XB10 routers have a beacon frame incompatibility that causes the mac80211 driver to silently downgrade from 802.11ac to 802.11n. The result is a 54 Mbps connection instead of 1000+ Mbps with no error, no log entry, nothing.</p>
+    </section>
+
+    <section class="pp-section">
       <h2>How I fixed it</h2>
-      <p>Traced through the mac80211 wireless stack until I found where the speed negotiation breaks. The driver was accepting the downgrade without validating it against the actual hardware capabilities. Patched it to hold the correct HT mode and reject invalid downgrades.</p>
-      <div class="pp-code">drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c<br>
-+ validate HT capability before accepting downgrade<br>
+      <p>Traced through the mac80211 wireless stack until I found where the speed negotiation breaks. The driver was accepting the downgrade without validating it against actual hardware capabilities. Patched it to hold the correct HT mode and reject invalid downgrades.</p>
+      <div class="pp-code">drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++ validate HT capability before accepting downgrade
 + reject beacon-induced mode switch when incompatible</div>
     </section>
 

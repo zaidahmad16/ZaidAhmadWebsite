@@ -32,8 +32,13 @@
     </div>
 
     <header class="pp-header">
-      <p class="pp-eyebrow">[ embedded &middot; homebrew ]</p>
-      <h1 class="pp-title">Nintendo DS<br>Business Card</h1>
+      <div class="pp-header-kicker">
+        <span>2025</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>embedded &middot; homebrew</span>
+      </div>
+      <h1 class="pp-title">Nintendo DS Business Card</h1>
+      <p class="pp-lead">My business card is a Nintendo DS cartridge. Plug it in, play a short game, find my contact info at the end. Pure C &mdash; no game engine, no operating system.</p>
       <div class="pp-meta">
         <span class="pp-tag">C</span>
         <span class="pp-tag">ARM9 / ARM7</span>
@@ -44,21 +49,11 @@
       <a href="https://github.com/zaidahmad16/DS_Business_Card" target="_blank" class="pp-github">View on GitHub &#8599;</a>
     </header>
 
-    <section class="pp-section">
-      <h2>What it is</h2>
-      <p>My business card is a Nintendo DS cartridge. Plug it in, play a short game, find my contact info at the end. Wrote the whole thing in C — no game engine, no operating system.</p>
-      <div class="pp-stats">
-        <div class="pp-stat">Platform: <strong>NDS / NDS Lite</strong></div>
-        <div class="pp-stat">CPU: <strong>ARM9 + ARM7</strong></div>
-        <div class="pp-stat">Language: <strong>C</strong></div>
-      </div>
-    </section>
-
     <section class="pp-section pp-images-section">
       <h2>Running on real hardware</h2>
       <div class="pp-images pp-images--single">
         <figure>
-          <img src="../static/images/ds.jpg" alt="Nintendo DS showing the business card program">
+          <img src="../static/images/ds.jpg" alt="Nintendo DS showing the business card program running">
           <figcaption>Running on a real DS Lite via flash cart</figcaption>
         </figure>
       </div>
@@ -66,8 +61,13 @@
 
     <section class="pp-section">
       <h2>How it works</h2>
-      <p>Built against the NDS SDK on bare-metal ARM9/ARM7. No OS, no game engine — just direct hardware registers. The top screen runs an animated bar chart; the bottom shows my contact info.</p>
-      <p>Works on any DS or DS Lite with a flash cart. Hand someone the cartridge and they plug it in like a regular game. The dual-processor setup (ARM9 for main logic, ARM7 for audio/wifi) is managed entirely in C with no abstraction layer.</p>
+      <p>Built against the NDS SDK targeting bare-metal ARM9/ARM7. No OS, no game engine &mdash; just direct hardware register access. The top screen runs an animated sequence; the bottom shows contact info.</p>
+      <p>Works on any DS or DS Lite with a flash cart. Hand someone the cartridge and they plug it in like a regular game. The dual-processor setup (ARM9 for main logic, ARM7 for audio and wifi) is managed entirely in C with no abstraction layer.</p>
+      <div class="pp-stats">
+        <div class="pp-stat"><strong>NDS / NDS Lite</strong><span>target hardware</span></div>
+        <div class="pp-stat"><strong>ARM9 + ARM7</strong><span>dual-core</span></div>
+        <div class="pp-stat"><strong>C</strong><span>no engine, no OS</span></div>
+      </div>
     </section>
 
   </div>
