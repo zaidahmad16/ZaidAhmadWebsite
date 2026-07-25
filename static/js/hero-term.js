@@ -55,8 +55,7 @@
           line('<span class="ht-dir">projects/</span>    <span class="ht-file">resume.pdf</span>    <span class="ht-dim">.bashrc</span>');
         } else if (/^projects\/?$/.test(arg)) {
           line('<span class="ht-dir">carleton-course-map/</span>   <span class="ht-dir">linux-kernel-patch/</span>');
-          line('<span class="ht-dir">stm32-doom-loader/</span>     <span class="ht-dir">nintendo-ds-card/</span>');
-          line('<span class="ht-dir">c-simulation/</span>');
+          line('<span class="ht-dir">nintendo-ds-card/</span>      <span class="ht-dir">c-simulation/</span>');
         } else {
           line('ls: ' + esc(arg) + ': no such file or directory', 'ht-err');
         }
@@ -67,7 +66,7 @@
         var f = arg.replace(/\/$/, '');
         if (f === 'resume.pdf' || f === './resume.pdf') {
           line('opening resume&hellip;', 'ht-dim');
-          setTimeout(function () { window.open('static/docs/ZaidAhmadCV.pdf', '_blank'); }, 400);
+          setTimeout(function () { window.open('static/docs/ZaidAhmadResume.pdf', '_blank'); }, 400);
         } else if (f === '.bashrc') {
           line('# ~/.bashrc', 'ht-dim');
           line('export PS1="\\u@\\h:\\w\\$ "');
@@ -78,8 +77,6 @@
           showProject('carleton');
         } else if (/linux|kernel/.test(f)) {
           showProject('linux');
-        } else if (/stm32|doom/.test(f)) {
-          showProject('stm32');
         } else if (/nintendo|ds/.test(f)) {
           showProject('nintendo');
         } else if (/c-sim|ghost/.test(f)) {
@@ -103,9 +100,6 @@
         } else if (/c-sim|ghost/.test(arg)) {
           line('navigating&hellip;', 'ht-dim');
           setTimeout(function () { window.location.href = 'projects/c-simulation.html'; }, 400);
-        } else if (/stm32|doom/.test(arg)) {
-          line('opening github&hellip;', 'ht-dim');
-          setTimeout(function () { window.open('https://github.com/zaidahmad16/stm32-doom-loader', '_blank'); }, 400);
         } else {
           line('cd: ' + esc(arg) + ': no such directory', 'ht-err');
         }
@@ -214,7 +208,7 @@
       carleton: {
         name: 'Carleton Course Map',
         stack: 'Python · Parsel · FastAPI · PostgreSQL · Next.js · React Flow',
-        desc: '800+ students use it. scraped every program at carleton,\nbuilt the prerequisite graph as a DAG, shipped a REST API\nand drag-and-drop semester planner.',
+        desc: '4.5K+ students use it. scraped every program at carleton,\nbuilt the prerequisite graph as a DAG, shipped a REST API\nand drag-and-drop semester planner.',
         link: 'projects/carleton-course-map.html',
       },
       linux: {
@@ -222,13 +216,6 @@
         stack: 'C · mac80211 · nl80211 · iw',
         desc: 'wi-fi was capped at 54 mbps. should have been 1 gbps.\ntraced the bug through mac80211, wrote the patch, fixed it.',
         link: 'projects/linux-kernel-patch.html',
-      },
-      stm32: {
-        name: 'STM32 Doom Bootloader',
-        stack: 'C · ARM Cortex-M4 · Linker Scripts · OpenOCD · SPI',
-        desc: 'bare-metal bootloader on an stm32f4. no HAL, no SDK.\nloads shareware doom off an SD card over SPI.',
-        link: null,
-        ext: 'https://github.com/zaidahmad16/stm32-doom-loader',
       },
       nintendo: {
         name: 'Nintendo DS Business Card',
@@ -252,7 +239,7 @@
     blank();
     var href = p.link || p.ext;
     var label = p.link ? 'open write-up' : 'open github';
-    line('<span class="ht-dim">' + label + ':  cd ' + esc(key === 'stm32' ? 'projects/stm32-doom-loader' : 'projects/' + key) + '</span>');
+    line('<span class="ht-dim">' + label + ':  cd ' + esc('projects/' + key) + '</span>');
   }
 
   /* ── Input handler ───────────────────── */

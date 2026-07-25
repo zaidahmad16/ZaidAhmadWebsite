@@ -6,7 +6,7 @@
     { label: 'Go to Work',       hint: '↓', action: function () { jumpTo('work'); } },
     { label: 'Go to Experience', hint: '↓', action: function () { jumpTo('experience'); } },
     { label: 'Go to Contact',    hint: '↓', action: function () { jumpTo('contact'); } },
-    { label: 'Open Resume',      hint: '↗', action: function () { window.open('static/docs/ZaidAhmadCV.pdf', '_blank'); } },
+    { label: 'Open Resume',      hint: '↗', action: function () { window.open('static/docs/ZaidAhmadResume.pdf', '_blank'); } },
     { label: 'GitHub',           hint: '↗', action: function () { window.open('https://github.com/zaidahmad16', '_blank'); } },
     { label: 'LinkedIn',         hint: '↗', action: function () { window.open('https://linkedin.com/in/zaid-ahmad-ba9b10224', '_blank'); } },
     { label: 'Toggle Theme',     hint: '◐', action: function () { var t = document.getElementById('theme-toggle'); if (t) t.click(); } },

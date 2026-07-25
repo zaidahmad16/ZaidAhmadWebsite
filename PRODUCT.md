@@ -16,7 +16,7 @@ One sentence both audiences should walk away thinking: "This person goes further
 
 ## Product Purpose
 
-A personal portfolio for Zaid Ahmad, CS student at Carleton University (AI/ML co-op stream, 2024–2029), specializing in systems programming and embedded development. Projects range from a bare-metal STM32 bootloader to a Linux kernel wireless patch to a full-stack course mapping tool used by 800+ students.
+A personal portfolio for Zaid Ahmad, CS student at Carleton University (AI/ML co-op stream, 2024–2029), specializing in systems programming and embedded development. Projects range from a Linux kernel wireless patch to a real-time packet analyzer on a Raspberry Pi to a full-stack course mapping tool used by 4.5K+ students.
 
 Success: a recruiter books a screen call. A technical reader adds the GitHub to their bookmarks.
 

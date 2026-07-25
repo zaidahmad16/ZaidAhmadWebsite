@@ -656,7 +656,7 @@
   function snakeWin() {
     var finalScore = sScore;
     stopSnake();
-    window.open('static/docs/ZaidAhmadCV.pdf', '_blank');
+    window.open('static/docs/ZaidAhmadResume.pdf', '_blank');
 
     var steps = [
       [0,    ''],
@@ -679,7 +679,7 @@
     setTimeout(function(){
       var d=document.createElement('div'); d.className='tl-acc';
       var a=document.createElement('a');
-      a.href='static/docs/ZaidAhmadCV.pdf'; a.target='_blank';
+      a.href='static/docs/ZaidAhmadResume.pdf'; a.target='_blank';
       a.style.cssText='color:#58a6ff;text-decoration:underline;';
       a.textContent='  → view resume';
       d.appendChild(a); termOutput.appendChild(d);
