@@ -527,6 +527,8 @@ html.is-paged body { overflow: hidden; height: 100%; }
 
 .icon-dark { filter: none; }
 [data-theme="dark"] .icon-dark { filter: invert(1) brightness(0.85); }
+.icon-light { filter: invert(1); }
+[data-theme="dark"] .icon-light { filter: brightness(0.85); }
 
 /* ── Contact ───────────────────────────── */
 .contact-links { max-width: 520px; }

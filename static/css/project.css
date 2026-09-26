@@ -140,6 +140,12 @@
   background: var(--color-accent-dim);
 }
 
+.pp-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
 /* ── Sections ───────────────────────────── */
 .pp-section {
   padding-top: var(--space-2xl);
@@ -168,6 +174,25 @@
   text-wrap: pretty;
 }
 .pp-section p:last-child { margin-bottom: 0; }
+
+.pp-list {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.85;
+  max-width: 68ch;
+  margin: 0 0 var(--space-sm) 1.2em;
+  list-style: square;
+}
+
+.pp-section .pp-images { margin: var(--space-md) 0; }
+.pp-section .pp-images:last-child { margin-bottom: 0; }
+.pp-section p.pp-caption {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  line-height: 1.6;
+  margin-top: calc(-1 * var(--space-xs));
+}
 
 .pp-section a { color: var(--color-accent); }
 .pp-section a:hover { text-decoration: underline; text-underline-offset: 2px; }

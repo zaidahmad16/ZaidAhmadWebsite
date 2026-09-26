@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="tokens.css">
-  <link rel="stylesheet" href="static/css/styles.css?v=22">
+  <link rel="stylesheet" href="static/css/styles.css?v=23">
   <link rel="stylesheet" href="static/css/pokemon-battle.css">
   <link rel="stylesheet" href="static/css/snake.css">
 </head>
@@ -21,7 +21,7 @@
     <div class="sn-sep" aria-hidden="true"></div>
     <div class="sn-links">
       <a href="#about"      class="sn-link" data-s="about">About</a>
-      <a href="#work"       class="sn-link" data-s="work">Work</a>
+      <a href="#work"       class="sn-link" data-s="work">Projects</a>
       <a href="#experience" class="sn-link" data-s="experience">Experience</a>
       <a href="#contact"    class="sn-link" data-s="contact">Contact</a>
     </div>
@@ -113,6 +113,21 @@
         <ul class="proj-list">
 
           <li class="proj-row">
+            <a href="projects/ontario-drive-test-map.html" class="proj-row-link">
+              <div class="proj-row-main">
+                <div class="proj-row-namerow">
+                  <div class="proj-row-name">OntarioDriveTestMap</div>
+                </div>
+                <p class="proj-row-hook">Ontario doesn't publish its road test routes. I reconstructed them from Reddit posts and OCR on dashcam video, and the map shows how confident it is about every segment.</p>
+                <div class="proj-row-pills">
+                  <span>Python</span><span>PaddleOCR</span><span>OpenStreetMap</span><span>FastAPI</span><span>React</span>
+                </div>
+              </div>
+              <span class="proj-row-arrow" aria-hidden="true">&#8594;</span>
+            </a>
+          </li>
+
+          <li class="proj-row">
             <a href="projects/carleton-course-map.html" class="proj-row-link">
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
@@ -122,22 +137,6 @@
                 <p class="proj-row-hook">My program didn't have a course map. I built one for every program at Carleton &mdash; prerequisites as a DAG, REST API, drag-and-drop semester planner. 4.5K+ students use it.</p>
                 <div class="proj-row-pills">
                   <span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>Next.js</span><span>React Flow</span>
-                </div>
-              </div>
-              <span class="proj-row-arrow" aria-hidden="true">&#8599;</span>
-            </a>
-          </li>
-
-          <li class="proj-row">
-            <a href="https://github.com/zaidahmad16/rpi-packet-analyzer" target="_blank" class="proj-row-link">
-              <div class="proj-row-main">
-                <div class="proj-row-namerow">
-                  <div class="proj-row-name">RPi Network Packet Analyzer</div>
-                  <span class="proj-row-year">2025</span>
-                </div>
-                <p class="proj-row-hook">Real-time packet capture in C over raw sockets, feeding a scikit-learn anomaly detector and a Grafana dashboard. Runs the whole pipeline on a Raspberry Pi 5 under 100MB of memory.</p>
-                <div class="proj-row-pills">
-                  <span>C</span><span>Python</span><span>scikit-learn</span><span>Prometheus</span><span>Raspberry Pi</span>
                 </div>
               </div>
               <span class="proj-row-arrow" aria-hidden="true">&#8599;</span>
@@ -275,10 +274,12 @@
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React"><span>React</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React Native"><span>React Native</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nextjs/nextjs-original.svg" alt="Next.js" class="icon-dark"><span>Next.js</span></div>
+          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vitejs/vitejs-original.svg" alt="Vite"><span>Vite</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/fastapi/fastapi-original.svg" alt="FastAPI"><span>FastAPI</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/firebase/firebase-plain.svg" alt="Firebase"><span>Firebase</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/mongodb/mongodb-original.svg" alt="MongoDB"><span>MongoDB</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"><span>PostgreSQL</span></div>
+          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/sqlite/sqlite-original.svg" alt="SQLite"><span>SQLite</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/supabase/supabase-original.svg" alt="Supabase"><span>Supabase</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS"><span>Tailwind</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/hugo/hugo-original.svg" alt="Hugo"><span>Hugo</span></div>
@@ -291,6 +292,8 @@
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/prometheus/prometheus-original.svg" alt="Prometheus"><span>Prometheus</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/grafana/grafana-original.svg" alt="Grafana"><span>Grafana</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vercel/vercel-original.svg" alt="Vercel" class="icon-dark"><span>Vercel</span></div>
+          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/railway/railway-original.svg" alt="Railway" class="icon-light"><span>Railway</span></div>
+          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/cloudflare/cloudflare-original.svg" alt="Cloudflare"><span>Cloudflare</span></div>
           <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" class="icon-dark"><span>AWS</span></div>
         </div>
 
@@ -362,7 +365,7 @@
     </a>
     <a href="#work"       class="mn-link" data-s="work">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      <span>Work</span>
+      <span>Projects</span>
     </a>
     <a href="#experience" class="mn-link" data-s="experience">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>

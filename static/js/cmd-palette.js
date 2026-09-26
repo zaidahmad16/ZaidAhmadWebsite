@@ -3,7 +3,7 @@
 
   var COMMANDS = [
     { label: 'Go to About',      hint: '↓', action: function () { jumpTo('about'); } },
-    { label: 'Go to Work',       hint: '↓', action: function () { jumpTo('work'); } },
+    { label: 'Go to Projects',   hint: '↓', action: function () { jumpTo('work'); } },
     { label: 'Go to Experience', hint: '↓', action: function () { jumpTo('experience'); } },
     { label: 'Go to Contact',    hint: '↓', action: function () { jumpTo('contact'); } },
     { label: 'Open Resume',      hint: '↗', action: function () { window.open('static/docs/ZaidAhmadResume.pdf', '_blank'); } },
