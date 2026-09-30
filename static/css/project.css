@@ -219,6 +219,7 @@ code {
   border-radius: var(--radius-sm);
   margin: var(--space-md) 0;
   overflow-x: auto;
+  white-space: pre;
 }
 
 /* ── Stat metrics ───────────────────────── */
@@ -268,6 +269,7 @@ code {
   gap: var(--space-sm);
 }
 .pp-images--single { grid-template-columns: minmax(0, 1fr); }
+.pp-images--narrow { max-width: 460px; }
 .pp-images + .pp-images { margin-top: var(--space-sm); }
 
 .pp-images figure {

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salah — Zaid Ahmad</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=21">
+  <link rel="stylesheet" href="../static/css/project.css">
+</head>
+<body>
+  <div class="proj-page">
+
+    <div class="pp-topbar">
+      <a href="../index.html#work" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <div class="pp-header-kicker">
+        <span>2026</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>desktop &middot; linux &middot; astronomy</span>
+      </div>
+      <h1 class="pp-title">Salah</h1>
+      <p class="pp-lead">My desktop prayer-times app was calculating for Jakarta. I replaced it with one that uses my mosque's own timetable, and reproduces that timetable to the minute when it can't download it.</p>
+      <div class="pp-meta">
+        <span class="pp-tag">Python</span>
+        <span class="pp-tag">GTK4</span>
+        <span class="pp-tag">libadwaita</span>
+        <span class="pp-tag">GJS</span>
+        <span class="pp-tag">Cinnamon</span>
+        <span class="pp-tag">Mawaqit API</span>
+      </div>
+      <a href="https://github.com/zaidahmad16/Salah" target="_blank" rel="noopener" class="pp-github">View on GitHub &#8599;</a>
+    </header>
+
+    <section class="pp-section">
+      <p>Muslims pray five times a day, and each prayer has a window set by the sun's position. Fajr starts when the sky begins to lighten, Maghrib at sunset, Isha once twilight is gone. Those times move every day and depend on where you are, so most people rely on an app.</p>
+      <p>The applet on my Linux Mint panel never agreed with my mosque. When I finally opened its settings, the coordinates were for Jakarta, Indonesia. Fixing them helped, but Fajr was still up to 39 minutes off, because the applet used a different calculation method than the mosque. The mosque's timetable is the one I actually pray by, so that's the one the app should show.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The result</h2>
+      <div class="pp-stats">
+        <div class="pp-stat"><strong>99.2%</strong><span>times exact vs. the mosque</span></div>
+        <div class="pp-stat"><strong>1 min</strong><span>worst miss, all year</span></div>
+        <div class="pp-stat"><strong>19</strong><span>calculation methods</span></div>
+      </div>
+      <div class="pp-images">
+        <figure>
+          <img src="../static/images/salah/today.webp" alt="Salah's Today view: the next prayer, Maghrib, with a countdown, and a list of today's adhan and iqama times from Masjid Toronto" loading="lazy">
+          <figcaption>Today view, showing a linked mosque's own times, iqama included.</figcaption>
+        </figure>
+        <figure>
+          <img src="../static/images/salah/month.webp" alt="Salah's month timetable for September 2026 with Hijri dates beside each day" loading="lazy">
+          <figcaption>A month at a time, with Umm al-Qura Hijri dates.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Match the mosque, not a formula</h2>
+      <p>There's no single correct prayer time. Fajr and Isha depend on which twilight angle you treat as "light" and "dark", and authorities disagree: 15&deg; in North America, 18&deg; for the Muslim World League, 19.5&deg; in Egypt. Asr has two schools of thought. The same city can have timetables 30 minutes apart, and all of them are legitimate.</p>
+      <p>So Salah doesn't try to pick the right answer. Many mosques publish their full-year timetable on <a href="https://mawaqit.net" target="_blank" rel="noopener">Mawaqit</a>, so you link your mosque and Salah downloads that table, iqama times and Friday prayer included. It shows those times whenever you're within 40 km of the mosque. Anywhere else it calculates, using the method most common in the country you're in.</p>
+      <div class="pp-images pp-images--single pp-images--narrow">
+        <figure>
+          <img src="../static/images/salah/applet.webp" alt="The Salah panel applet showing Maghrib 28m, with its popup listing today's prayer and iqama times" loading="lazy">
+          <figcaption>The panel applet counts down to the next prayer and sends a reminder before it starts.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Reverse-engineering a timetable</h2>
+      <p>A downloaded table doesn't help when you're offline in January and next year's timetable hasn't been fetched yet. For that, Salah needs to calculate the mosque's times itself, which means knowing how the mosque calculates them.</p>
+      <p>Mosques rarely say. So Salah fits the published calendar: it sweeps Fajr and Isha angles from 10&deg; to 21&deg; in tenth-degree steps, tries both Asr schools, and measures fixed minute offsets on Dhuhr and Maghrib. It keeps whichever combination reproduces the most days exactly. For my mosque, that came back as ISNA (15&deg;/15&deg;) with standard Asr.</p>
+      <p>Some mosques set their times by hand, rounding to the nearest five minutes or holding Isha fixed all summer. The fit catches that. If fewer than 90% of times match, or any is off by more than two minutes, Salah marks the mosque as not reproducible and falls back to the standard method instead of pretending.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The one-minute Asr problem</h2>
+      <p>With ISNA and nearest-minute rounding, five of the six daily times matched the mosque on all 365 days. Asr matched on 118. The rest were off by one or two minutes in both directions, which looked like noise.</p>
+      <p>It wasn't noise. When I averaged the error by month, it traced a smooth curve through the year: about a minute late in February and March, about a minute early in October, close to zero at the solstices. That's the shape of the rate at which the sun's declination changes, which is fastest at the equinoxes and zero at the solstices. The error only makes sense if the sun's position was being measured at a different moment.</p>
+      <p>Evaluating the declination one day earlier fixed most of it. Scanning the offset in finer steps landed on 0.9 days, and exact matches jumped from 89% to 99.2%. Somewhere in Mawaqit's pipeline, Asr is computed from the sun's position about a day early. Salah reproduces that quirk only when it's standing in for a Mawaqit mosque, and uses the textbook formula everywhere else.</p>
+      <div class="pp-code">asr residual by month (calculated &minus; published, minutes)
+  Feb +0.98   Mar +0.95   Jun +0.05   Sep &minus;0.79   Oct &minus;1.01
+
+decl = sun_position(jd + t - 0.9).declination   # 88.7% &rarr; 99.2% exact</div>
+      <p>The last misses are all Asr, by one minute, on days where the true time sits within a few seconds of a minute boundary.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Edge cases</h2>
+      <p>Above the Arctic Circle the sun doesn't set in June or rise in December, so there's no sunset to anchor Maghrib to. On those days Salah uses the times for latitude 65&deg; and says so on screen. Further south, where the sun never gets 18&deg; below the horizon in summer, it uses the angle-based high-latitude rule for Fajr and Isha.</p>
+      <p>Hijri dates come from ICU's Umm al-Qura calendar. Python can't reach it, so Salah asks GJS (which ships with Cinnamon) to convert the whole year once and caches the result. My first version used the tabular Islamic calendar, which put today two days off.</p>
+      <div class="pp-images pp-images--single pp-images--narrow">
+        <figure>
+          <img src="../static/images/salah/preferences.webp" alt="Salah preferences: detected location, the linked mosque, and the calculation method Salah fitted from its timetable" loading="lazy">
+          <figcaption>Preferences show which method Salah fitted from the mosque's timetable, and how closely it matches.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+  </div>
+  <script src="../static/js/cinematic.js"></script>
+  <script src="../static/js/cursor.js"></script>
+  <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+</body>
+</html>
