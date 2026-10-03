@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syllabus Privacy Policy — Zaid Ahmad</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=21">
+  <link rel="stylesheet" href="../static/css/project.css">
+</head>
+<body>
+  <div class="proj-page">
+
+    <div class="pp-topbar">
+      <a href="syllabus.html" class="back-link">&#8592; Syllabus</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <div class="pp-header-kicker"><span>Last updated October 3, 2026</span></div>
+      <h1 class="pp-title">Syllabus privacy policy</h1>
+      <p class="pp-lead">Syllabus is a desktop app that runs on your own computer. There is no Syllabus server: nothing you give it is sent to me or stored anywhere I control.</p>
+    </header>
+
+    <section class="pp-section">
+      <h2>Google user data</h2>
+      <p>Syllabus asks for one Google permission: <code>https://www.googleapis.com/auth/calendar.app.created</code>. It lets the app create a single secondary calendar (named "Brightspace" by default) and add, change and delete events in that calendar only. Syllabus cannot see, read or change your other calendars or their events.</p>
+      <p>Syllabus uses this access only to keep that calendar in sync with your Brightspace deadlines, class timetable and announcement dates. It reads the events in its own calendar solely to tell which ones need to be added, updated or removed.</p>
+      <p>Your Google sign-in tokens are stored on your computer in <code>~/.config/syllabus/token.json</code>, readable only by your user account. Google Calendar data is not sent to any other service, including Gemini, and is never sold, shared, or used for advertising.</p>
+      <p>Syllabus's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Brightspace data and Gemini</h2>
+      <p>Syllabus downloads your Brightspace calendar feed and course announcement feeds using private links you paste in. If you add a Gemini API key, the titles and short descriptions of calendar items, and the text of new announcements, are sent to Google's Gemini API to classify them and find dates. This is governed by your own Gemini API key and <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Google's Gemini API terms</a>. Without a key, nothing is sent to Gemini.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>What's stored, and deleting it</h2>
+      <p>Everything Syllabus keeps lives in <code>~/.config/syllabus/</code> on your computer: settings, the feed links, your Gemini key, sign-in tokens, and small caches. Deleting that folder removes it all. To revoke Syllabus's Google access, use Preferences &rarr; Disconnect, or remove it at <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>. Deleting the "Brightspace" calendar in Google Calendar removes every event Syllabus created.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Contact</h2>
+      <p>Questions: <a href="mailto:zaidahmad8060@gmail.com">zaidahmad8060@gmail.com</a>.</p>
+    </section>
+
+  </div>
+  <script src="../static/js/cinematic.js"></script>
+  <script src="../static/js/cursor.js"></script>
+  <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syllabus — Zaid Ahmad</title>
+  <meta name="description" content="Syllabus copies Brightspace deadlines, quizzes, class times and dates from course announcements into Google Calendar.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=21">
+  <link rel="stylesheet" href="../static/css/project.css">
+</head>
+<body>
+  <div class="proj-page">
+
+    <div class="pp-topbar">
+      <a href="../index.html#work" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <div class="pp-header-kicker">
+        <span>2026</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>desktop &middot; linux &middot; calendar</span>
+      </div>
+      <h1 class="pp-title">Syllabus</h1>
+      <p class="pp-lead">A small desktop app that keeps my Brightspace deadlines, quizzes, exams and class times in Google Calendar, including dates that only show up in course announcements.</p>
+      <div class="pp-meta">
+        <span class="pp-tag">Python</span>
+        <span class="pp-tag">GTK4</span>
+        <span class="pp-tag">libadwaita</span>
+        <span class="pp-tag">Google Calendar API</span>
+        <span class="pp-tag">Gemini API</span>
+      </div>
+    </header>
+
+    <section class="pp-section">
+      <h2>What it does</h2>
+      <p>Brightspace has a calendar feed, but it's noisy: every quiz shows up three times (opens, closes, due), course content "becomes available" every week, and checklists look like deadlines. Professors also announce test dates and extensions in announcements that never reach the calendar.</p>
+      <p>Syllabus reads the Brightspace calendar feed and each course's announcements feed, uses Gemini to separate real deadlines from the noise and to pull dates out of announcement text, and writes the result to a separate "Brightspace" calendar in Google Calendar, with reminders before each deadline. It also adds your weekly class timetable, skipping holidays and reading week.</p>
+      <p>Dates read from announcements are labelled "(from announcement)" and coloured differently, so they're never confused with official Brightspace dates.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Your data</h2>
+      <p>Syllabus runs on your own computer. It only gets access to the calendar it creates in your Google account, not your other calendars or events. See the <a href="syllabus-privacy.html">privacy policy</a> for exactly what is sent where.</p>
+    </section>
+
+  </div>
+  <script src="../static/js/cinematic.js"></script>
+  <script src="../static/js/cursor.js"></script>
+  <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+</body>
+</html>
