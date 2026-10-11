@@ -87,6 +87,43 @@
     </section>
 
     <section class="pp-section">
+      <h2>The stack</h2>
+      <h3 class="pp-stack-group">Desktop app</h3>
+      <dl class="pp-stack">
+        <div><dt>TypeScript</dt><dd>the whole codebase: app, engine, tests and the relay</dd></div>
+        <div><dt>Electron</dt><dd>the desktop app on Windows, macOS and Linux</dd></div>
+        <div><dt>electron-vite + Vite</dt><dd>builds the main process, preload and window</dd></div>
+        <div><dt>Plain TypeScript + CSS</dt><dd>the interface, no UI framework; Inter font, Lucide icons</dd></div>
+        <div><dt>Electron safeStorage</dt><dd>encrypts saved keys with the system keychain</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Google</h3>
+      <dl class="pp-stack">
+        <div><dt>Google Apps Script</dt><dd>runs the sync engine every 10 minutes in the student's own account</dd></div>
+        <div><dt>Apps Script API</dt><dd>installs and updates that script from the desktop app</dd></div>
+        <div><dt>Google Calendar</dt><dd>where everything ends up, through the <code>calendar.app.created</code> permission</dd></div>
+        <div><dt>OAuth 2.0 + PKCE</dt><dd>desktop sign-in through a loopback redirect</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">AI</h3>
+      <dl class="pp-stack">
+        <div><dt>OpenAI-compatible APIs</dt><dd>OpenAI, Mistral, Groq, OpenRouter, Ollama, LM Studio</dd></div>
+        <div><dt>Anthropic API</dt><dd>Claude models</dd></div>
+        <div><dt>Gemini API</dt><dd>Google's models, including the free tier</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Alerts</h3>
+      <dl class="pp-stack">
+        <div><dt>Cloudflare Workers + KV</dt><dd>the relay that holds the Discord bot token</dd></div>
+        <div><dt>Discord API</dt><dd>the bot that sends DMs, and the sign-in that links an account</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Shipping</h3>
+      <dl class="pp-stack">
+        <div><dt>GitHub Actions</dt><dd>tests and builds on Windows, macOS and Linux</dd></div>
+        <div><dt>electron-builder</dt><dd>the installers: .exe, .dmg, AppImage and .deb</dd></div>
+        <div><dt>GitHub Releases + electron-updater</dt><dd>downloads and automatic updates</dd></div>
+        <div><dt>Node's test runner</dt><dd>200 tests, run straight from the TypeScript</dd></div>
+      </dl>
+    </section>
+
+    <section class="pp-section">
       <h2>TypeScript: one engine, three places</h2>
       <p><span class="pp-label">Why</span> The sync engine was already written in TypeScript, and it's the part with all the fiddly logic, like merging the three copies of every quiz. It now has to run on the desktop and inside Google Apps Script. I didn't want two versions of that logic slowly disagreeing with each other, so it stayed one codebase.</p>
       <p><span class="pp-label">The struggle</span> Apps Script isn't Node and it isn't a browser. There's no <code>fetch</code>, <code>Intl</code>, <code>URL</code>, timers or Web Crypto. Losing <code>Intl</code> hurt the most, because every time zone calculation in the engine went through it.</p>
@@ -156,6 +193,12 @@
       </div>
       <p><span class="pp-label">The struggle</span> Discord only lets a bot DM people it shares a server with, and you can't ship a bot token inside an open-source app. So after avoiding a server the whole project, I needed one after all, plus a Discord server that random people could wander into.</p>
       <p><span class="pp-label">The fix</span> I kept the server as small as I could: a Cloudflare Worker on the free tier that holds the token. It stores a hash of each device's token and the Discord user ID, and it never keeps what an alert says. The Discord server has no invite links. You get in through Duely's Connect Discord sign-in or not at all, an hourly sweep kicks out anyone without a link, and links nobody's used in 30 days get deleted. The Apps Script calls the Worker itself, so the DM still arrives with the laptop off.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Building and shipping</h2>
+      <p>The smaller tools were mostly picked so the whole thing costs nothing to run and needs no infrastructure of mine. electron-vite builds Electron's three parts (main process, preload, window) from one config. electron-builder turns that into every installer from one file, and GitHub Actions runs it on real Windows, macOS and Linux machines, because a Mac installer can't be built or smoke-tested anywhere else. GitHub Releases hosts the downloads for free, and electron-updater reads its update feed straight from there, so there's no update server either.</p>
+      <p>The interface is plain TypeScript and CSS. It's three screens and a five-step setup, and a framework would have been more code than the UI itself. Tests run on Node's built-in test runner, which can run TypeScript files directly, so there's no test framework or compile step to maintain.</p>
     </section>
 
     <section class="pp-section">
