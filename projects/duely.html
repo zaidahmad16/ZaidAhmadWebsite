@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duely — Zaid Ahmad</title>
+  <meta name="description" content="Duely puts a student's Brightspace deadlines, tests and classes in Google Calendar and answers what's due, with the AI they choose. It runs 24/7 in their own Google account, with no server.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=21">
+  <link rel="stylesheet" href="../static/css/project.css">
+</head>
+<body>
+  <div class="proj-page">
+
+    <div class="pp-topbar">
+      <a href="../index.html#work" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <div class="pp-header-kicker">
+        <span>2026</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>desktop &middot; windows &middot; macos &middot; linux</span>
+      </div>
+      <h1 class="pp-title">Duely</h1>
+      <p class="pp-lead">I built an app that keeps my Brightspace deadlines in Google Calendar, and friends kept asking for it. Duely is the version they can install themselves. It uses their Google account and whichever AI they already pay for, and it keeps syncing after they close the laptop.</p>
+      <div class="pp-meta">
+        <span class="pp-tag">TypeScript</span>
+        <span class="pp-tag">Electron</span>
+        <span class="pp-tag">Google Apps Script</span>
+        <span class="pp-tag">Google Calendar API</span>
+        <span class="pp-tag">Cloudflare Workers</span>
+        <span class="pp-tag">Discord API</span>
+      </div>
+      <div class="pp-links">
+        <a href="https://github.com/zaidahmad16/Duely-public-/releases" target="_blank" rel="noopener" class="pp-github">Download (beta) &#8599;</a>
+        <a href="https://github.com/zaidahmad16/Duely-public-" target="_blank" rel="noopener" class="pp-github">View on GitHub &#8599;</a>
+      </div>
+    </header>
+
+    <section class="pp-section">
+      <p>Brightspace has a calendar feed, but it's noisy. Every quiz shows up three times (opens, closes, due), course content "becomes available" every week, and when a prof moves a midterm it's usually only in an announcement. My own app, <a href="syllabus.html">Syllabus</a>, cleans that up for me, but it's hard-wired to my school, my Google project and my API key. Nobody else could run it.</p>
+      <p>Duely is the same engine with all of that pulled out. You paste your Brightspace calendar link, connect Google, and pick an AI provider: OpenAI, Anthropic, Gemini, or a model running on your own machine. Duely keeps a separate "Brightspace" calendar in your Google account and answers questions like "what's due this week?" or "when's my next test?".</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The result</h2>
+      <div class="pp-stats">
+        <div class="pp-stat"><strong>$0</strong><span>to run, for me or the student</span></div>
+        <div class="pp-stat"><strong>10 min</strong><span>between syncs, laptop on or off</span></div>
+        <div class="pp-stat"><strong>3</strong><span>systems: Windows, macOS, Linux</span></div>
+      </div>
+      <div class="pp-images">
+        <figure>
+          <img src="../static/images/duely/upcoming.webp" alt="Duely's Upcoming screen: a question about a quiz that disappeared from Brightspace, a suggested study time for a lab report, and the week's deadlines with checkboxes" loading="lazy">
+          <figcaption>Upcoming. The two cards at the top are Duely asking first; it doesn't touch the calendar until you answer.</figcaption>
+        </figure>
+        <figure>
+          <img src="../static/images/duely/chat.webp" alt="Duely's chat answering 'what do I have this week?' with six items grouped by day, each with its course, type and time" loading="lazy">
+          <figcaption>Chat answers with the actual calendar items, and you can tick them off from there.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Syncing with the laptop closed</h2>
+      <p>A desktop app only syncs while it's open, and students close their laptops. The normal fix is a server. That costs money every month, and it would mean I'm holding everyone's calendar access and AI keys, which I really didn't want.</p>
+      <p>Instead, Duely installs its engine as a Google Apps Script inside the student's own Google account. Google runs it every ten minutes, for free, and nobody but the student can see it. It's the same TypeScript engine the desktop app runs, bundled into one file. That part was fiddly: Apps Script has no <code>fetch</code>, <code>Intl</code>, <code>URL</code>, timers or Web Crypto, so the engine takes all of those as swappable services. The test suite runs the bundle in a sandbox with every one of them deleted, and fails if it writes a single event differently from the desktop app.</p>
+      <p>Only the script writes to the calendar. When you tick something off in the app, the change goes into a small inbox that the script picks up on its next run, so the two never fight over the same event. A full sync takes under six seconds. When nothing changed, it's about two.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Bring your own AI</h2>
+      <p>Nobody should have to know what <code>gemini-flash-lite-latest</code> means. Duely asks the provider which models your key can use, tries a few small, fast ones, and skips any that are overloaded or gone. Before an answer is shown, Duely checks it against the calendar. If the AI mentions a date or an item that isn't there, it has to try again. When the AI is down or out of quota, a rule-based parser answers instead. That parser passes all 811 questions in my test set.</p>
+      <div class="pp-images pp-images--single pp-images--narrow">
+        <figure>
+          <img src="../static/images/duely/ai-setup.webp" alt="Duely's 'Choose your AI' step with Gemini selected, a key entered, and checks passed for chat, reading and screenshots, using a model Duely chose" loading="lazy">
+          <figcaption>You paste a key and press Test. Duely picks the model and checks what it can do.</figcaption>
+        </figure>
+      </div>
+      <p>The same test set run against a real model caught something the offline tests couldn't. Newer Gemini models reject a conversation unless each tool call is sent back with its "thought signature". Duely was dropping it, so any answer that needed a second step silently fell back to the rules, and I'd have kept thinking the AI was doing the work. With the signature passed through, the live score went to 148 out of 150.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Your timetable from a screenshot</h2>
+      <p>Class times aren't in the Brightspace feed, so you screenshot your timetable and the AI reads it, Fall and Winter in one go. You check each term before anything is added. Duely skips classes during reading week if Brightspace lists it, and it points out things the AI copies without question. One of my test timetables lists the same English class as ENGL 2106 on Monday and Wednesday but ENGL 2166 on Friday, so Duely asks which one is right.</p>
+      <div class="pp-images pp-images--single pp-images--narrow">
+        <figure>
+          <img src="../static/images/duely/timetable-review.webp" alt="Duely's review of a Winter 2027 term read from a screenshot, listing courses without meeting times and warning that ENGL 2166 on Friday looks like ENGL 2106" loading="lazy">
+          <figcaption>Reviewing Winter 2027. The yellow note is the ENGL mix-up.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Alerts on your phone</h2>
+      <p>If a prof moves a test while your laptop is shut, a desktop notification doesn't help much. So Duely can also DM you on Discord from a Duely bot. Discord only lets a bot message people it shares a server with, and a bot's token can't be shipped inside an app, so a small Cloudflare Worker holds it. The Worker keeps a hash of each device's token and your Discord ID. It never stores what the alerts say. The only way into the server is through Duely's own sign-in, and anyone in it without a link gets removed within the hour. Your Apps Script talks to the Worker directly, which is why the alert still arrives with the laptop off.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Your data</h2>
+      <p>There's no Duely account. Your settings and keys stay on your computer, encrypted with the system keychain, and the engine lives in your Google account, not mine. Duely only gets access to the calendar it creates, not your other ones. The <a href="https://github.com/zaidahmad16/Duely-public-/blob/p3-ui/docs/PRIVACY.md" target="_blank" rel="noopener">privacy policy</a> spells out what goes where.</p>
+    </section>
+
+  </div>
+  <script src="../static/js/cinematic.js"></script>
+  <script src="../static/js/cursor.js"></script>
+  <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+</body>
+</html>
