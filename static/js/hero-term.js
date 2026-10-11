@@ -54,16 +54,12 @@
       case 'ls':
         if (!arg || arg === '.' || arg === '~') {
           line('<span class="ht-dir">projects/</span>    <span class="ht-file">resume.pdf</span>    <span class="ht-dim">.bashrc</span>');
-        } else if (/^projects\/?$/.test(arg)) {
-          line('<span class="ht-dir">duely/</span>                 <span class="ht-dir">ontario-drive-test-map/</span>');
-          line('<span class="ht-dir">salah/</span>                 <span class="ht-dir">carleton-course-map/</span>');
-          line('<span class="ht-dir">linux-kernel-patch/</span>    <span class="ht-dir">nintendo-ds-card/</span>');
-          line('<span class="ht-dir">c-simulation/</span>');
+        } else if (/^(\.\/)?projects\/?$/.test(arg)) {
+          listProjects();
         } else {
           line('ls: ' + esc(arg) + ': no such file or directory', 'ht-err');
         }
         break;
-
       case 'cat':
         if (!arg) { line('cat: missing operand', 'ht-err'); break; }
         var f = arg.replace(/\/$/, '');
@@ -76,49 +72,25 @@
           line('alias ll="ls -alF"');
           line('alias gs="git status"');
           line('alias py="python3"');
-        } else if (/duely/.test(f)) {
-          showProject('duely');
-        } else if (/ontario|drive/.test(f)) {
-          showProject('ontario');
-        } else if (/salah/.test(f)) {
-          showProject('salah');
-        } else if (/carleton/.test(f)) {
-          showProject('carleton');
-        } else if (/linux|kernel/.test(f)) {
-          showProject('linux');
-        } else if (/nintendo|ds/.test(f)) {
-          showProject('nintendo');
-        } else if (/c-sim|ghost/.test(f)) {
-          showProject('csim');
+        } else if (findProject(f)) {
+          showProject(findProject(f));
         } else {
           line('cat: ' + esc(arg) + ': no such file or directory', 'ht-err');
         }
         break;
-
       case 'cd':
         if (!arg || arg === '~' || arg === '.') { break; }
-        var pages = { duely: 'duely', 'ontario|drive': 'ontario-drive-test-map', salah: 'salah' };
-        var hit = Object.keys(pages).filter(function (k) { return new RegExp(k).test(arg); })[0];
-        if (hit) {
+        var target = findProject(arg);
+        if (target) {
           line('navigating&hellip;', 'ht-dim');
-          setTimeout(function () { window.location.href = 'projects/' + pages[hit] + '.html'; }, 400);
-        } else if (/carleton/.test(arg)) {
-          line('navigating&hellip;', 'ht-dim');
-          setTimeout(function () { window.location.href = 'projects/carleton-course-map.html'; }, 400);
-        } else if (/linux|kernel/.test(arg)) {
-          line('navigating&hellip;', 'ht-dim');
-          setTimeout(function () { window.location.href = 'projects/linux-kernel-patch.html'; }, 400);
-        } else if (/nintendo/.test(arg)) {
-          line('navigating&hellip;', 'ht-dim');
-          setTimeout(function () { window.location.href = 'projects/nintendo-ds.html'; }, 400);
-        } else if (/c-sim|ghost/.test(arg)) {
-          line('navigating&hellip;', 'ht-dim');
-          setTimeout(function () { window.location.href = 'projects/c-simulation.html'; }, 400);
+          setTimeout(function () {
+            if (target.external) window.open(target.href, '_blank', 'noopener');
+            else window.location.href = target.href;
+          }, 400);
         } else {
           line('cd: ' + esc(arg) + ': no such directory', 'ht-err');
         }
         break;
-
       case 'pwd':
         line('/home/zaid/portfolio');
         break;
@@ -217,61 +189,71 @@
     }
   }
 
-  function showProject(key) {
-    var projects = {
-      duely: {
-        name: 'Duely',
-        stack: 'TypeScript · Electron · Apps Script · Cloudflare Workers · Discord API',
-        desc: 'keeps brightspace deadlines, tests and classes in google calendar.\nsyncs from the student\'s own google account, laptop on or off.',
-        link: 'projects/duely.html',
-      },
-      ontario: {
-        name: 'OntarioDriveTestMap',
-        stack: 'Python · PaddleOCR · OpenStreetMap · FastAPI · React',
-        desc: 'ontario\'s road test routes, rebuilt from reddit posts and\nocr on dashcam video, with a confidence level per segment.',
-        link: 'projects/ontario-drive-test-map.html',
-      },
-      salah: {
-        name: 'Salah',
-        stack: 'Python · GTK4 · libadwaita · GJS · Cinnamon',
-        desc: 'prayer times from my mosque\'s own timetable,\nreproduced to the minute offline.',
-        link: 'projects/salah.html',
-      },
-      carleton: {
-        name: 'Carleton Course Map',
-        stack: 'Python · Parsel · FastAPI · PostgreSQL · Next.js · React Flow',
-        desc: '4.5K+ students use it. scraped every program at carleton,\nbuilt the prerequisite graph as a DAG, shipped a REST API\nand drag-and-drop semester planner.',
-        link: 'projects/carleton-course-map.html',
-      },
-      linux: {
-        name: 'Linux Wireless Kernel Patch',
-        stack: 'C · mac80211 · nl80211 · iw',
-        desc: 'wi-fi was capped at 54 mbps. should have been 1 gbps.\ntraced the bug through mac80211, wrote the patch, fixed it.',
-        link: 'projects/linux-kernel-patch.html',
-      },
-      nintendo: {
-        name: 'Nintendo DS Business Card',
-        stack: 'C · NDS SDK · ARM',
-        desc: 'boots on real hardware. play a short game,\nget my contact info at the end.',
-        link: 'projects/nintendo-ds.html',
-      },
-      csim: {
-        name: 'Ghost Hunting Simulation',
-        stack: 'C · POSIX Threads · Semaphores',
-        desc: 'every actor is its own POSIX thread on shared memory.\nzero deadlocks across 1,000+ ticks.',
-        link: 'projects/c-simulation.html',
-      },
-    };
-    var p = projects[key];
+  /* ── Projects: read live from the "Selected work" list on this page, so a new
+        project row shows up here with nothing else to edit ── */
+  function projects() {
+    return Array.prototype.map.call(document.querySelectorAll('.proj-list .proj-row'), function (li) {
+      var a = li.querySelector('a');
+      var href = a ? a.getAttribute('href') || '' : '';
+      var text = function (sel) { var e = li.querySelector(sel); return e ? e.textContent.trim() : ''; };
+      var name = text('.proj-row-name');
+      var dir = /^projects\//.test(href) ? href.replace(/^.*\//, '').replace(/\.html$/, '')
+                                         : name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      return {
+        dir: dir, name: name, year: text('.proj-row-year'), hook: text('.proj-row-hook'), href: href,
+        external: !!a && a.getAttribute('target') === '_blank',
+        stack: Array.prototype.map.call(li.querySelectorAll('.proj-row-pills span'), function (x) { return x.textContent.trim(); }).join(' · '),
+      };
+    }).filter(function (p) { return p.dir && p.href; });
+  }
+
+  /* "duely", "projects/duely/", "kernel", "ghost": the folder name first, then a word in the title */
+  function findProject(arg) {
+    var q = String(arg).toLowerCase().replace(/^(\.\/)?(projects\/)?/, '').replace(/\/$/, '');
+    if (!q) return null;
+    var list = projects();
+    return list.filter(function (p) { return p.dir === q; })[0]
+        || list.filter(function (p) { return p.dir.indexOf(q) === 0; })[0]
+        || list.filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; })[0]
+        || null;
+  }
+
+  function listProjects() {
+    var dirs = projects().map(function (p) { return p.dir + '/'; });
+    if (!dirs.length) { line('(empty)', 'ht-dim'); return; }
+    var w = Math.max.apply(null, dirs.map(function (d) { return d.length; })) + 3;
+    for (var i = 0; i < dirs.length; i += 2) {
+      var left = '<span class="ht-dir">' + esc(dirs[i]) + '</span>';
+      var right = dirs[i + 1] ? new Array(w - dirs[i].length + 1).join(' ') + '<span class="ht-dir">' + esc(dirs[i + 1]) + '</span>' : '';
+      line(left + right);
+    }
+  }
+
+  /* wraps the row's one-line description to the terminal's width */
+  function wrap(text, width) {
+    var out = [], cur = '';
+    text.toLowerCase().split(/\s+/).forEach(function (w) {
+      if (cur && (cur + ' ' + w).length > width) { out.push(cur); cur = w; }
+      else cur = cur ? cur + ' ' + w : w;
+    });
+    if (cur) out.push(cur);
+    return out;
+  }
+
+  function showProject(p) {
     if (!p) return;
-    line('<span class="ht-acc">' + esc(p.name) + '</span>');
-    line('<span class="ht-dim">' + esc(p.stack) + '</span>');
+    line('<span class="ht-acc">' + esc(p.name) + '</span>' + (p.year ? '  <span class="ht-dim">' + esc(p.year) + '</span>' : ''));
+    // the stack wraps between items, never inside one
+    var row = '';
+    p.stack.split(' · ').forEach(function (t) {
+      if (row && (row + ' · ' + t).length > 56) { line('<span class="ht-dim">' + esc(row) + '</span>'); row = t; }
+      else row = row ? row + ' · ' + t : t;
+    });
+    if (row) line('<span class="ht-dim">' + esc(row) + '</span>');
     blank();
-    p.desc.split('\n').forEach(function (l) { line(esc(l)); });
+    wrap(p.hook, 56).forEach(function (l) { line(esc(l)); });
     blank();
-    var href = p.link || p.ext;
-    var label = p.link ? 'open write-up' : 'open github';
-    line('<span class="ht-dim">' + label + ':  cd ' + esc('projects/' + key) + '</span>');
+    line('<span class="ht-dim">' + (p.external ? 'open it' : 'open write-up') + ':  cd ' + esc('projects/' + p.dir) + '</span>');
   }
 
   /* ── Input handler ───────────────────── */
