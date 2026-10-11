@@ -802,74 +802,87 @@ html.is-paged body { overflow: hidden; height: 100%; }
 
 /* ── Terminal easter egg ───────────────── */
 /* Terminal is always dark — uses own palette based on design tokens */
+/* The expanded terminal uses the same tokens as the hero terminal, so it matches it in light and dark */
 :root {
-  --term-bg:        oklch(7%  0 0);
-  --term-bg-title:  oklch(11% 0 0);
-  --term-border:    oklch(20% 0 0);
-  --term-ink:       oklch(88% 0 0);
-  --term-ink-dim:   oklch(42% 0 0);
-  --term-ink-faint: oklch(28% 0 0);
-  --term-green:     oklch(72% 0.16 148);
-  --term-red:       oklch(65% 0.18 25);
-  --term-blue:      oklch(73% 0.14 264); /* matches site accent in dark */
+  --term-bg:        var(--color-paper-2);
+  --term-bg-title:  var(--color-paper-3);
+  --term-border:    var(--color-rule);
+  --term-ink:       var(--color-ink);
+  --term-ink-dim:   var(--color-ink-3);
+  --term-ink-faint: var(--color-rule);
+  --term-green:     var(--color-success);
+  --term-red:       oklch(52% 0.18 25);
+  --term-blue:      var(--color-accent);
 }
 
 #term-overlay {
   position: fixed; inset: 0;
-  background: oklch(0% 0 0 / 72%);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: oklch(0% 0 0 / 0%);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9998;
+  transition: background 0.42s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.42s cubic-bezier(0.16, 1, 0.3, 1);
 }
 #term-overlay.open { display: flex; }
+#term-overlay.shown {
+  background: oklch(0% 0 0 / 38%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
 
 #term-window {
-  width: 720px;
-  max-width: calc(100vw - 2rem);
-  height: 480px;
+  width: min(960px, calc(100vw - 2rem));
+  height: min(640px, calc(100vh - 4rem));
   background: var(--term-bg);
-  border-radius: var(--radius-md);
   border: 1px solid var(--term-border);
+  border-top: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 32px 96px oklch(0% 0 0 / 80%),
-              0  0   0 1px oklch(100% 0 0 / 4%) inset;
+  box-shadow: 0 24px 80px oklch(0% 0 0 / 22%);
   font-family: var(--font-mono);
   overflow: hidden;
+  transform-origin: top left;
+  will-change: transform;
 }
 
 .term-titlebar {
-  height: 40px;
+  height: 38px;
   background: var(--term-bg-title);
   border-bottom: 1px solid var(--term-border);
   display: flex;
   align-items: center;
-  padding: 0 var(--space-sm);
-  gap: var(--space-2xs);
+  justify-content: space-between;
+  padding: 0 var(--space-md);
   flex-shrink: 0;
 }
 
-.term-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-.term-dot--red    { background: oklch(65% 0.18 25); }
-.term-dot--yellow { background: oklch(78% 0.14 85); }
-.term-dot--green  { background: oklch(68% 0.17 145); }
+.term-dot { display: none; }
 
 .term-title {
-  flex: 1;
-  text-align: center;
   font-size: var(--text-xs);
   color: var(--term-ink-dim);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
+
+.term-close {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--term-ink-dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: color var(--dur-short) var(--ease-out);
+}
+.term-close:hover { color: var(--color-accent); }
 
 #term-body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: var(--space-sm) var(--space-sm) var(--space-xs);
+  padding: var(--space-md) var(--space-md) var(--space-sm);
   overflow: hidden;
   min-height: 0;
 }
@@ -879,30 +892,33 @@ html.is-paged body { overflow: hidden; height: 100%; }
   overflow-y: auto;
   min-height: 0;
   font-size: var(--text-sm);
-  line-height: 1.75;
+  line-height: 1.8;
   color: var(--term-ink);
   white-space: pre-wrap;
   word-break: break-all;
+  padding-bottom: var(--space-xs);
 }
+#term-output p { margin: 0; }
 #term-output::-webkit-scrollbar { width: 3px; }
 #term-output::-webkit-scrollbar-track { background: transparent; }
 #term-output::-webkit-scrollbar-thumb { background: var(--term-ink-faint); border-radius: 2px; }
 
 .tl      { color: var(--term-ink); }
-.tl-cmd  { color: var(--term-green); }
+.tl-cmd  { color: var(--color-accent); }
 .tl-err  { color: var(--term-red); }
 .tl-dim  { color: var(--term-ink-dim); }
-.tl-acc  { color: var(--term-blue); }
+.tl-acc  { color: var(--color-accent); font-weight: 600; }
 .tl-mint { color: var(--term-green); }
 
 #term-input-row {
   display: flex;
   align-items: center;
-  margin-top: var(--space-2xs);
   flex-shrink: 0;
+  padding-top: var(--space-2xs);
+  border-top: 1px solid var(--term-border);
 }
 #term-prompt {
-  color: var(--term-green);
+  color: var(--color-accent);
   font-size: var(--text-sm);
   white-space: nowrap;
   user-select: none;
@@ -915,7 +931,8 @@ html.is-paged body { overflow: hidden; height: 100%; }
   color: var(--term-ink);
   font-family: var(--font-mono);
   font-size: var(--text-sm);
-  caret-color: var(--term-blue);
+  caret-color: var(--color-accent);
+  min-width: 0;
 }
 #term-canvas { display: none; width: 100%; flex: 1; min-height: 0; }
 

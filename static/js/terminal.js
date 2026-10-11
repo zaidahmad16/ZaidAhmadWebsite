@@ -17,16 +17,81 @@
   var snakeInterval = null;
 
   // ── Open / Close ──────────────────────────────────────────────
+  // The window grows out of the hero terminal and shrinks back into it (FLIP: measure both boxes,
+  // start the window at the hero's box with a transform, then animate the transform away).
+  var termBody = document.getElementById('term-body');
+  var closeBtn = overlay.querySelector('.term-close');
+  var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var OPEN_MS = 480, CLOSE_MS = 380;
+  var closing = false, closeTimer = null;
+
+  // the hero terminal's box, only while it's on screen (About page showing)
+  function heroBox() {
+    var hero = document.querySelector('.hero-term');
+    var about = document.getElementById('about');
+    if (!hero || (about && !about.classList.contains('page--active'))) return null;
+    var r = hero.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 ? { el: hero, r: r } : null;
+  }
+  // the transform that puts the window exactly over a box
+  function onto(r) {
+    var t = termWindow.getBoundingClientRect();
+    return 'translate(' + (r.left - t.left) + 'px,' + (r.top - t.top) + 'px) scale(' + (r.width / t.width) + ',' + (r.height / t.height) + ')';
+  }
+  function resetStyles() {
+    termWindow.style.transition = termWindow.style.transform = termWindow.style.opacity = '';
+    termBody.style.transition = termBody.style.opacity = '';
+  }
+
   function openTerm() {
+    if (overlay.classList.contains('open') && !closing) return;
+    if (closing) { clearTimeout(closeTimer); closing = false; }
     overlay.classList.add('open');
-    if (termOutput.children.length === 0) printWelcome();
-    termInput.focus();
+    if (termOutput.children.length === 0) continueFromHero();
+    resetStyles();
+    var hero = reduced ? null : heroBox();
+    termWindow.style.transition = 'none';
+    termWindow.style.transform = hero ? onto(hero.r) : 'scale(0.97)';
+    termWindow.style.opacity = hero ? '1' : '0';
+    termBody.style.opacity = hero ? '0' : '1';
+    if (hero) hero.el.style.visibility = 'hidden';               // one terminal on screen, not two
+    void termWindow.offsetWidth;                                  // apply the start state before animating
+    overlay.classList.add('shown');
+    var ms = reduced ? 160 : OPEN_MS;
+    termWindow.style.transition = 'transform ' + ms + 'ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms ease-out';
+    termBody.style.transition = 'opacity 220ms ease-out ' + (hero ? ms * 0.45 : 0) + 'ms';
+    termWindow.style.transform = 'none';
+    termWindow.style.opacity = '1';
+    termBody.style.opacity = '1';
+    termInput.focus({ preventScroll: true });
   }
 
   function closeTerm() {
+    if (!overlay.classList.contains('open') || closing) return;
     stopSnake();
-    overlay.classList.remove('open');
+    closing = true;
+    var hero = reduced ? null : heroBox();
+    termWindow.style.transition = 'none';
+    termWindow.style.transform = 'none';
+    var to = hero ? onto(hero.r) : 'scale(0.97)';
+    void termWindow.offsetWidth;
+    var ms = reduced ? 140 : CLOSE_MS;
+    overlay.classList.remove('shown');
+    termBody.style.transition = 'opacity 120ms ease-out';
+    termBody.style.opacity = '0';
+    termWindow.style.transition = 'transform ' + ms + 'ms cubic-bezier(0.65, 0, 0.35, 1), opacity ' + (hero ? 0 : 160) + 'ms ease-out';
+    termWindow.style.transform = to;
+    if (!hero) termWindow.style.opacity = '0';
+    closeTimer = setTimeout(function () {
+      overlay.classList.remove('open');
+      resetStyles();
+      var h = document.querySelector('.hero-term');
+      if (h) h.style.visibility = '';
+      closing = false;
+    }, ms);
   }
+
+  if (closeBtn) closeBtn.addEventListener('click', function () { if (!snakeRunning) closeTerm(); });
 
   // ── Output helpers ────────────────────────────────────────────
   function line(text, cls) {
@@ -34,6 +99,16 @@
     d.className = cls || 'tl';
     d.textContent = text || ' ';
     termOutput.appendChild(d);
+    termOutput.scrollTop = termOutput.scrollHeight;
+  }
+
+  // The first time it opens, carry over what the hero terminal already shows, so it reads as the same
+  // terminal getting bigger rather than a different one
+  function continueFromHero() {
+    var hero = document.getElementById('ht-output');
+    if (!hero || !hero.children.length) { printWelcome(); return; }
+    Array.prototype.forEach.call(hero.children, function (n) { termOutput.appendChild(n.cloneNode(true)); });
+    line('full terminal: type "help" for more commands', 'tl-dim');
     termOutput.scrollTop = termOutput.scrollHeight;
   }
 
