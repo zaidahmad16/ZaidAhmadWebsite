@@ -47,6 +47,7 @@
         line('<span class="ht-acc">zaid ahmad</span>');
         blank();
         line('cs @ carleton university');
+        line('minor in mathematics');
         line('ai/ml co-op stream &middot; 2029');
         break;
 
@@ -54,8 +55,10 @@
         if (!arg || arg === '.' || arg === '~') {
           line('<span class="ht-dir">projects/</span>    <span class="ht-file">resume.pdf</span>    <span class="ht-dim">.bashrc</span>');
         } else if (/^projects\/?$/.test(arg)) {
-          line('<span class="ht-dir">carleton-course-map/</span>   <span class="ht-dir">linux-kernel-patch/</span>');
-          line('<span class="ht-dir">nintendo-ds-card/</span>      <span class="ht-dir">c-simulation/</span>');
+          line('<span class="ht-dir">duely/</span>                 <span class="ht-dir">ontario-drive-test-map/</span>');
+          line('<span class="ht-dir">salah/</span>                 <span class="ht-dir">carleton-course-map/</span>');
+          line('<span class="ht-dir">linux-kernel-patch/</span>    <span class="ht-dir">nintendo-ds-card/</span>');
+          line('<span class="ht-dir">c-simulation/</span>');
         } else {
           line('ls: ' + esc(arg) + ': no such file or directory', 'ht-err');
         }
@@ -73,6 +76,12 @@
           line('alias ll="ls -alF"');
           line('alias gs="git status"');
           line('alias py="python3"');
+        } else if (/duely/.test(f)) {
+          showProject('duely');
+        } else if (/ontario|drive/.test(f)) {
+          showProject('ontario');
+        } else if (/salah/.test(f)) {
+          showProject('salah');
         } else if (/carleton/.test(f)) {
           showProject('carleton');
         } else if (/linux|kernel/.test(f)) {
@@ -88,7 +97,12 @@
 
       case 'cd':
         if (!arg || arg === '~' || arg === '.') { break; }
-        if (/carleton/.test(arg)) {
+        var pages = { duely: 'duely', 'ontario|drive': 'ontario-drive-test-map', salah: 'salah' };
+        var hit = Object.keys(pages).filter(function (k) { return new RegExp(k).test(arg); })[0];
+        if (hit) {
+          line('navigating&hellip;', 'ht-dim');
+          setTimeout(function () { window.location.href = 'projects/' + pages[hit] + '.html'; }, 400);
+        } else if (/carleton/.test(arg)) {
           line('navigating&hellip;', 'ht-dim');
           setTimeout(function () { window.location.href = 'projects/carleton-course-map.html'; }, 400);
         } else if (/linux|kernel/.test(arg)) {
@@ -205,6 +219,24 @@
 
   function showProject(key) {
     var projects = {
+      duely: {
+        name: 'Duely',
+        stack: 'TypeScript · Electron · Apps Script · Cloudflare Workers · Discord API',
+        desc: 'keeps brightspace deadlines, tests and classes in google calendar.\nsyncs from the student\'s own google account, laptop on or off.',
+        link: 'projects/duely.html',
+      },
+      ontario: {
+        name: 'OntarioDriveTestMap',
+        stack: 'Python · PaddleOCR · OpenStreetMap · FastAPI · React',
+        desc: 'ontario\'s road test routes, rebuilt from reddit posts and\nocr on dashcam video, with a confidence level per segment.',
+        link: 'projects/ontario-drive-test-map.html',
+      },
+      salah: {
+        name: 'Salah',
+        stack: 'Python · GTK4 · libadwaita · GJS · Cinnamon',
+        desc: 'prayer times from my mosque\'s own timetable,\nreproduced to the minute offline.',
+        link: 'projects/salah.html',
+      },
       carleton: {
         name: 'Carleton Course Map',
         stack: 'Python · Parsel · FastAPI · PostgreSQL · Next.js · React Flow',
