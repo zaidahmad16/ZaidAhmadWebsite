@@ -1,0 +1,12 @@
+# Repo files that aren't part of the website: never served.
+.git
+.github
+.gitignore
+.assetsignore
+.hallmark
+.impeccable
+.wrangler
+design.md
+PRODUCT.md
+README.md
+wrangler.jsonc
