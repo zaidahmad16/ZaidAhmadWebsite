@@ -1,10 +1,11 @@
 # Security headers for every page and file (Cloudflare Workers static assets read this file).
 # The policy allows only this site's own scripts, plus what the pages really use: Google Fonts,
-# jsDelivr icons, PokeAPI sprites/cries on raw.githubusercontent.com, and the Web3Forms contact form.
+# jsDelivr icons, PokeAPI sprites/cries on raw.githubusercontent.com, the Web3Forms contact form,
+# and Cloudflare Web Analytics (its beacon script is added by Cloudflare at the edge).
 /*
   Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://cdn.jsdelivr.net https://raw.githubusercontent.com; media-src 'self' https://raw.githubusercontent.com; connect-src 'self' https://api.web3forms.com; frame-src 'self'; frame-ancestors 'self'; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://cdn.jsdelivr.net https://raw.githubusercontent.com; media-src 'self' https://raw.githubusercontent.com; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com; frame-src 'self'; frame-ancestors 'self'; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'self'; upgrade-insecure-requests
