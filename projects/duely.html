@@ -39,33 +39,36 @@
         <span>desktop &middot; windows &middot; macos &middot; linux</span>
       </div>
       <h1 class="pp-title">Duely</h1>
-      <p class="pp-lead">I built an app that keeps my Brightspace deadlines in Google Calendar, and friends kept asking for it. Duely is the version they can install themselves. It uses their Google account and whichever AI they already pay for, and it keeps syncing after they close the laptop.</p>
+      <p class="pp-lead">Duely turns a student's Brightspace calendar into a clean Google Calendar: deadlines once instead of three times, tests moved when a prof's announcement says so, and a chat that answers "what's due this week?". It runs in the student's own Google account, so it keeps syncing with the laptop closed, and it uses whichever AI they already have.</p>
       <div class="pp-meta">
         <span class="pp-tag">TypeScript</span>
         <span class="pp-tag">Electron</span>
         <span class="pp-tag">Google Apps Script</span>
         <span class="pp-tag">Google Calendar API</span>
+        <span class="pp-tag">OpenAI / Anthropic / Gemini</span>
         <span class="pp-tag">Cloudflare Workers</span>
         <span class="pp-tag">Discord API</span>
+        <span class="pp-tag">GitHub Actions</span>
       </div>
-      <div class="pp-links">
-        <a href="https://github.com/zaidahmad16/Duely-public-/releases" target="_blank" rel="noopener" class="pp-github">Download (beta) &#8599;</a>
-        <a href="https://github.com/zaidahmad16/Duely-public-" target="_blank" rel="noopener" class="pp-github">View on GitHub &#8599;</a>
+      <div class="pp-download" aria-label="Download Duely 0.2.0 beta 1">
+        <span class="pp-download-label">Download &middot; v0.2.0-beta.1</span>
+        <div class="pp-links">
+          <a href="https://github.com/zaidahmad16/Duely-public-/releases/download/v0.2.0-beta.1/Duely-Setup-0.2.0-beta.1.exe" class="pp-github">Windows <span class="pp-dl-size">106 MB</span></a>
+          <a href="https://github.com/zaidahmad16/Duely-public-/releases/download/v0.2.0-beta.1/Duely-0.2.0-beta.1-arm64.dmg" class="pp-github">macOS &middot; Apple silicon <span class="pp-dl-size">121 MB</span></a>
+          <a href="https://github.com/zaidahmad16/Duely-public-/releases/download/v0.2.0-beta.1/Duely-0.2.0-beta.1-x64.dmg" class="pp-github">macOS &middot; Intel <span class="pp-dl-size">128 MB</span></a>
+          <a href="https://github.com/zaidahmad16/Duely-public-/releases/download/v0.2.0-beta.1/Duely-0.2.0-beta.1-x86_64.AppImage" class="pp-github">Linux AppImage <span class="pp-dl-size">120 MB</span></a>
+          <a href="https://github.com/zaidahmad16/Duely-public-/releases/download/v0.2.0-beta.1/Duely-0.2.0-beta.1-amd64.deb" class="pp-github">Linux .deb <span class="pp-dl-size">95 MB</span></a>
+        </div>
+        <p class="pp-download-note">It's a beta and isn't code-signed yet. On Windows, click <em>More info &rarr; Run anyway</em>; on a Mac, use <em>System Settings &rarr; Privacy &amp; Security &rarr; Open Anyway</em>. Then follow the <a href="https://github.com/zaidahmad16/Duely-public-/blob/p3-ui/docs/SETUP.md" target="_blank" rel="noopener">setup guide</a>.</p>
+        <div class="pp-links">
+          <a href="https://github.com/zaidahmad16/Duely-public-/releases" target="_blank" rel="noopener" class="pp-github">All releases &#8599;</a>
+          <a href="https://github.com/zaidahmad16/Duely-public-" target="_blank" rel="noopener" class="pp-github">View on GitHub &#8599;</a>
+        </div>
       </div>
     </header>
 
     <section class="pp-section">
-      <p>Brightspace has a calendar feed, but it's noisy. Every quiz shows up three times (opens, closes, due), course content "becomes available" every week, and when a prof moves a midterm it's usually only in an announcement. I first built an app that cleans that up for me, but it was hard-wired to my school, my Google project and my API key. Nobody else could run it.</p>
-      <p>Duely is the same engine with all of that pulled out. You paste your Brightspace calendar link, connect Google, and pick an AI provider: OpenAI, Anthropic, Gemini, or a model running on your own machine. Duely keeps a separate "Brightspace" calendar in your Google account and answers questions like "what's due this week?" or "when's my next test?".</p>
-    </section>
-
-    <section class="pp-section">
-      <h2>The result</h2>
-      <div class="pp-stats">
-        <div class="pp-stat"><strong>$0</strong><span>to run, for me or the student</span></div>
-        <div class="pp-stat"><strong>10 min</strong><span>between syncs, laptop on or off</span></div>
-        <div class="pp-stat"><strong>3</strong><span>systems: Windows, macOS, Linux</span></div>
-      </div>
+      <p>Brightspace's calendar feed is noisy. Every quiz shows up three times (opens, closes, due), course content "becomes available" every week, and when a prof moves a midterm it's usually only in an announcement. I'd built a version of this for myself first, hard-wired to my school, my Google project and my API key. Duely is that engine rebuilt so any student can install it, with no server of mine in the middle.</p>
       <div class="pp-images">
         <figure>
           <img src="../static/images/duely/upcoming.webp" alt="Duely's Upcoming screen: a question about a quiz that disappeared from Brightspace, a suggested study time for a lab report, and the week's deadlines with checkboxes" loading="lazy">
@@ -76,46 +79,88 @@
           <figcaption>Chat answers with the actual calendar items, and you can tick them off from there.</figcaption>
         </figure>
       </div>
+      <div class="pp-stats">
+        <div class="pp-stat"><strong>$0</strong><span>to run, for me or the student</span></div>
+        <div class="pp-stat"><strong>10 min</strong><span>between syncs, laptop on or off</span></div>
+        <div class="pp-stat"><strong>200</strong><span>automated tests, on all three systems</span></div>
+      </div>
     </section>
 
     <section class="pp-section">
-      <h2>Syncing with the laptop closed</h2>
-      <p>A desktop app only syncs while it's open, and students close their laptops. The normal fix is a server. That costs money every month, and it would mean I'm holding everyone's calendar access and AI keys, which I really didn't want.</p>
-      <p>Instead, Duely installs its engine as a Google Apps Script inside the student's own Google account. Google runs it every ten minutes, for free, and nobody but the student can see it. It's the same TypeScript engine the desktop app runs, bundled into one file. That part was fiddly: Apps Script has no <code>fetch</code>, <code>Intl</code>, <code>URL</code>, timers or Web Crypto, so the engine takes all of those as swappable services. The test suite runs the bundle in a sandbox with every one of them deleted, and fails if it writes a single event differently from the desktop app.</p>
-      <p>Only the script writes to the calendar. When you tick something off in the app, the change goes into a small inbox that the script picks up on its next run, so the two never fight over the same event. A full sync takes under six seconds. When nothing changed, it's about two.</p>
+      <h2>TypeScript: one engine, three places</h2>
+      <p><span class="pp-label">Why</span> The sync engine (parsing the feed, merging the three copies of each quiz, deciding what changed) already existed in TypeScript. The same code had to run on the desktop, inside Google Apps Script and in tests, and one language for all three meant one engine instead of three that drift apart.</p>
+      <p><span class="pp-label">The struggle</span> Apps Script isn't Node or a browser. It has no <code>fetch</code>, no <code>Intl</code>, no <code>URL</code>, no timers and no Web Crypto, and every time zone calculation in the engine leaned on <code>Intl</code>.</p>
+      <p><span class="pp-label">The fix</span> I pulled every host feature behind a small swappable service: time zone offsets, SHA-1, query strings, HTTP. The desktop plugs in Node's versions; the Apps Script build plugs in <code>Utilities</code> and <code>UrlFetchApp</code>. A build step bundles everything into one ~130 KB file, and a test runs that bundle in a sandbox with all of those globals deleted. It fails if the script writes a single calendar event differently from the desktop app.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Electron: one installer per system</h2>
+      <p><span class="pp-label">Why</span> Students use Windows, Macs and Linux, and the engine is TypeScript, so Electron let the desktop app run the engine directly with one codebase for all three.</p>
+      <div class="pp-images pp-images--single pp-images--narrow">
+        <figure>
+          <img src="../static/images/duely/onboarding.webp" alt="Duely's first setup step, Connect Brightspace, with a field for the Brightspace calendar link and a Continue button" loading="lazy">
+          <figcaption>Setup is five steps. The first is pasting your Brightspace calendar link.</figcaption>
+        </figure>
+      </div>
+      <p><span class="pp-label">The struggle</span> The failures were all quiet ones. The sandboxed preload script was built as an ES module, which Electron doesn't load there, so the window had no bridge to the app and nothing said why. On Linux desktops without a notification service, every notification froze the app for about 25 seconds. And on Linux without a keyring, Electron can't encrypt saved keys at all.</p>
+      <p><span class="pp-label">The fix</span> Each one got a check that would have caught it. The packaged smoke test now fails if the bridge isn't there, and it runs on Windows, macOS and Linux in GitHub Actions before any release is drafted. Duely asks D-Bus whether a notification service exists before sending one. Without a keyring, Duely still works but says plainly that keys are only lightly protected, and once a keyring shows up it moves the saved keys into it by itself.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Google Apps Script: syncing with the laptop closed</h2>
+      <p><span class="pp-label">Why</span> A desktop app only syncs while it's open. The usual fix is a server, which costs money every month and would mean I hold every student's calendar access and AI key. Apps Script runs code inside the student's own Google account, on a timer, for free, and nobody else can see it.</p>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/duely/apps-script-runs.webp" alt="Apps Script's execution log for Duely: duelyTick runs every ten minutes, each finishing in two to nine seconds, all completed" loading="lazy">
+          <figcaption>The script in a test account: a run every ten minutes, most finishing in about three seconds.</figcaption>
+        </figure>
+      </div>
+      <p><span class="pp-label">The struggle</span> The desktop app needs to talk to the script, and the obvious way, a private web app, rejects the call unless the student also grants Google Drive access, which is far too much to ask. Calling the Calendar API from the script failed with a 403, because the script's hidden Cloud project doesn't have it enabled. And one line that referenced Node's <code>process</code> only crashed once it ran in Apps Script for real.</p>
+      <p><span class="pp-label">The fix</span> The web app is open to anonymous calls but answers nothing without a 256-bit key that only the student's desktop has, checked in constant time. Calendar writes go through Apps Script's built-in Calendar service instead of the REST API. Only the script writes to the calendar: when you tick something off in the app, it goes into an inbox the script picks up next run, so the two never fight over an event. A full sync takes under six seconds; when nothing changed, about two.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Google Calendar and sign-in</h2>
+      <p><span class="pp-label">Why</span> Google Calendar is what students already have on their phones. Duely asks for the narrowest permission Google offers, <code>calendar.app.created</code>: it can only see the one calendar it creates, never your other ones.</p>
+      <p><span class="pp-label">The struggle</span> Each student brings their own Google sign-in client, and Google signs a client in "Testing" out every seven days. The standard advice is to publish the client, but that's buried behind Google Cloud's branding forms.</p>
+      <p><span class="pp-label">The fix</span> I looked at what actually needs that sign-in. Once the script is installed, it runs on its own authorization, so the desktop only needs Google when a new version updates the script. An expired sign-in now just waits for a one-click Reconnect, and nothing stops syncing in the meantime.</p>
     </section>
 
     <section class="pp-section">
       <h2>Bring your own AI</h2>
-      <p>Nobody should have to know what <code>gemini-flash-lite-latest</code> means. Duely asks the provider which models your key can use, tries a few small, fast ones, and skips any that are overloaded or gone. Before an answer is shown, Duely checks it against the calendar. If the AI mentions a date or an item that isn't there, it has to try again. When the AI is down or out of quota, a rule-based parser answers instead. That parser passes all 811 questions in my test set.</p>
+      <p><span class="pp-label">Why</span> Paying for my own AI calls on behalf of every student wasn't an option, and holding their keys was worse. So students bring one key: OpenAI, Anthropic, Gemini (which has a free tier), Mistral, Groq, or a model running on their own computer. Duely has adapters for OpenAI-compatible APIs, Anthropic and Gemini, and the key never leaves the student's machine and Google account.</p>
       <div class="pp-images pp-images--single pp-images--narrow">
         <figure>
           <img src="../static/images/duely/ai-setup.webp" alt="Duely's 'Choose your AI' step with Gemini selected, a key entered, and checks passed for chat, reading and screenshots, using a model Duely chose" loading="lazy">
           <figcaption>You paste a key and press Test. Duely picks the model and checks what it can do.</figcaption>
         </figure>
       </div>
-      <p>The same test set run against a real model caught something the offline tests couldn't. Newer Gemini models reject a conversation unless each tool call is sent back with its "thought signature". Duely was dropping it, so any answer that needed a second step silently fell back to the rules, and I'd have kept thinking the AI was doing the work. With the signature passed through, the live score went to 148 out of 150.</p>
-    </section>
-
-    <section class="pp-section">
-      <h2>Your timetable from a screenshot</h2>
-      <p>Class times aren't in the Brightspace feed, so you screenshot your timetable and the AI reads it, Fall and Winter in one go. You check each term before anything is added. Duely skips classes during reading week if Brightspace lists it, and it points out things the AI copies without question. One of my test timetables lists the same English class as ENGL 2106 on Monday and Wednesday but ENGL 2166 on Friday, so Duely asks which one is right.</p>
+      <p><span class="pp-label">The struggle</span> Models get renamed, overloaded and retired, and nobody should have to know what <code>gemini-flash-lite-latest</code> means. Worse, a live test caught a bug the offline tests couldn't: newer Gemini models reject a conversation unless each tool call comes back with its "thought signature". Duely was dropping it, so any answer that needed a second step quietly fell back to the rules, and it looked like the AI was working.</p>
+      <p><span class="pp-label">The fix</span> Duely asks the provider which models the key can use and tries small, fast ones, skipping any that are overloaded or gone. The adapter passes the signature through, and the live score went to 148 of 150. Every answer is checked against the calendar before it's shown; a date or item that isn't there sends the AI back to try again. If the AI is down, a rule-based parser answers instead, and it passes all 811 questions in the test set.</p>
       <div class="pp-images pp-images--single pp-images--narrow">
         <figure>
           <img src="../static/images/duely/timetable-review.webp" alt="Duely's review of a Winter 2027 term read from a screenshot, listing courses without meeting times and warning that ENGL 2166 on Friday looks like ENGL 2106" loading="lazy">
-          <figcaption>Reviewing Winter 2027. The yellow note is the ENGL mix-up.</figcaption>
+          <figcaption>Class times aren't in the feed, so the AI reads a timetable screenshot. You review each term first; the yellow note flags a course code the AI copied wrong.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="pp-section">
-      <h2>Alerts on your phone</h2>
-      <p>If a prof moves a test while your laptop is shut, a desktop notification doesn't help much. So Duely can also DM you on Discord from a Duely bot. Discord only lets a bot message people it shares a server with, and a bot's token can't be shipped inside an app, so a small Cloudflare Worker holds it. The Worker keeps a hash of each device's token and your Discord ID. It never stores what the alerts say. The only way into the server is through Duely's own sign-in, and anyone in it without a link gets removed within the hour. Your Apps Script talks to the Worker directly, which is why the alert still arrives with the laptop off.</p>
+      <h2>Cloudflare Workers and Discord: alerts on your phone</h2>
+      <p><span class="pp-label">Why</span> If a prof moves a test while your laptop is shut, a desktop notification doesn't help. A Discord DM reaches your phone, and students set it up with one sign-in instead of creating a bot or webhook themselves.</p>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/duely/alerts.webp" alt="Duely's Notifications settings: desktop notifications and important announcements turned on, and a Connect Discord button for alerts as Discord DMs" loading="lazy">
+          <figcaption>Alerts: desktop notifications, and Discord DMs that work with the computer off.</figcaption>
+        </figure>
+      </div>
+      <p><span class="pp-label">The struggle</span> Discord only lets a bot DM people it shares a server with, and a bot token can't ship inside an open-source app. That means a server in the middle, which I'd been avoiding, plus a public Discord server that strangers could wander into.</p>
+      <p><span class="pp-label">The fix</span> A small Cloudflare Worker on the free tier holds the token. It stores only a hash of each device's token and the Discord user ID, never the text of an alert. The server has no invites: the only way in is Duely's own Connect Discord sign-in, an hourly sweep removes anyone without a link, and links unused for 30 days are deleted. The Apps Script calls the Worker directly, so the DM still arrives with the laptop off.</p>
     </section>
 
     <section class="pp-section">
       <h2>Your data</h2>
-      <p>There's no Duely account. Your settings and keys stay on your computer, encrypted with the system keychain, and the engine lives in your Google account, not mine. Duely only gets access to the calendar it creates, not your other ones. The <a href="https://github.com/zaidahmad16/Duely-public-/blob/p3-ui/docs/PRIVACY.md" target="_blank" rel="noopener">privacy policy</a> spells out what goes where.</p>
+      <p>There's no Duely account. Settings and keys stay on your computer, encrypted with the system keychain, and the engine lives in your Google account, not mine. Releases are built and tested on all three systems by GitHub Actions, and the app updates itself from GitHub Releases. The <a href="https://github.com/zaidahmad16/Duely-public-/blob/p3-ui/docs/PRIVACY.md" target="_blank" rel="noopener">privacy policy</a> spells out what goes where.</p>
     </section>
 
   </div>
