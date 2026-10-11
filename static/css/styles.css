@@ -370,6 +370,22 @@ html.is-paged body { overflow: hidden; height: 100%; }
   letter-spacing: 0.04em;
   flex-shrink: 0;
 }
+.proj-row-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-success);
+}
+.proj-row-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
 
 .proj-row-hook {
   font-size: var(--text-md);
@@ -487,6 +503,20 @@ html.is-paged body { overflow: hidden; height: 100%; }
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-md);
+}
+
+.ts-groups.cin-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--space-lg) var(--space-xl);
+}
+.ts-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin: 0 0 var(--space-xs);
 }
 
 .ts-item {

@@ -74,6 +74,17 @@ function initHighlights() {
   window._hlStart = start;
   window._hlStop  = stop;
 
+  // Pause while someone is reading it (pointer over it, or keyboard focus inside it)
+  var box = document.querySelector('.highlights');
+  var held = false;
+  if (box) {
+    box.addEventListener('mouseenter', function () { held = true; stop(); });
+    box.addEventListener('mouseleave', function () { held = false; start(); });
+    box.addEventListener('focusin',    function () { held = true; stop(); });
+    box.addEventListener('focusout',   function () { held = false; start(); });
+  }
+  window._hlStart = function () { if (!held) start(); };
+
   // Start on load (About is first page)
   start();
 }

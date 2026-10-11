@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zaid Ahmad — CS @ Carleton</title>
+  <meta name="description" content="Backend &amp; database developer. Duely, OntarioDriveTestMap, Carleton Course Map, a Linux kernel patch and more.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zaid Ahmad">
+  <meta property="og:title" content="Zaid Ahmad — CS @ Carleton">
+  <meta property="og:description" content="Backend &amp; database developer. Duely, OntarioDriveTestMap, Carleton Course Map, a Linux kernel patch and more.">
+  <meta property="og:url" content="https://zaidahmad.dev/">
+  <meta property="og:image" content="https://zaidahmad.dev/static/images/og/index.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="tokens.css">
-  <link rel="stylesheet" href="static/css/styles.css?v=23">
+  <link rel="stylesheet" href="static/css/styles.css?v=24">
   <link rel="stylesheet" href="static/css/pokemon-battle.css">
   <link rel="stylesheet" href="static/css/snake.css">
 </head>
@@ -54,19 +64,19 @@
             <a class="id-btn id-btn--primary" href="#contact" data-switch-page="contact">Get in touch →</a>
             <a href="static/docs/ZaidAhmadResume.pdf" target="_blank" rel="noopener" class="id-btn id-btn--secondary">Resume ↗</a>
           </div>
-          <div class="highlights cin-group" style="--ci:2" aria-live="polite">
+          <div class="highlights cin-group" style="--ci:2" aria-label="Highlights" tabindex="0">
             <div class="hl-bar"></div>
             <div class="hl-track">
               <p class="hl-slide hl-slide--active">4.5K+ students use CarletonCourseMap across every program at Carleton.</p>
+              <p class="hl-slide">Business Analyst at IRCC, triaging IT change requests and writing the docs that drive IT prioritization.</p>
+              <p class="hl-slide">Traced a wireless bug through the Linux mac80211 stack and fixed it in the kernel.</p>
               <p class="hl-slide">Duely keeps Brightspace deadlines in Google Calendar, synced from each student's own Google account.</p>
               <p class="hl-slide">Rebuilt Ontario's road test routes from Reddit posts and OCR on dashcam video.</p>
-              <p class="hl-slide">Salah shows my mosque's prayer timetable and reproduces it to the minute offline.</p>
-              <p class="hl-slide">Traced a wireless bug through the Linux mac80211 stack and fixed it in the kernel.</p>
               <p class="hl-slide">Government of Canada Reliability Status security clearance.</p>
+              <p class="hl-slide">Salah shows my mosque's prayer timetable and reproduces it to the minute offline.</p>
               <p class="hl-slide">Built a business card that boots on a Nintendo DS. Play a short game, get my contact info at the end.</p>
-              <p class="hl-slide">Ghost hunting simulation in C — every actor its own POSIX thread. Zero deadlocks across 1,000+ ticks.</p>
               <p class="hl-slide">Leading logistics for cuHacking, Carleton's 500+ attendee hackathon.</p>
-              <p class="hl-slide">Working as a Business Analyst at IRCC — triaging IT change requests and writing the docs that drive IT prioritization.</p>
+              <p class="hl-slide">Ghost hunting simulation in C where every actor is its own POSIX thread. Zero deadlocks across 1,000+ ticks.</p>
               <p class="hl-slide">Volunteered with Carleton's CS Society on search, test coverage and a force-directed course-graph visualization.</p>
             </div>
             <span class="hl-counter"><span class="hl-n">01</span> / 11</span>
@@ -136,6 +146,8 @@
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">OntarioDriveTestMap</div>
+                  <span class="proj-row-year">2026</span>
+                  <span class="proj-row-live" title="Live at ontariodrivetestmap.fyi">live</span>
                 </div>
                 <p class="proj-row-hook">A map of Ontario's road test routes, rebuilt from Reddit posts and OCR on dashcam video, showing how confident it is about every segment.</p>
                 <div class="proj-row-pills">
@@ -240,7 +252,7 @@
           <div class="exp-entry">
             <div class="exp-header">
               <h3 class="exp-role">Business Analyst (FSWEP) <span class="exp-sep">&middot;</span> <span class="exp-co">Immigration, Refugees and Citizenship Canada</span></h3>
-              <span class="exp-date">Jun 2026 &mdash; Aug 2026</span>
+              <span class="exp-date">Jun 2026 &ndash; Aug 2026</span>
             </div>
             <p class="exp-detail">Triaged intake across four request categories in Azure DevOps, turned vague impact claims into quantified business requirements, and wrote the shared intake standards the team drafts against now.</p>
             <div class="pill-row">
@@ -251,9 +263,9 @@
           <div class="exp-entry">
             <div class="exp-header">
               <h3 class="exp-role">Software Developer (Volunteer) <span class="exp-sep">&middot;</span> <span class="exp-co">Carleton Computer Science Society</span></h3>
-              <span class="exp-date">May 2026 &mdash; Aug 2026</span>
+              <span class="exp-date">May 2026 &ndash; Aug 2026</span>
             </div>
-            <p class="exp-detail">Built out the CCSS course-graph Explorer &mdash; type-ahead search, a core-courses filter, test coverage in CI, and a force-directed webring visualization with d3-force.</p>
+            <p class="exp-detail">Built out the CCSS course-graph Explorer: type-ahead search, a core-courses filter, test coverage in CI, and a force-directed webring visualization with d3-force.</p>
             <div class="pill-row">
               <span>React</span><span>TypeScript</span><span>d3-force</span><span>Vitest</span>
             </div>
@@ -262,9 +274,9 @@
           <div class="exp-entry">
             <div class="exp-header">
               <h3 class="exp-role">Logistics Lead <span class="exp-sep">&middot;</span> <span class="exp-co">cuHacking</span></h3>
-              <span class="exp-date">Sep 2025 &mdash; Present</span>
+              <span class="exp-date">Sep 2025 &ndash; Present</span>
             </div>
-            <p class="exp-detail">Leading a 2-person logistics team for a 500+ attendee hackathon &mdash; venue setup, equipment, and day-of operations.</p>
+            <p class="exp-detail">Leading a 2-person logistics team for a 500+ attendee hackathon, covering venue setup, equipment and day-of operations.</p>
           </div>
 
         </div>
@@ -275,9 +287,9 @@
           <div class="exp-entry">
             <div class="exp-header">
               <h3 class="exp-role">B.Sc. Computer Science <span class="exp-sep">&middot;</span> <span class="exp-co">Carleton University</span></h3>
-              <span class="exp-date">2024 &mdash; 2029</span>
+              <span class="exp-date">2024 &ndash; 2029</span>
             </div>
-            <p class="exp-detail">AI &amp; Machine Learning Co-op stream with a minor in mathematics, though most of my time goes to systems programming, algorithms, and math.</p>
+            <p class="exp-detail">AI &amp; Machine Learning co-op stream, with a minor in mathematics.</p>
             <div class="pill-row">
               <span>Data Structures</span><span>C/C++</span><span>Linear Algebra</span><span>Discrete Structures II</span><span>Web Applications</span>
             </div>
@@ -293,45 +305,75 @@
         </div>
 
         <p class="section-heading">Technical Skills</p>
-        <div class="tech-stack cin-skills">
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/c/c-original.svg" alt="C"><span>C</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/cplusplus/cplusplus-original.svg" alt="C++"><span>C++</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/python/python-original.svg" alt="Python"><span>Python</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/typescript/typescript-original.svg" alt="TypeScript"><span>TypeScript</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/javascript/javascript-original.svg" alt="JavaScript"><span>JavaScript</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/java/java-original.svg" alt="Java"><span>Java</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/go/go-original.svg" alt="Go"><span>Go</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nodejs/nodejs-original.svg" alt="Node.js"><span>Node.js</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/express/express-original.svg" alt="Express" class="icon-dark"><span>Express</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/fastapi/fastapi-original.svg" alt="FastAPI"><span>FastAPI</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"><span>PostgreSQL</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/sqlite/sqlite-original.svg" alt="SQLite"><span>SQLite</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/mongodb/mongodb-original.svg" alt="MongoDB"><span>MongoDB</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/supabase/supabase-original.svg" alt="Supabase"><span>Supabase</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/firebase/firebase-plain.svg" alt="Firebase"><span>Firebase</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/docker/docker-original.svg" alt="Docker"><span>Docker</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/cloudflare/cloudflare-original.svg" alt="Cloudflare"><span>Cloudflare</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud"><span>Google Cloud</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" class="icon-dark"><span>AWS</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vercel/vercel-original.svg" alt="Vercel" class="icon-dark"><span>Vercel</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/railway/railway-original.svg" alt="Railway" class="icon-light"><span>Railway</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/github/github-original.svg" alt="GitHub Actions" class="icon-dark"><span>GitHub Actions</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/azuredevops/azuredevops-original.svg" alt="Azure DevOps"><span>Azure DevOps</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/prometheus/prometheus-original.svg" alt="Prometheus"><span>Prometheus</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/grafana/grafana-original.svg" alt="Grafana"><span>Grafana</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/electron/electron-original.svg" alt="Electron"><span>Electron</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React"><span>React</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React Native"><span>React Native</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nextjs/nextjs-original.svg" alt="Next.js" class="icon-dark"><span>Next.js</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vitejs/vitejs-original.svg" alt="Vite"><span>Vite</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS"><span>Tailwind</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/hugo/hugo-original.svg" alt="Hugo"><span>Hugo</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/linux/linux-original.svg" alt="Linux"><span>Linux</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/git/git-original.svg" alt="Git"><span>Git</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/bash/bash-original.svg" alt="Bash" class="icon-dark"><span>Bash</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vitest/vitest-original.svg" alt="Vitest"><span>Vitest</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/pytest/pytest-original.svg" alt="pytest"><span>pytest</span></div>
-          <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/scikitlearn/scikitlearn-original.svg" alt="scikit-learn"><span>scikit-learn</span></div>
+        <div class="ts-groups cin-skills">
+          <div class="ts-group">
+            <p class="ts-label">Languages</p>
+            <div class="tech-stack">
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/c/c-original.svg" alt="C"><span>C</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/cplusplus/cplusplus-original.svg" alt="C++"><span>C++</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/python/python-original.svg" alt="Python"><span>Python</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/typescript/typescript-original.svg" alt="TypeScript"><span>TypeScript</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/javascript/javascript-original.svg" alt="JavaScript"><span>JavaScript</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/java/java-original.svg" alt="Java"><span>Java</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/go/go-original.svg" alt="Go"><span>Go</span></div>
+            </div>
+          </div>
+          <div class="ts-group">
+            <p class="ts-label">Backend</p>
+            <div class="tech-stack">
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nodejs/nodejs-original.svg" alt="Node.js"><span>Node.js</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/express/express-original.svg" alt="Express" class="icon-dark"><span>Express</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/fastapi/fastapi-original.svg" alt="FastAPI"><span>FastAPI</span></div>
+            </div>
+          </div>
+          <div class="ts-group">
+            <p class="ts-label">Databases</p>
+            <div class="tech-stack">
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"><span>PostgreSQL</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/sqlite/sqlite-original.svg" alt="SQLite"><span>SQLite</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/mongodb/mongodb-original.svg" alt="MongoDB"><span>MongoDB</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/supabase/supabase-original.svg" alt="Supabase"><span>Supabase</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/firebase/firebase-plain.svg" alt="Firebase"><span>Firebase</span></div>
+            </div>
+          </div>
+          <div class="ts-group">
+            <p class="ts-label">Cloud &amp; infra</p>
+            <div class="tech-stack">
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/docker/docker-original.svg" alt="Docker"><span>Docker</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/cloudflare/cloudflare-original.svg" alt="Cloudflare"><span>Cloudflare</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud"><span>Google Cloud</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" class="icon-dark"><span>AWS</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vercel/vercel-original.svg" alt="Vercel" class="icon-dark"><span>Vercel</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/railway/railway-original.svg" alt="Railway" class="icon-light"><span>Railway</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/github/github-original.svg" alt="GitHub Actions" class="icon-dark"><span>GitHub Actions</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/azuredevops/azuredevops-original.svg" alt="Azure DevOps"><span>Azure DevOps</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/prometheus/prometheus-original.svg" alt="Prometheus"><span>Prometheus</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/grafana/grafana-original.svg" alt="Grafana"><span>Grafana</span></div>
+            </div>
+          </div>
+          <div class="ts-group">
+            <p class="ts-label">Frontend &amp; desktop</p>
+            <div class="tech-stack">
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/electron/electron-original.svg" alt="Electron"><span>Electron</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React"><span>React</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/react/react-original.svg" alt="React Native"><span>React Native</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/nextjs/nextjs-original.svg" alt="Next.js" class="icon-dark"><span>Next.js</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vitejs/vitejs-original.svg" alt="Vite"><span>Vite</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS"><span>Tailwind</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/hugo/hugo-original.svg" alt="Hugo"><span>Hugo</span></div>
+            </div>
+          </div>
+          <div class="ts-group">
+            <p class="ts-label">Tools &amp; testing</p>
+            <div class="tech-stack">
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/linux/linux-original.svg" alt="Linux"><span>Linux</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/git/git-original.svg" alt="Git"><span>Git</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/bash/bash-original.svg" alt="Bash" class="icon-dark"><span>Bash</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/vitest/vitest-original.svg" alt="Vitest"><span>Vitest</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/pytest/pytest-original.svg" alt="pytest"><span>pytest</span></div>
+            <div class="ts-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons/scikitlearn/scikitlearn-original.svg" alt="scikit-learn"><span>scikit-learn</span></div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -447,7 +489,7 @@
     <iframe src="static/docs/ZaidAhmadResume.pdf" class="ro-frame" title="Resume"></iframe>
   </div>
 
-  <script src="static/js/cinematic.js"></script>
+  <script src="static/js/cinematic.js?v=2"></script>
   <script src="static/js/script.js?v=9"></script>
   <script src="static/js/cursor.js"></script>
   <script src="static/js/terminal.js?v=3"></script>
