@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RPi Network Packet Analyzer — Zaid Ahmad</title>
-  <meta name="description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows which devices are on my network and who they talk to.">
+  <meta name="description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows who's on my network, graphs it in Grafana, and emails me through AWS when something looks wrong.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zaid Ahmad">
   <meta property="og:title" content="RPi Network Packet Analyzer — Zaid Ahmad">
-  <meta property="og:description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows which devices are on my network and who they talk to.">
+  <meta property="og:description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows who's on my network, graphs it in Grafana, and emails me through AWS when something looks wrong.">
   <meta property="og:url" content="https://zaidahmad.dev/projects/rpi-packet-analyzer">
   <meta property="og:image" content="https://zaidahmad.dev/static/images/og/rpi-packet-analyzer.png">
   <meta property="og:image:width" content="1200">
@@ -48,13 +48,17 @@
         <span>networking &middot; raspberry pi &middot; linux</span>
       </div>
       <h1 class="pp-title">RPi Network Packet Analyzer</h1>
-      <p class="pp-lead">A packet analyzer that lives on my Raspberry Pi 5. It reads traffic straight off the network card, decodes every header by hand, and shows which devices are on my network and who they're talking to, in a terminal or in a browser.</p>
+      <p class="pp-lead">A packet analyzer that lives on my Raspberry Pi 5. It reads traffic straight off the network card, decodes every header by hand, and shows which devices are on my network and who they're talking to. Prometheus and Grafana keep the history, and AWS emails me when something looks wrong.</p>
       <div class="pp-meta">
         <span class="pp-tag">Python</span>
         <span class="pp-tag">Linux raw sockets</span>
         <span class="pp-tag">Raspberry Pi 5</span>
         <span class="pp-tag">Server-Sent Events</span>
-        <span class="pp-tag">pcap</span>
+        <span class="pp-tag">Prometheus</span>
+        <span class="pp-tag">Grafana</span>
+        <span class="pp-tag">Kubernetes (k3s)</span>
+        <span class="pp-tag">AWS SNS</span>
+        <span class="pp-tag">AWS S3</span>
         <span class="pp-tag">systemd</span>
       </div>
       <a href="https://github.com/zaidahmad16/rpi-packet-analyzer" target="_blank" rel="noopener" class="pp-github">View on GitHub &#8599;</a>
@@ -70,7 +74,7 @@
       <div class="pp-stats">
         <div class="pp-stat"><strong>0</strong><span>packages to install</span></div>
         <div class="pp-stat"><strong>13</strong><span>protocols decoded by hand</span></div>
-        <div class="pp-stat"><strong>26</strong><span>tests on hand-built packets</span></div>
+        <div class="pp-stat"><strong>44</strong><span>tests on hand-built packets</span></div>
       </div>
       <div class="pp-images pp-images--single">
         <figure>
@@ -115,8 +119,21 @@
       <h3 class="pp-stack-group">Running it</h3>
       <dl class="pp-stack">
         <div><dt>Classic pcap</dt><dd>reads and saves captures that Wireshark can open</dd></div>
-        <div><dt>systemd</dt><dd>starts it on boot as an unprivileged user</dd></div>
-        <div><dt><code>unittest</code></dt><dd>26 tests that build their own packets byte by byte</dd></div>
+        <div><dt>systemd</dt><dd>starts it on boot as a throwaway user with only the capture permissions</dd></div>
+        <div><dt><code>unittest</code></dt><dd>44 tests that build their own packets byte by byte</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Monitoring</h3>
+      <dl class="pp-stack">
+        <div><dt>Prometheus</dt><dd>scrapes pktan every 15 seconds and keeps 30 days of history</dd></div>
+        <div><dt>Grafana</dt><dd>the long-term dashboard, provisioned from a file</dd></div>
+        <div><dt>k3s (Kubernetes)</dt><dd>runs Prometheus and Grafana on the same Pi</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">AWS</h3>
+      <dl class="pp-stack">
+        <div><dt>SNS</dt><dd>emails me alerts: new devices, port scans, ARP changes</dd></div>
+        <div><dt>S3</dt><dd>stores full capture files, deleted after 30 days</dd></div>
+        <div><dt>IAM</dt><dd>a user that can only send to that one topic and upload to that one folder</dd></div>
+        <div><dt>Signature Version 4, by hand</dt><dd>signs every AWS request with <code>hmac</code> and <code>hashlib</code>, so there's still no SDK</dd></div>
       </dl>
     </section>
 
@@ -155,9 +172,35 @@
     </section>
 
     <section class="pp-section">
+      <h2>History in Prometheus and Grafana</h2>
+      <p><span class="pp-label">Why</span> The browser dashboard only knows the last two minutes, and it forgets everything when pktan restarts. I wanted to see what the network did overnight. So pktan serves a <code>/metrics</code> page in Prometheus's text format: packet and byte counters per protocol, DNS queries, alerts by kind, and how many devices are active. I wrote that format by hand too, since it's just lines of text. Prometheus pulls it every 15 seconds and stores 30 days of it, and Grafana draws the graphs.</p>
+      <p>The Pi has no Docker, but it already runs k3s, a small Kubernetes. So Prometheus and Grafana run there as two deployments, with Prometheus's data on a 2 GB volume and Grafana's data source and dashboard loaded from files. pktan itself stays outside Kubernetes, because it needs raw access to the Pi's network cards. Prometheus uses the host's network and scrapes <code>127.0.0.1:8080</code>, so it keeps working when the router hands the Pi a new IP address.</p>
+      <p><span class="pp-label">The struggle</span> My first dashboard lied in small ways. One alert showed up as "1.01", because Prometheus estimates how much a counter grew over a window instead of counting exactly. A chart of alerts per 10 minutes drew that single alert as a dozen bars, because every window it slid over counted it again. And Grafana's default colours turned a perfectly normal 486 kb/s red.</p>
+      <p><span class="pp-label">The fix</span> Alert counts are rounded to whole numbers and shown as one total per kind over the last day. Colours only change when there's something worth looking at, and the protocol list is sorted by size with empty rows left out. I checked every new query against the live Prometheus before shipping it.</p>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/rpi-packet-analyzer/grafana.webp" alt="The pktan Grafana dashboard over 90 minutes: throughput, active devices, LAN hosts, 21 alerts, bandwidth and packet charts with two spikes, traffic by protocol led by HTTPS, a sorted top-protocols list, alerts by kind with 20 new-device and 1 port-scan, and DNS queries per minute" loading="lazy">
+          <figcaption>Grafana on the Pi. Most of those 20 "new device" alerts are the false ones from the next section, raised before I fixed them.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>Alerts through AWS</h2>
+      <p><span class="pp-label">Why</span> A dashboard only helps if I'm looking at it, so I wanted alerts to come to me. pktan publishes them to Amazon SNS, which emails me. It can also save its capture to a file, and every time that file fills up, it goes to S3 and is deleted from the Pi, so the SD card never fills. Old captures expire after 30 days. On a home network all of this costs a few cents a month at most. The Pi's AWS user can't do anything except send to that one topic and upload into that one folder.</p>
+      <p>I didn't want to give up "no dependencies" just to talk to AWS, so I wrote the request signing myself. AWS Signature Version 4 is a chain of HMAC-SHA256 steps over a carefully formatted copy of the request. Before touching real AWS, I tested it against the examples AWS publishes, and it matched them exactly. The first real call worked on the first try.</p>
+      <div class="pp-code">10.0.0.32 tried 25 ports on 10.0.0.249 in 10s (port scan?)
+
+Seen by pktan on raspberrypi (wlan0) at 2026-10-29 13:55:51.</div>
+      <p>That's a real alert email, from a test where I knocked on 30 ports of the Pi from my laptop. Even the test taught me something. The first try produced nothing, because <code>raspberrypi.local</code> pointed at the Pi's Ethernet port while pktan was listening on its Wi-Fi.</p>
+      <p><span class="pp-label">The struggle</span> The next emails were wrong. They said a new device had joined, but one was a Hikvision device I'd already seen in a capture an hour and a half earlier, and another was the Pi's own Ethernet port. pktan forgot the whole network every time it restarted, and I'd restarted it three times while testing. After a restart it only waited 90 seconds before calling a device new. Quiet devices like cameras and smart plugs can go minutes without saying anything, so each one got announced the moment it spoke. My tests had caught a similar problem earlier that day: a port scan that touched ports 21 and 23 also raised "unencrypted Telnet/FTP" alerts.</p>
+      <p><span class="pp-label">The fix</span> pktan now keeps the list of every device it has ever seen in a small file in its state folder, so a reboot doesn't re-announce anything. The Pi's own network cards count as known from the start. On a first run with no saved list, it learns for 10 minutes before it alerts. The Telnet and FTP alert now waits for the server to accept the connection, so a scan's knocking doesn't count.</p>
+    </section>
+
+    <section class="pp-section">
       <h2>Built to run for weeks</h2>
       <p>Anything that starts on boot and never stops can't be allowed to grow forever. Every table pktan keeps (hosts, devices, conversations, names) has a ceiling, and when one fills up, the entries seen least recently are dropped. Logs are fixed-size queues. Saving to a pcap file has a size limit and rotates into a single backup, so it never uses more than twice the limit on disk. A test pushes 10,000 different hosts through and checks that the tables stay under 4,000.</p>
-      <p>The included systemd service doesn't run as root either. Capturing only needs the <code>CAP_NET_RAW</code> capability, so the service runs as <code>nobody</code> with just the two network capabilities, a read-only filesystem and a 200 MB memory cap. A packet parser reads bytes from anyone on the network, and it shouldn't run with full root powers while it does that.</p>
+      <p>The included systemd service doesn't run as root either. Capturing only needs the <code>CAP_NET_RAW</code> capability, so the service runs as a throwaway user that systemd creates for it, with just the two network capabilities, a read-only filesystem except for its own state folder, and a 200 MB memory cap. A packet parser reads bytes from anyone on the network, and it shouldn't run with full root powers while it does that.</p>
       <p>The last fixes came from running it on my actual network instead of in tests. Most devices showed up as a bare MAC address, my router included, because I'd started with a small hand-written table of manufacturer prefixes. The full IEEE list is often already installed: the Pi had nmap's copy, and my laptop had Debian's. pktan now reads whichever one it finds. The "new device" alert also fired for every quiet device that happened to speak in the first minute, so it now waits 90 seconds before treating anything as new.</p>
     </section>
 
@@ -165,6 +208,7 @@
       <h2>What I learned</h2>
       <p>The biggest lesson had nothing to do with code. Where a packet analyzer sits matters more than how well it's written. On Wi-Fi, my Pi only sees its own traffic plus whatever gets broadcast to everyone. Promiscuous mode doesn't change that, because the access point only sends each device the frames meant for it. To see everything, the Pi has to be the router, sit inline between the router and a device, or plug into a switch port that mirrors all the traffic. I knew in theory that switches forward frames by MAC address. Seeing it in my own capture is what made it stick.</p>
       <p>I also learned how much of the network is in plain text, even with HTTPS everywhere. Encryption hides what you send, but not who you're talking to. DNS lookups, the site name at the start of every TLS connection, and the hostnames that phones announce all go by readable. A Pi on a shelf can build a decent picture of a house from that alone.</p>
+      <p>Alerts taught me that a wrong alarm is worse than no alarm. Five false "new device" emails in five minutes, and I'd have set up a filter for them and then missed the real one. Getting the logic right mattered more than getting the email delivered, and only real email in a real inbox showed me that.</p>
       <p>Building the test packets byte by byte taught me the formats as well as parsing them did. Still, every test passed before I found the mDNS and vendor bugs. Those only showed up when I compared what the dashboard said with what I knew was in my house.</p>
     </section>
 
