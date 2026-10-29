@@ -48,7 +48,7 @@
         blank();
         line('cs @ carleton university');
         line('minor in mathematics');
-        line('ai/ml co-op stream &middot; 2029');
+        line('ai/ml stream &middot; 2029');
         break;
 
       case 'ls':
