@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPi Network Packet Analyzer — Zaid Ahmad</title>
+  <meta name="description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows which devices are on my network and who they talk to.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zaid Ahmad">
+  <meta property="og:title" content="RPi Network Packet Analyzer — Zaid Ahmad">
+  <meta property="og:description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows which devices are on my network and who they talk to.">
+  <meta property="og:url" content="https://zaidahmad.dev/projects/rpi-packet-analyzer">
+  <meta property="og:image" content="https://zaidahmad.dev/static/images/og/rpi-packet-analyzer.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d0d0d'/><text x='50' y='62' text-anchor='middle' dominant-baseline='middle' font-size='46' font-family='system-ui,sans-serif' font-weight='700' letter-spacing='-2' fill='%23ffffff'>ZA</text><rect x='22' y='74' width='56' height='4' rx='2' fill='%238ab4f8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../static/css/styles.css?v=22">
+  <link rel="stylesheet" href="../static/css/project.css?v=2">
+</head>
+<body>
+  <div class="proj-page">
+
+    <div class="pp-topbar">
+      <a href="../index.html#work" class="back-link">&#8592; Back</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow:visible">
+          <defs><mask id="att-mask"><rect x="0" y="0" width="24" height="24" fill="white"/><circle class="att-mc" cx="33" cy="0" r="9" fill="black"/></mask></defs>
+          <circle class="att-body" cx="12" cy="12" r="5" fill="currentColor" stroke="none" mask="url(#att-mask)"/>
+          <g class="att-rays">
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="5.64" y1="5.64" x2="4.22" y2="4.22"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="5.64" y1="18.36" x2="4.22" y2="19.78"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <header class="pp-header">
+      <div class="pp-header-kicker">
+        <span>Summer 2026</span>
+        <span class="pp-sep" aria-hidden="true">·</span>
+        <span>networking &middot; raspberry pi &middot; linux</span>
+      </div>
+      <h1 class="pp-title">RPi Network Packet Analyzer</h1>
+      <p class="pp-lead">A packet analyzer that lives on my Raspberry Pi 5. It reads traffic straight off the network card, decodes every header by hand, and shows which devices are on my network and who they're talking to, in a terminal or in a browser.</p>
+      <div class="pp-meta">
+        <span class="pp-tag">Python</span>
+        <span class="pp-tag">Linux raw sockets</span>
+        <span class="pp-tag">Raspberry Pi 5</span>
+        <span class="pp-tag">Server-Sent Events</span>
+        <span class="pp-tag">pcap</span>
+        <span class="pp-tag">systemd</span>
+      </div>
+      <a href="https://github.com/zaidahmad16/rpi-packet-analyzer" target="_blank" rel="noopener" class="pp-github">View on GitHub &#8599;</a>
+    </header>
+
+    <section class="pp-section">
+      <p>I had a Raspberry Pi 5 on my home network that wasn't doing much, and I kept wondering what all the devices in the house were actually saying to each other. Wireshark can answer that. But it's a desktop app, and it does all the interesting work for you. I wanted something that ran on the Pi all the time, that I could check from my phone, and that I understood down to the byte because I'd written the byte-level part myself.</p>
+      <p>I built it over the summer of 2026. It's called pktan, and you point it at a network interface. There are three ways to look at what it captures: one line per packet like tcpdump, a live dashboard in the terminal, or the same dashboard in a browser that any phone or laptop on the network can open.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The result</h2>
+      <div class="pp-stats">
+        <div class="pp-stat"><strong>0</strong><span>packages to install</span></div>
+        <div class="pp-stat"><strong>13</strong><span>protocols decoded by hand</span></div>
+        <div class="pp-stat"><strong>26</strong><span>tests on hand-built packets</span></div>
+      </div>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/rpi-packet-analyzer/dashboard.webp" alt="The pktan web dashboard: throughput, packet and device counts, a two-minute bandwidth chart with one spike, a protocol table led by HTTPS, and top hosts named github.com, carleton.ca, wikipedia.org and python.org" loading="lazy">
+          <figcaption>The browser dashboard after two minutes on my home Wi-Fi. The spike is me loading github.com from the Pi.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>What it does</h2>
+      <p>Every packet takes the same path. A raw socket hands over the bytes, the decoder peels off one header at a time, a filter decides whether you care about it, and a stats object adds it to the running totals: bandwidth per second, protocol mix, top hosts, conversations, DNS lookups, and the devices on the LAN.</p>
+      <div class="pp-code">$ sudo python3 -m pktan sniff -f "dns or https"
+12:42:54.945 DNS       [2001:db8:ab:cd:68de:36f2:8889:7a2b]:43941 -&gt; [2607:f798:18:10:0:640:7125:5204]:53 len=101 query A github.com
+12:42:54.968 DNS       [2607:f798:18:10:0:640:7125:5204]:53 -&gt; [2001:db8:ab:cd:68de:36f2:8889:7a2b]:43941 len=117 response A github.com -&gt; 140.82.114.3
+12:42:54.998 HTTPS     10.0.0.249:56012 -&gt; 140.82.112.3:443 len=1490 [A] SNI=github.com
+12:43:27.929 HTTPS     10.0.0.249:42860 -&gt; 134.117.206.206:443 len=1434 [A] SNI=carleton.ca</div>
+      <p>My favourite part is the names. IP headers don't contain any, so pktan picks them up wherever they leak out. A DNS answer says which address github.com lives at. The first packet of an HTTPS connection carries the site's name in plain text, in a field called SNI. Phones and PCs announce their own hostnames over mDNS, and DHCP requests often include one too. Put all of that together and a wall of IP addresses turns into github.com, carleton.ca and "the Windows PC in the other room".</p>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/rpi-packet-analyzer/devices.webp" alt="The Devices on the network table listing ten devices with vendors such as Raspberry Pi, Intel, AzureWave and Hikvision, plus names like DESKTOP-GAMING1.local" loading="lazy">
+          <figcaption>Devices on my network, labelled by manufacturer and by the hostnames they announce. I scrubbed the MAC and IPv6 addresses in these screenshots.</figcaption>
+        </figure>
+      </div>
+      <p>It also raises an alert when something looks off: a new device joining, an IP address that suddenly belongs to a different MAC (the sign of ARP spoofing or an IP conflict), one machine trying 25 ports in ten seconds, or anyone opening an unencrypted Telnet or FTP session.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>The stack</h2>
+      <h3 class="pp-stack-group">Capture and decoding</h3>
+      <dl class="pp-stack">
+        <div><dt>Python 3, standard library only</dt><dd>the whole project, with nothing to <code>pip install</code></dd></div>
+        <div><dt>Linux <code>AF_PACKET</code> sockets</dt><dd>live capture of every frame on an interface, or on all of them</dd></div>
+        <div><dt><code>struct</code> + <code>ipaddress</code></dt><dd>the hand-written decoders, one function per header</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Views</h3>
+      <dl class="pp-stack">
+        <div><dt>ANSI escape codes</dt><dd>the terminal views, <code>sniff</code> and <code>top</code></dd></div>
+        <div><dt><code>http.server</code> + Server-Sent Events</dt><dd>the web server and the live feed to the browser</dd></div>
+        <div><dt>Vanilla JavaScript + canvas</dt><dd>the dashboard page and its bandwidth chart</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Running it</h3>
+      <dl class="pp-stack">
+        <div><dt>Classic pcap</dt><dd>reads and saves captures that Wireshark can open</dd></div>
+        <div><dt>systemd</dt><dd>starts it on boot as an unprivileged user</dd></div>
+        <div><dt><code>unittest</code></dt><dd>26 tests that build their own packets byte by byte</dd></div>
+      </dl>
+    </section>
+
+    <section class="pp-section">
+      <h2>Python, with no dependencies</h2>
+      <p><span class="pp-label">Why</span> Raspberry Pi OS, like recent Debian, won't let you <code>pip install</code> into the system Python anymore. I wanted setup to be <code>git clone</code> and run, and I wanted it to keep working through OS updates. Python's standard library already has raw sockets, <code>struct</code> for reading binary data, an HTTP server and threads, which turned out to be everything I needed.</p>
+      <p><span class="pp-label">The tradeoff</span> Speed. Python decodes far slower than C, and filtering happens in Python after capture instead of in the kernel. At a few hundred megabits a second the Pi will start dropping packets. On a home network it keeps up fine, and the README says so plainly instead of pretending otherwise.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Decoding by hand instead of Scapy</h2>
+      <p><span class="pp-label">Why</span> Scapy could have done most of this in an afternoon. But I was building this to learn what's inside a packet, and calling <code>packet.show()</code> wouldn't have taught me that. Each decoder is a small function. It reads one header with <code>struct</code>, fills in a few fields, and hands the rest of the bytes to the next one. The Ethernet header says whether IP comes next, the IP header names the transport protocol, and the port usually tells you what the application is.</p>
+      <p><span class="pp-label">The struggle</span> Real traffic is messier than the specs. DNS shortens names by pointing back at bytes earlier in the message, so a broken packet can point at itself forever. IPv6 can hide the TCP header behind a chain of extension headers. Some frames just arrive cut off.</p>
+      <p><span class="pp-label">The fix</span> Every decoder treats bad input as normal. If a header is too short, decoding stops at that layer, and the packet still shows up, marked as malformed. One test takes every sample packet and chops it off every 7 bytes, and nothing is allowed to throw. Another test feeds in a DNS name that points to itself.</p>
+      <p>The bug that surprised me most was mDNS. The dashboard showed plenty of mDNS traffic but never learned a single device name. It turns out a device announcing itself doesn't ask a question. It just answers, and the address records go in the "additional" section of the message, which my parser skipped. Once it read every section, an Android phone in the house showed up by name.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Raw sockets instead of libpcap</h2>
+      <p><span class="pp-label">Why</span> tcpdump and Wireshark capture through libpcap, and using it from Python means installing a C binding, which breaks the no-dependencies rule. Linux has its own option built in. You open one <code>AF_PACKET</code> socket and the kernel gives you a copy of every frame, including the ones the Pi sends. With each frame it also says which interface it came from and what kind of link that is.</p>
+      <p><span class="pp-label">The struggle</span> That last detail mattered more than I expected. My Pi runs Tailscale, and frames on a tunnel interface have no Ethernet header. They start straight at the IP header, so reading them like Ethernet produces garbage. The Pi also runs a small Kubernetes cluster, which adds a bridge plus a virtual interface per container, so "the first interface" was never a sensible default.</p>
+      <p><span class="pp-label">The fix</span> pktan checks the link type the kernel reports for each frame and decodes tunnel traffic as bare IP. The default interface is whichever one carries the default route, read from <code>/proc/net/route</code>. On my Pi, that's the Wi-Fi.</p>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/rpi-packet-analyzer/top.webp" alt="The pktan top view in a terminal: a header with packet totals and throughput, a protocol table with bars, a top hosts column, recent DNS lookups, an alert, and a live packet feed coloured by protocol" loading="lazy">
+          <figcaption><code>pktan top</code> is the same dashboard, drawn with ANSI codes for when I'm already SSHed into the Pi.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>A browser dashboard over Server-Sent Events</h2>
+      <p><span class="pp-label">Why</span> I wanted to check on the network from my phone without opening an SSH session. Data only goes one way here, from the Pi to the browser, once a second. Server-Sent Events do exactly that over plain HTTP. Python's <code>http.server</code> can send them, and the browser's <code>EventSource</code> reconnects on its own when the Pi restarts. WebSockets would have needed a library for a back channel I never use. The page is one HTML file with plain JavaScript and a chart drawn on a canvas. Nothing loads from a CDN, so it still works when the internet is down, which is exactly when you'd want to look at it.</p>
+      <p><span class="pp-label">The struggle</span> The first time I ran it over SSH, 24 of the first 25 packets were SSH. The analyzer was mostly capturing its own output on its way to my laptop. The web dashboard had the same loop, because every update it sends is itself traffic.</p>
+      <p><span class="pp-label">The fix</span> The web mode filters out its own port automatically. For the terminal views, the README tells you to add <code>-f "not port 22"</code>.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>Built to run for weeks</h2>
+      <p>Anything that starts on boot and never stops can't be allowed to grow forever. Every table pktan keeps (hosts, devices, conversations, names) has a ceiling, and when one fills up, the entries seen least recently are dropped. Logs are fixed-size queues. Saving to a pcap file has a size limit and rotates into a single backup, so it never uses more than twice the limit on disk. A test pushes 10,000 different hosts through and checks that the tables stay under 4,000.</p>
+      <p>The included systemd service doesn't run as root either. Capturing only needs the <code>CAP_NET_RAW</code> capability, so the service runs as <code>nobody</code> with just the two network capabilities, a read-only filesystem and a 200 MB memory cap. A packet parser reads bytes from anyone on the network, and it shouldn't run with full root powers while it does that.</p>
+      <p>The last fixes came from running it on my actual network instead of in tests. Most devices showed up as a bare MAC address, my router included, because I'd started with a small hand-written table of manufacturer prefixes. The full IEEE list is often already installed: the Pi had nmap's copy, and my laptop had Debian's. pktan now reads whichever one it finds. The "new device" alert also fired for every quiet device that happened to speak in the first minute, so it now waits 90 seconds before treating anything as new.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2>What I learned</h2>
+      <p>The biggest lesson had nothing to do with code. Where a packet analyzer sits matters more than how well it's written. On Wi-Fi, my Pi only sees its own traffic plus whatever gets broadcast to everyone. Promiscuous mode doesn't change that, because the access point only sends each device the frames meant for it. To see everything, the Pi has to be the router, sit inline between the router and a device, or plug into a switch port that mirrors all the traffic. I knew in theory that switches forward frames by MAC address. Seeing it in my own capture is what made it stick.</p>
+      <p>I also learned how much of the network is in plain text, even with HTTPS everywhere. Encryption hides what you send, but not who you're talking to. DNS lookups, the site name at the start of every TLS connection, and the hostnames that phones announce all go by readable. A Pi on a shelf can build a decent picture of a house from that alone.</p>
+      <p>Building the test packets byte by byte taught me the formats as well as parsing them did. Still, every test passed before I found the mDNS and vendor bugs. Those only showed up when I compared what the dashboard said with what I knew was in my house.</p>
+    </section>
+
+  </div>
+  <script src="../static/js/cinematic.js?v=2"></script>
+  <script src="../static/js/cursor.js"></script>
+  <script src="../static/js/script.js"></script>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+</body>
+</html>
