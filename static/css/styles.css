@@ -482,12 +482,6 @@ html.is-paged body { overflow: hidden; height: 100%; }
 }
 
 /* ── Pill row (shared across exp + proj) ─ */
-.exp-detail--sub {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--color-ink-3);
-  margin: var(--space-sm) 0 0;
-}
 .pill-row {
   display: flex;
   flex-wrap: wrap;
