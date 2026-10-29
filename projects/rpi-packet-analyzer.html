@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RPi Network Packet Analyzer — Zaid Ahmad</title>
-  <meta name="description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows who's on my network, graphs it in Grafana, and emails me through AWS when something looks wrong.">
+  <meta name="description" content="A packet analyzer for my Raspberry Pi 5 with a C capture engine on raw sockets and an Isolation Forest that learns what normal looks like on my network. Grafana keeps the history and AWS emails me when something's off.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zaid Ahmad">
   <meta property="og:title" content="RPi Network Packet Analyzer — Zaid Ahmad">
-  <meta property="og:description" content="A packet analyzer for my Raspberry Pi 5, written from raw sockets up with no dependencies. It shows who's on my network, graphs it in Grafana, and emails me through AWS when something looks wrong.">
+  <meta property="og:description" content="A packet analyzer for my Raspberry Pi 5 with a C capture engine on raw sockets and an Isolation Forest that learns what normal looks like on my network. Grafana keeps the history and AWS emails me when something's off.">
   <meta property="og:url" content="https://zaidahmad.dev/projects/rpi-packet-analyzer">
   <meta property="og:image" content="https://zaidahmad.dev/static/images/og/rpi-packet-analyzer.png">
   <meta property="og:image:width" content="1200">
@@ -48,10 +48,12 @@
         <span>networking &middot; raspberry pi &middot; linux</span>
       </div>
       <h1 class="pp-title">RPi Network Packet Analyzer</h1>
-      <p class="pp-lead">A packet analyzer that lives on my Raspberry Pi 5. It reads traffic straight off the network card, decodes every header by hand, and shows which devices are on my network and who they're talking to. Prometheus and Grafana keep the history, and AWS emails me when something looks wrong.</p>
+      <p class="pp-lead">A packet analyzer that lives on my Raspberry Pi 5. A C engine reads traffic straight off the network card, every header is decoded by hand, and an Isolation Forest learns what normal looks like for each device. Prometheus and Grafana keep the history, and AWS emails me when something looks wrong.</p>
       <div class="pp-meta">
+        <span class="pp-tag">C</span>
         <span class="pp-tag">Python</span>
         <span class="pp-tag">Linux raw sockets</span>
+        <span class="pp-tag">scikit-learn</span>
         <span class="pp-tag">Raspberry Pi 5</span>
         <span class="pp-tag">Server-Sent Events</span>
         <span class="pp-tag">Prometheus</span>
@@ -72,9 +74,9 @@
     <section class="pp-section">
       <h2>The result</h2>
       <div class="pp-stats">
-        <div class="pp-stat"><strong>0</strong><span>packages to install</span></div>
+        <div class="pp-stat"><strong>3.8M</strong><span>packets/s parsed in C on the Pi</span></div>
         <div class="pp-stat"><strong>13</strong><span>protocols decoded by hand</span></div>
-        <div class="pp-stat"><strong>44</strong><span>tests on hand-built packets</span></div>
+        <div class="pp-stat"><strong>60</strong><span>tests, incl. a sanitizer fuzz</span></div>
       </div>
       <div class="pp-images pp-images--single">
         <figure>
@@ -110,6 +112,12 @@
         <div><dt>Linux <code>AF_PACKET</code> sockets</dt><dd>live capture of every frame on an interface, or on all of them</dd></div>
         <div><dt><code>struct</code> + <code>ipaddress</code></dt><dd>the hand-written decoders, one function per header</dd></div>
       </dl>
+      <h3 class="pp-stack-group">C engine</h3>
+      <dl class="pp-stack">
+        <div><dt>C, TPACKET_V3 ring</dt><dd>reads packets from memory the kernel fills in 1 MiB blocks, with no system call per packet</dd></div>
+        <div><dt>Hash table + min-heap</dt><dd>per-source traffic in a fixed-size open-addressing table, and the top talkers picked with a size-K heap</dd></div>
+        <div><dt>AddressSanitizer</dt><dd>a fuzz test throws thousands of mangled packets at a sanitizer build</dd></div>
+      </dl>
       <h3 class="pp-stack-group">Views</h3>
       <dl class="pp-stack">
         <div><dt>ANSI escape codes</dt><dd>the terminal views, <code>sniff</code> and <code>top</code></dd></div>
@@ -120,13 +128,18 @@
       <dl class="pp-stack">
         <div><dt>Classic pcap</dt><dd>reads and saves captures that Wireshark can open</dd></div>
         <div><dt>systemd</dt><dd>starts it on boot as a throwaway user with only the capture permissions</dd></div>
-        <div><dt><code>unittest</code></dt><dd>44 tests that build their own packets byte by byte</dd></div>
+        <div><dt><code>unittest</code></dt><dd>60 tests that build their own packets byte by byte</dd></div>
       </dl>
       <h3 class="pp-stack-group">Monitoring</h3>
       <dl class="pp-stack">
         <div><dt>Prometheus</dt><dd>scrapes pktan every 15 seconds and keeps 30 days of history</dd></div>
         <div><dt>Grafana</dt><dd>the long-term dashboard, provisioned from a file</dd></div>
         <div><dt>k3s (Kubernetes)</dt><dd>runs Prometheus and Grafana on the same Pi</dd></div>
+      </dl>
+      <h3 class="pp-stack-group">Machine learning</h3>
+      <dl class="pp-stack">
+        <div><dt>scikit-learn Isolation Forest</dt><dd>learns what a normal minute of traffic looks like for each device</dd></div>
+        <div><dt>Pure-Python scoring</dt><dd>the trained trees are exported to JSON, so the always-on service never loads numpy</dd></div>
       </dl>
       <h3 class="pp-stack-group">AWS</h3>
       <dl class="pp-stack">
@@ -139,8 +152,8 @@
 
     <section class="pp-section">
       <h2>Python, with no dependencies</h2>
-      <p><span class="pp-label">Why</span> Raspberry Pi OS, like recent Debian, won't let you <code>pip install</code> into the system Python anymore. I wanted setup to be <code>git clone</code> and run, and I wanted it to keep working through OS updates. Python's standard library already has raw sockets, <code>struct</code> for reading binary data, an HTTP server and threads, which turned out to be everything I needed.</p>
-      <p><span class="pp-label">The tradeoff</span> Speed. Python decodes far slower than C, and filtering happens in Python after capture instead of in the kernel. At a few hundred megabits a second the Pi will start dropping packets. On a home network it keeps up fine, and the README says so plainly instead of pretending otherwise.</p>
+      <p><span class="pp-label">Why</span> My Pi runs Ubuntu, which, like recent Debian, won't let you <code>pip install</code> into the system Python anymore. I wanted setup to be <code>git clone</code> and run, and I wanted it to keep working through OS updates. Python's standard library already has raw sockets, <code>struct</code> for reading binary data, an HTTP server and threads, which turned out to be everything I needed. The core still has no dependencies. The C engine only needs a compiler, and scikit-learn is only needed to train the model, not to run it.</p>
+      <p><span class="pp-label">The tradeoff</span> Speed. Python decodes far slower than C, and filtering happens in Python after capture instead of in the kernel. That's what the C engine further down is for.</p>
     </section>
 
     <section class="pp-section">
@@ -162,6 +175,20 @@
           <figcaption><code>pktan top</code> is the same dashboard, drawn with ANSI codes for when I'm already SSHed into the Pi.</figcaption>
         </figure>
       </div>
+    </section>
+
+    <section class="pp-section">
+      <h2>A C engine for the fast path</h2>
+      <p><span class="pp-label">Why</span> Python was fine for my home network, but I wanted to see how far the capture side could go, and I wanted to write the part closest to the kernel in the language the kernel speaks. <code>pktcap</code> is about 600 lines of C. Instead of one system call per packet, it asks the kernel for a TPACKET_V3 ring: 8 MiB of memory shared with the kernel, filled in 1 MiB blocks that the program reads directly. It parses Ethernet, VLAN tags, IPv4, IPv6, TCP and UDP itself. It keeps per-source counts in an open-addressing hash table with a fixed 8,192 slots, and when that's three-quarters full it throws out the least recently seen half, so even a scan of a whole /16 can't grow it. Once a second, a min-heap picks the top talkers.</p>
+      <p>The C side sends Python a fixed 76-byte summary for every packet. The raw bytes only go along when Python has to look deeper: DNS, DHCP, ARP, TLS hellos, or anything malformed. Everything else becomes a <code>Packet</code> without being parsed twice. A test compares both engines field by field on deliberately awkward packets (stacked VLAN tags, IPv6 extension headers, fragments, truncated frames), and another throws thousands of mangled packets at an AddressSanitizer build.</p>
+      <p><span class="pp-label">The struggle</span> My first benchmark was humbling. The C parser was 210 times faster than Python, but the whole pipeline only got 1.2 times faster, because Python's per-packet bookkeeping was now the slow part. A profiler showed most of that time was spent turning the same IP-address strings back into numbers, over and over, just to ask whether each one was on my LAN.</p>
+      <p><span class="pp-label">The fix</span> Caching those answers made both engines roughly twice as fast. Then I found that turning on S3 archiving quietly switched the C fast path off, because the service asked for every raw frame and then decoded them all in Python anyway. Now the raw bytes for saving and the "needs decoding" flag are separate. These are the honest numbers on the Pi, on a real capture replayed 100 times:</p>
+      <div class="pp-code">                                    packets/s
+python engine (decode + stats)         34,668     1.0x
+c engine (pktcap + python stats)       52,157     1.5x
+c parsing only (pktcap -n)          3,780,082   109.0x
+
+live service: pktcap 9 MB + python 39 MB of memory</div>
     </section>
 
     <section class="pp-section">
@@ -198,6 +225,26 @@ Seen by pktan on raspberrypi (wlan0) at 2026-10-29 13:55:51.</div>
     </section>
 
     <section class="pp-section">
+      <h2>An Isolation Forest instead of more thresholds</h2>
+      <p><span class="pp-label">Why</span> Fixed rules like "25 ports in 10 seconds is a scan" are easy to write and easy to fool. They also don't know my network. In my held-out data, the one time the fixed limits went off, it was a device with a randomised MAC address, almost certainly a phone, doing its normal mDNS chatter: 37 lookups a minute against a limit of 30. So every minute, pktan sums up each device's traffic in ten numbers: packets and bytes each way, packet size, how many hosts and ports it reached, SYNs sent, resets received, DNS lookups and ARP requests. An Isolation Forest learns what those minutes normally look like. It works by building random trees that keep splitting the data, and anything that gets isolated in very few splits is unusual.</p>
+      <p>Training uses scikit-learn. The trained trees are then exported to JSON, and the service scores each device-minute with about 35 lines of pure Python, so the always-on process never loads numpy. A test checks those scores match scikit-learn's to within 1e-9. A device has to score above the threshold two minutes in a row before it raises an alert, and the alert says which numbers were furthest from normal.</p>
+      <p><span class="pp-label">The struggle</span> Mostly honesty about the data. I trained on about two hours of today's traffic, which is far too little to know what nights, weekends or software updates look like. My own testing kept leaking into it, too: one capture included a port scan I'd run earlier, from both the laptop's side and the Pi's replies, so I had to drop those minutes before training. Then I tested it with three attacks from my laptop and recorded them separately, so attack traffic could never end up in training:</p>
+      <div class="pp-code">                                     fixed limits   isolation forest
+91 ordinary held-out minutes         1 false alarm  0 false alarms
+port scan, ~500 ports/min            caught         caught    (0.77)
+slow scan, 9 ports/min for 3 min     missed         caught    (0.75)
+150 MB upload over 2 min             caught         missed    (0.73 vs 0.734)</div>
+      <p>The slow scan is the case that matters. It stays under every fixed limit, and the forest caught it every minute. It missed the bulk upload by a hair, and the byte limit caught that one, so pktan keeps both.</p>
+      <p><span class="pp-label">The fix</span> The most convincing result wasn't planned. At 14:51 the model flagged the Pi itself. I checked, and it was right. My S3 archiver had started capturing its own uploads: every 50 MB file it sent produced 50 MB of new captured traffic, which filled the next file, which got uploaded too, one every three seconds. pktan now remembers the network ports of its own AWS connections and leaves those packets out of what it saves and what it scores. I tested the fix by forcing a real 50 MB rotation. One file went up and the next capture stayed small.</p>
+      <div class="pp-images pp-images--single">
+        <figure>
+          <img src="../static/images/rpi-packet-analyzer/anomaly.webp" alt="Grafana panel 'Anomaly score by device': most devices sit around 0.4; one line rises above the dashed alert threshold at about 0.73 from 14:39 to 14:45 during the scans, and another climbs to about 0.79 around 14:50" loading="lazy">
+          <figcaption>Anomaly scores per device. The dashed line is the alert threshold. My laptop crosses it during the scans at 14:39 to 14:45, and the Pi crosses it around 14:50, when the upload loop started.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pp-section">
       <h2>Built to run for weeks</h2>
       <p>Anything that starts on boot and never stops can't be allowed to grow forever. Every table pktan keeps (hosts, devices, conversations, names) has a ceiling, and when one fills up, the entries seen least recently are dropped. Logs are fixed-size queues. Saving to a pcap file has a size limit and rotates into a single backup, so it never uses more than twice the limit on disk. A test pushes 10,000 different hosts through and checks that the tables stay under 4,000.</p>
       <p>The included systemd service doesn't run as root either. Capturing only needs the <code>CAP_NET_RAW</code> capability, so the service runs as a throwaway user that systemd creates for it, with just the two network capabilities, a read-only filesystem except for its own state folder, and a 200 MB memory cap. A packet parser reads bytes from anyone on the network, and it shouldn't run with full root powers while it does that.</p>
@@ -208,6 +255,8 @@ Seen by pktan on raspberrypi (wlan0) at 2026-10-29 13:55:51.</div>
       <h2>What I learned</h2>
       <p>The biggest lesson had nothing to do with code. Where a packet analyzer sits matters more than how well it's written. On Wi-Fi, my Pi only sees its own traffic plus whatever gets broadcast to everyone. Promiscuous mode doesn't change that, because the access point only sends each device the frames meant for it. To see everything, the Pi has to be the router, sit inline between the router and a device, or plug into a switch port that mirrors all the traffic. I knew in theory that switches forward frames by MAC address. Seeing it in my own capture is what made it stick.</p>
       <p>I also learned how much of the network is in plain text, even with HTTPS everywhere. Encryption hides what you send, but not who you're talking to. DNS lookups, the site name at the start of every TLS connection, and the hostnames that phones announce all go by readable. A Pi on a shelf can build a decent picture of a house from that alone.</p>
+      <p>Measuring beat guessing every time. "C is 210 times faster" was true and nearly useless. The number that mattered was the whole pipeline, and a profiler showed me where the time actually went. The same goes for the model: one table of what it caught and missed says more than any accuracy figure I could have quoted.</p>
+      <p>Networks are stranger than diagrams. My Pi has Wi-Fi and Ethernet on the same subnet, and Linux will happily answer for the Wi-Fi address on the Ethernet port. So my first "bulk upload" test arrived on an interface pktan wasn't watching, and I only noticed because the capture was 82 MB of something else.</p>
       <p>Alerts taught me that a wrong alarm is worse than no alarm. Five false "new device" emails in five minutes, and I'd have set up a filter for them and then missed the real one. Getting the logic right mattered more than getting the email delivered, and only real email in a real inbox showed me that.</p>
       <p>Building the test packets byte by byte taught me the formats as well as parsing them did. Still, every test passed before I found the mDNS and vendor bugs. Those only showed up when I compared what the dashboard said with what I knew was in my house.</p>
     </section>
