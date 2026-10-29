@@ -80,7 +80,7 @@
       </div>
       <div class="pp-images pp-images--single">
         <figure>
-          <img src="../static/images/rpi-packet-analyzer/dashboard.webp" alt="The pktan web dashboard: throughput, packet and device counts, a two-minute bandwidth chart with one spike, a protocol table led by HTTPS, and top hosts named github.com, carleton.ca, wikipedia.org and python.org" loading="lazy">
+          <img src="../static/images/rpi-packet-analyzer/dashboard-v2.webp" alt="The pktan web dashboard: throughput, packet and device counts, a two-minute bandwidth chart with a few spikes, a protocol table led by HTTPS, and top hosts named github.com, ubuntu.com, carleton.ca, kernel.org and wikipedia.org" loading="lazy">
           <figcaption>The browser dashboard after two minutes on my home Wi-Fi. The spike is me loading github.com from the Pi.</figcaption>
         </figure>
       </div>
@@ -97,8 +97,8 @@
       <p>My favourite part is the names. IP headers don't contain any, so pktan picks them up wherever they leak out. A DNS answer says which address github.com lives at. The first packet of an HTTPS connection carries the site's name in plain text, in a field called SNI. Phones and PCs announce their own hostnames over mDNS, and DHCP requests often include one too. Put all of that together and a wall of IP addresses turns into github.com, carleton.ca and "the Windows PC in the other room".</p>
       <div class="pp-images pp-images--single">
         <figure>
-          <img src="../static/images/rpi-packet-analyzer/devices.webp" alt="The Devices on the network table listing ten devices with vendors such as Raspberry Pi, Intel, AzureWave and Hikvision, plus names like DESKTOP-GAMING1.local" loading="lazy">
-          <figcaption>Devices on my network, labelled by manufacturer and by the hostnames they announce. I scrubbed the MAC and IPv6 addresses in these screenshots.</figcaption>
+          <img src="../static/images/rpi-packet-analyzer/devices-v2.webp" alt="The Devices on the network table listing eight devices with vendors such as Raspberry Pi, AzureWave, Hon Hai and Hikvision, two devices with randomised MAC addresses (usually phones), and the IP addresses each one used" loading="lazy">
+          <figcaption>Devices on my network, labelled by manufacturer (names appear when a device announces one). I scrubbed the MAC and IPv6 addresses in these screenshots.</figcaption>
         </figure>
       </div>
       <p>It also raises an alert when something looks off: a new device joining, an IP address that suddenly belongs to a different MAC (the sign of ARP spoofing or an IP conflict), one machine trying 25 ports in ten seconds, or anyone opening an unencrypted Telnet or FTP session.</p>
@@ -171,7 +171,7 @@
       <p><span class="pp-label">The fix</span> pktan checks the link type the kernel reports for each frame and decodes tunnel traffic as bare IP. The default interface is whichever one carries the default route, read from <code>/proc/net/route</code>. On my Pi, that's the Wi-Fi.</p>
       <div class="pp-images pp-images--single">
         <figure>
-          <img src="../static/images/rpi-packet-analyzer/top.webp" alt="The pktan top view in a terminal: a header with packet totals and throughput, a protocol table with bars, a top hosts column, recent DNS lookups, an alert, and a live packet feed coloured by protocol" loading="lazy">
+          <img src="../static/images/rpi-packet-analyzer/top-v2.webp" alt="The pktan top view in a terminal: a header with packet totals and throughput, a protocol table with bars, a top hosts column, recent DNS lookups, an alert, and a live packet feed coloured by protocol" loading="lazy">
           <figcaption><code>pktan top</code> is the same dashboard, drawn with ANSI codes for when I'm already SSHed into the Pi.</figcaption>
         </figure>
       </div>
@@ -206,8 +206,8 @@ live service: pktcap 9 MB + python 39 MB of memory</div>
       <p><span class="pp-label">The fix</span> Alert counts are rounded to whole numbers and shown as one total per kind over the last day. Colours only change when there's something worth looking at, and the protocol list is sorted by size with empty rows left out. I checked every new query against the live Prometheus before shipping it.</p>
       <div class="pp-images pp-images--single">
         <figure>
-          <img src="../static/images/rpi-packet-analyzer/grafana.webp" alt="The pktan Grafana dashboard over 90 minutes: throughput, active devices, LAN hosts, 21 alerts, bandwidth and packet charts with two spikes, traffic by protocol led by HTTPS, a sorted top-protocols list, alerts by kind with 20 new-device and 1 port-scan, and DNS queries per minute" loading="lazy">
-          <figcaption>Grafana on the Pi. Most of those 20 "new device" alerts are the false ones from the next section, raised before I fixed them.</figcaption>
+          <img src="../static/images/rpi-packet-analyzer/grafana-v2.webp" alt="The pktan Grafana dashboard over two hours: throughput, active devices, LAN hosts and 30 alerts; bandwidth and packet charts with a large spike near 14:50; traffic by protocol led by HTTPS; a sorted top-protocols list; alerts by kind with 24 new-device, 3 port-scan and 3 anomaly; DNS queries per minute; anomaly scores per device with a dashed threshold; the most unusual devices right now; and the C engine's top talkers. Device and address labels are blurred." loading="lazy">
+          <figcaption>Grafana on the Pi over two hours. The big spike near 14:50 is the S3 upload loop described further down, and most of the 24 "new device" alerts are the false ones from the next section. I blurred the device and address labels.</figcaption>
         </figure>
       </div>
     </section>
@@ -236,6 +236,12 @@ slow scan, 9 ports/min for 3 min     missed         caught    (0.75)
 150 MB upload over 2 min             caught         missed    (0.73 vs 0.734)</div>
       <p>The slow scan is the case that matters. It stays under every fixed limit, and the forest caught it every minute. It missed the bulk upload by a hair, and the byte limit caught that one, so pktan keeps both.</p>
       <p><span class="pp-label">The fix</span> The most convincing result wasn't planned. At 14:51 the model flagged the Pi itself. I checked, and it was right. My S3 archiver had started capturing its own uploads: every 50 MB file it sent produced 50 MB of new captured traffic, which filled the next file, which got uploaded too, one every three seconds. pktan now remembers the network ports of its own AWS connections and leaves those packets out of what it saves and what it scores. I tested the fix by forcing a real 50 MB rotation. One file went up and the next capture stayed small.</p>
+      <div class="pp-images pp-images--single pp-images--narrow">
+        <figure>
+          <img src="../static/images/rpi-packet-analyzer/alert-emails.webp" alt="Two alert emails from AWS Notifications. 2:43 PM: Unusual traffic from an Intel device at 10.0.0.32, score 0.74 for 2 minutes, syn_out high and rst_in high. 2:51 PM: Unusual traffic from the Raspberry Pi at 10.0.0.249, score 0.78 for 2 minutes, syn_out high and dst_ips high." loading="lazy">
+          <figcaption>The two alert emails, as they arrived on my phone: the slow scan from my laptop at 2:43, and the Pi flagging itself at 2:51. I hid the device half of each MAC address.</figcaption>
+        </figure>
+      </div>
       <div class="pp-images pp-images--single">
         <figure>
           <img src="../static/images/rpi-packet-analyzer/anomaly.webp" alt="Grafana panel 'Anomaly score by device': most devices sit around 0.4; one line rises above the dashed alert threshold at about 0.73 from 14:39 to 14:45 during the scans, and another climbs to about 0.79 around 14:50" loading="lazy">
