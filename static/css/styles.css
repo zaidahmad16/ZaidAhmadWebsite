@@ -769,37 +769,6 @@ html.is-paged body { overflow: hidden; height: 100%; }
   }
 }
 
-/* ── Resume overlay ────────────────────── */
-#resume-overlay {
-  position: fixed; inset: 0;
-  z-index: 500;
-  background: var(--color-paper);
-  display: none;
-  flex-direction: column;
-}
-.ro-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-xs) var(--space-md);
-  border-bottom: 1px solid var(--color-rule);
-  font-size: var(--text-sm);
-  font-family: var(--font-mono);
-  color: var(--color-ink-2);
-  flex-shrink: 0;
-}
-#ro-close {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-ink-2);
-  border: 1px solid var(--color-rule);
-  padding: 0.25rem 0.6rem;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: color var(--dur-short), border-color var(--dur-short);
-}
-#ro-close:hover { color: var(--color-ink); border-color: var(--color-ink-3); }
-.ro-frame { flex: 1; width: 100%; border: none; }
 
 /* ── Terminal easter egg ───────────────── */
 /* Terminal is always dark — uses own palette based on design tokens */

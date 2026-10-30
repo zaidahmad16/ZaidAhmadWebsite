@@ -85,7 +85,7 @@ Animate transform and opacity only — never layout properties.
 
 - storm-bg.js — pixel cloud/lightning canvas, reads --bg/--bdr/--accent tokens
 - terminal.js — Ctrl+Shift+L, snake game, fastfetch
-- pokemon-battle.js — 5× click on .hero-zekrom sprite (keep class names)
+- pokemon-battle.js + pb/*.js — Gen 5 battle vs N at N's Castle, started from the terminal (`sudo apt install pokemon`)
 - Theme toggle — SVG sun/moon morph, audio tick
 
 The sprite toggle (Zekrom dark ↔ Reshiram light) is part of the brand identity.

@@ -215,14 +215,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Resume overlay
-  var overlay = document.getElementById('resume-overlay');
-  var roClose = document.getElementById('ro-close');
-  if (roClose && overlay) {
-    roClose.addEventListener('click', function () { overlay.style.display = 'none'; });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.style.display === 'flex') overlay.style.display = 'none';
-    });
-  }
 
 });

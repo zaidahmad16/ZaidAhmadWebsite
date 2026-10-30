@@ -136,8 +136,9 @@
         break;
 
       case 'snake':
-      case 'pokemon':
       case 'fastfetch':
+      case 'htop':
+      case 'top':
         line('launching in full terminal&hellip;', 'ht-dim');
         setTimeout(function () {
           if (typeof window.openPortfolioTerm === 'function') window.openPortfolioTerm();
@@ -177,8 +178,8 @@
         line('  <span class="ht-acc">cd</span> [project]       open project page');
         line('  <span class="ht-acc">git log</span>            recent commits');
         line('  <span class="ht-acc">snake</span>              launch snake game');
-        line('  <span class="ht-acc">pokemon</span>            start a pok&eacute;mon battle');
         line('  <span class="ht-acc">fastfetch</span>          system info');
+        line('  <span class="ht-acc">htop</span>               what&rsquo;s running right now');
         line('  <span class="ht-acc">clear</span>              clear screen');
         line('  <span class="ht-acc">open</span>               full terminal (ctrl+shift+l)');
         break;

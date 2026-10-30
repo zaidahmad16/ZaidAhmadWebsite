@@ -1,0 +1,127 @@
+/* term-apps.css — text-mode apps that take over the portfolio terminal: Snake (snake.js) and htop (htop.js),
+   both drawn by term-screen.js. Uses the terminal's own --term-* tokens so they follow light and dark themes. */
+
+/* While the game runs it takes over the terminal body */
+#term-body.ts-on > :not(.ts-root) { display: none !important; }
+
+.ts-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 0.5rem);
+}
+
+.ts-screen {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  /* A system monospace: the site's web-font JetBrains Mono has no box-drawing or block glyphs,
+     and mixing in a fallback font for those breaks the column grid */
+  font-family: ui-monospace, 'SF Mono', Menlo, 'DejaVu Sans Mono', Consolas, 'Liberation Mono', monospace;
+  font-size: var(--text-sm);
+  line-height: 1;
+  color: var(--term-ink);
+  white-space: pre;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: default;
+  font-variant-ligatures: none;
+}
+
+/* Inverse status bar, like htop / nano */
+.ts-bar   { background: var(--term-ink); color: var(--term-bg); }
+.ts-got   { color: var(--term-bg); font-weight: 700; }
+.ts-dim   { color: color-mix(in oklab, var(--term-bg) 50%, var(--term-ink)); }
+.ts-flash { background: var(--color-accent); color: var(--term-bg); }
+
+/* Key bar at the bottom */
+.ts-key      { background: var(--term-ink); color: var(--term-bg); }
+.ts-keylabel { color: var(--term-ink-dim); }
+[data-act]   { cursor: pointer; }
+.ts-key[data-act]:hover, .ts-keylabel[data-act]:hover { color: var(--color-accent); }
+
+/* Board: half-block cells. ▀ ▄ █ take the colour of the cell they draw; when two different
+   cells share a character, the lower one is the background */
+.ts-frame { color: var(--term-ink-dim); }
+.ts-hit   { color: var(--term-red); }
+.ts-fg-h  { color: var(--color-accent); }
+.ts-fg-b  { color: var(--term-green); }
+.ts-fg-d  { color: var(--term-red); }
+.ts-bg-h  { background: var(--color-accent); }
+.ts-bg-b  { background: var(--term-green); }
+.ts-bg-d  { background: var(--term-red); }
+.ts-food  { background: var(--color-accent); color: var(--term-bg); font-weight: 700; }
+
+/* Dialog boxes */
+.ts-strong   { font-weight: 700; color: var(--term-ink); }
+.ts-title    { color: var(--term-green); }
+.ts-dimtext  { color: var(--term-ink-dim); }
+.ts-foodtext { color: var(--color-accent); font-weight: 700; }
+.ts-sel      { background: var(--term-ink); color: var(--term-bg); font-weight: 700; }
+.ts-btn      { color: var(--color-accent); }
+.ts-btn:hover { background: var(--color-accent); color: var(--term-bg); }
+
+/* Touch d-pad: only on touch screens */
+.ts-pad { display: none; }
+@media (pointer: coarse) {
+  .ts-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 48px) 1fr 48px 48px;
+    grid-template-rows: 40px 40px;
+    gap: 6px;
+    flex-shrink: 0;
+    align-items: stretch;
+  }
+  .ts-pad-btn {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--term-ink);
+    background: transparent;
+    border: 1px solid var(--term-border);
+    border-radius: 4px;
+    touch-action: manipulation;
+  }
+  .ts-pad-btn:active { background: var(--term-ink); color: var(--term-bg); }
+  .ts-pad-up    { grid-column: 2; grid-row: 1; }
+  .ts-pad-left  { grid-column: 1; grid-row: 2; }
+  .ts-pad-down  { grid-column: 2; grid-row: 2; }
+  .ts-pad-right { grid-column: 3; grid-row: 2; }
+  .ts-pad-ok    { grid-column: 5; grid-row: 1 / 3; }
+  .ts-pad-p     { grid-column: 6; grid-row: 1 / 3; }
+}
+
+/* ── htop ───────────────────────────────────── */
+.hp-root {
+  --hp-cyan: oklch(72% 0.11 210);
+  --hp-blue: oklch(62% 0.15 255);
+  --hp-yellow: oklch(72% 0.15 80);
+  --hp-magenta: oklch(62% 0.19 330);
+  --hp-on-bar: #0b0b0e;
+}
+.hp-root .ts-screen { line-height: 1.2; }
+
+.hp-lab    { color: var(--hp-cyan); }
+.hp-br     { font-weight: 700; }
+.hp-g      { color: var(--term-green); }
+.hp-r      { color: var(--term-red); }
+.hp-b      { color: var(--hp-blue); }
+.hp-y      { color: var(--hp-yellow); }
+.hp-mtext  { color: var(--term-ink-dim); }
+.hp-strong { font-weight: 700; color: var(--term-ink); }
+.hp-run    { color: var(--term-green); font-weight: 700; }
+.hp-dim    { color: var(--term-ink-dim); }
+.hp-big    { color: var(--hp-cyan); }
+.hp-proj   { color: var(--color-accent); font-weight: 700; }
+.hp-zombie { color: var(--hp-magenta); }
+
+.hp-thead      { background: var(--term-green); color: var(--hp-on-bar); }
+.hp-thead-sort { background: var(--hp-cyan); }
+.hp-sel        { background: var(--hp-cyan); color: var(--hp-on-bar); }
+.hp-panel      { background: color-mix(in oklab, var(--term-bg) 88%, var(--term-ink)); }
+.hp-fkey       { color: var(--term-ink); font-weight: 700; }
+.hp-flabel     { background: var(--hp-cyan); color: var(--hp-on-bar); }
+.hp-msg        { background: var(--color-accent); color: var(--term-bg); }
+.hp-root [data-act^="row:"] { cursor: pointer; }
