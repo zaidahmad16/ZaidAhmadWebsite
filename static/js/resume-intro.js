@@ -199,14 +199,22 @@
     preEffect(meltTarget, function () { fxStarted = true; }, function () {
       if (stage !== 'pre' || !ov) return;
       stage = 'video';
-      ov.classList.remove('ri-overlay--waiting');
-      ov.classList.add('ri-in');
-      // never show the clip's lead-in (the Six Eyes close-up of Gojo's face, under the build-up);
-      // if the build-up ended early or was skipped, jump to the sky shot it hands over to
-      if (video && video.currentTime < 3.15) video.currentTime = 3.15;
+      // Never show the clip's lead-in (the Six Eyes close-up of Gojo's face). Seeking is slow on a
+      // host without range support (the face froze on screen), so don't seek: keep the build-up's
+      // full-sky last frame up and reveal the clip once it has played on to its own sky shot.
+      if (video && video.paused && video.currentTime < 3.2 && !fx) video.currentTime = 3.2;   // no build-up ran: start hidden at the sky shot
       if (video && video.paused) playWithSound();
-      // let the clip fade in over the build-up's last frame, then drop the canvas
-      setTimeout(stopPre, 400);
+      var waited = 0;
+      (function whenOnSky() {
+        if (stage !== 'video' || !ov) return;
+        if (!video || (video.currentTime >= 3.2 && !video.seeking) || waited > 2500) {
+          ov.classList.remove('ri-overlay--waiting');
+          ov.classList.add('ri-in');
+          setTimeout(stopPre, 400);   // let the clip fade in over the build-up's last frame
+          return;
+        }
+        waited += 50; setTimeout(whenOnSky, 50);
+      })();
     });
   }
 
