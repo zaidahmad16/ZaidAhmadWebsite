@@ -1602,3 +1602,127 @@ html.is-paged body { overflow: hidden; height: 100%; }
 @media (max-width: 768px) {
   .contact-heading { font-size: clamp(1.75rem, 7vw, 2.5rem); }
 }
+
+/* ── Resume intro: clip, then the resume is revealed out of its white ending (resume-intro.js) ── */
+html.ri-open { overflow: hidden; }
+.ri-overlay {
+  position: fixed; inset: 0;
+  z-index: 10000;
+  background: #000;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  cursor: pointer;
+}
+.ri-overlay.ri-in { opacity: 1; }
+.ri-overlay--quiet { background: var(--color-paper); }
+.ri-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #000;
+  z-index: 2;
+}
+.ri-skip {
+  position: absolute; right: 20px; bottom: 20px;
+  z-index: 6;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  color: #e8e8e8;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.ri-skip:hover { border-color: rgba(255, 255, 255, 0.6); }
+
+/* white: matches the clip's last frames, then clears to reveal the resume */
+.ri-white {
+  position: absolute; inset: 0;
+  z-index: 3;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.22s ease-out;
+  pointer-events: none;
+}
+.ri-white--in { opacity: 1; }
+.ri-white.ri-white--out { opacity: 0; transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.12s; }
+
+/* Hollow Purple shockwave: a violet bloom and two rings racing outward from the centre */
+.ri-bloom, .ri-ring {
+  position: absolute; left: 50%; top: 50%;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.ri-bloom {
+  width: 120vmax; height: 120vmax;
+  margin: -60vmax 0 0 -60vmax;
+  background: radial-gradient(circle, rgba(196, 120, 255, 0.55) 0%, rgba(140, 60, 255, 0.25) 30%, rgba(120, 40, 255, 0) 62%);
+  animation: ri-bloom 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.ri-ring {
+  width: 30vmax; height: 30vmax;
+  margin: -15vmax 0 0 -15vmax;
+  border: 2px solid rgba(225, 190, 255, 0.95);
+  box-shadow: 0 0 24px 6px rgba(170, 90, 255, 0.75), inset 0 0 24px 4px rgba(170, 90, 255, 0.55);
+  animation: ri-ring 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.ri-ring--late { animation-delay: 0.14s; opacity: 0; border-width: 1px; }
+@keyframes ri-bloom {
+  0%   { transform: scale(0.15); opacity: 0; }
+  25%  { opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+@keyframes ri-ring {
+  0%   { transform: scale(0.05); opacity: 1; }
+  70%  { opacity: 0.6; }
+  100% { transform: scale(4.2); opacity: 0; }
+}
+
+/* the resume: loads hidden behind the clip, then sharpens into place */
+.ri-view {
+  position: absolute; inset: 0;
+  z-index: 1;
+  display: flex; flex-direction: column;
+  background: var(--color-paper);
+  cursor: default;
+  opacity: 0;
+  transform: scale(1.045);
+  filter: blur(14px) saturate(1.4);
+  transition: opacity 0.7s ease 0.1s, transform 1.25s cubic-bezier(0.16, 1, 0.3, 1), filter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+}
+.ri-view.ri-view--in { opacity: 1; transform: none; filter: none; }
+.ri-bar {
+  display: flex; align-items: center; gap: var(--space-sm);
+  padding: 10px var(--space-md);
+  border-bottom: 1px solid var(--color-rule);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  transform: translateY(-110%);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s, opacity 0.5s ease 0.45s;
+}
+.ri-view--in .ri-bar { transform: none; opacity: 1; }
+.ri-title { margin-right: auto; }
+.ri-btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-ink-2);
+  background: none;
+  border: 1px solid var(--color-rule);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.ri-btn:hover { color: var(--color-ink); border-color: var(--color-ink-3); }
+.ri-frame { flex: 1; width: 100%; border: none; background: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ri-overlay, .ri-white, .ri-view, .ri-bar { transition: opacity 0.2s ease; transform: none; filter: none; }
+  .ri-bloom, .ri-ring { display: none; }
+}
