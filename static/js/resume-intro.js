@@ -2,13 +2,28 @@
    then the resume is revealed out of the scene's white ending: a purple shockwave, and the page
    sharpening into place. The resume loads behind the clip so it's ready when the white clears.
    Skippable with a click, Esc or the skip button; skipped entirely under reduced motion (it flashes).
-   On phones, where PDFs don't scroll inside a frame, it opens the PDF itself. */
+   On phones, where PDFs don't scroll inside a frame, it opens the PDF itself.
+   The host doesn't answer byte-range requests, which Safari needs to stream video, so the clip is
+   fetched in the background when someone points at a Resume link and played from memory. */
 (function () {
   'use strict';
 
   var PDF = 'static/docs/ZaidAhmadResume.pdf';
   var CLIP = 'static/video/hollow-purple.mp4';
   var ov = null, video = null, view = null, frameReady = false, stage = 'off';
+  var blobUrl = null, blobPromise = null;
+
+  // Download the clip into memory (once). Skipped for reduced motion and data-saver users.
+  function prefetch() {
+    if (blobUrl || blobPromise || !window.fetch || !window.URL || reduced()) return blobPromise;
+    var c = navigator.connection;
+    if (c && c.saveData) return null;
+    blobPromise = fetch(CLIP)
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.blob(); })
+      .then(function (b) { blobUrl = URL.createObjectURL(b); return blobUrl; })
+      .catch(function () { blobPromise = null; return null; });
+    return blobPromise;
+  }
 
   var reduced = function () { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; };
   var coarse = function () { return window.matchMedia && window.matchMedia('(pointer: coarse)').matches; };
@@ -54,7 +69,8 @@
     makeOverlay();
     if (!coarse()) buildView();
     video = el('video', 'ri-video', ov);
-    video.src = CLIP;
+    var fromMemory = !!blobUrl;
+    video.src = blobUrl || CLIP;
     video.preload = 'auto';
     video.playsInline = true;
     video.setAttribute('playsinline', '');
@@ -63,7 +79,18 @@
       if (video && video.duration && video.duration - video.currentTime <= 0.25) finish();
     });
     video.addEventListener('ended', finish);
-    video.addEventListener('error', finish);
+    // Streaming failed (Safari without range support): play it from memory instead
+    video.addEventListener('error', function () {
+      if (fromMemory || !video) return finish();
+      fromMemory = true;
+      var pr = blobPromise || prefetch();
+      if (!pr) return finish();
+      pr.then(function (url) {
+        if (!url || !video || stage !== 'video') return finish();
+        video.src = url;
+        playWithSound();
+      });
+    });
     var skip = el('button', 'ri-skip', ov, 'skip ›');
     skip.type = 'button';
     skip.addEventListener('click', function (e) { e.stopPropagation(); finish(); });
@@ -71,8 +98,18 @@
     requestAnimationFrame(function () { if (ov) ov.classList.add('ri-in'); });
 
     // Started inside the click, so sound is allowed; if the browser still says no, play muted
-    var p = video.play();
-    if (p && p.catch) p.catch(function () { if (!video) return; video.muted = true; video.play().catch(finish); });
+    playWithSound();
+  }
+
+  // Play with sound; fall back to muted only when the browser blocks sound (NotAllowedError).
+  // Other failures (a stream that can't load) are left to the error handler, which retries from memory.
+  function playWithSound() {
+    var p = video && video.play();
+    if (p && p.catch) p.catch(function (err) {
+      if (!video || !err || err.name !== 'NotAllowedError') return;
+      video.muted = true;
+      video.play().catch(finish);
+    });
   }
 
   function finish() {
@@ -152,5 +189,14 @@
     open();
   });
 
-  window.openResume = open;
+  // Start fetching the clip as soon as someone shows intent: hover, keyboard focus or a touch
+  function intent(e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href$="ZaidAhmadResume.pdf"]');
+    if (a) prefetch();
+  }
+  document.addEventListener('mouseover', intent, { passive: true });
+  document.addEventListener('focusin', intent);
+  document.addEventListener('touchstart', intent, { passive: true });
+
+  window.openResume = function () { prefetch(); open(); };
 })();
