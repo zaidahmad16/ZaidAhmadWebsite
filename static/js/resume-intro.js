@@ -201,6 +201,9 @@
       stage = 'video';
       ov.classList.remove('ri-overlay--waiting');
       ov.classList.add('ri-in');
+      // never show the clip's lead-in (the Six Eyes close-up of Gojo's face, under the build-up);
+      // if the build-up ended early or was skipped, jump to the sky shot it hands over to
+      if (video && video.currentTime < 3.15) video.currentTime = 3.15;
       if (video && video.paused) playWithSound();
       // let the clip fade in over the build-up's last frame, then drop the canvas
       setTimeout(stopPre, 400);
