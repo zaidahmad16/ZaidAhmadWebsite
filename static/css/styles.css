@@ -1648,41 +1648,9 @@ html.ri-open { overflow: hidden; }
   pointer-events: none;
 }
 .ri-white--in { opacity: 1; }
-.ri-white.ri-white--out { opacity: 0; transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.12s; }
+.ri-white.ri-white--out { opacity: 0; transition: opacity 0.4s ease-out; }
 
-/* Hollow Purple shockwave: a violet bloom and two rings racing outward from the centre */
-.ri-bloom, .ri-ring {
-  position: absolute; left: 50%; top: 50%;
-  z-index: 4;
-  pointer-events: none;
-  border-radius: 50%;
-}
-.ri-bloom {
-  width: 120vmax; height: 120vmax;
-  margin: -60vmax 0 0 -60vmax;
-  background: radial-gradient(circle, rgba(196, 120, 255, 0.55) 0%, rgba(140, 60, 255, 0.25) 30%, rgba(120, 40, 255, 0) 62%);
-  animation: ri-bloom 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-}
-.ri-ring {
-  width: 30vmax; height: 30vmax;
-  margin: -15vmax 0 0 -15vmax;
-  border: 2px solid rgba(225, 190, 255, 0.95);
-  box-shadow: 0 0 24px 6px rgba(170, 90, 255, 0.75), inset 0 0 24px 4px rgba(170, 90, 255, 0.55);
-  animation: ri-ring 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.ri-ring--late { animation-delay: 0.14s; opacity: 0; border-width: 1px; }
-@keyframes ri-bloom {
-  0%   { transform: scale(0.15); opacity: 0; }
-  25%  { opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
-}
-@keyframes ri-ring {
-  0%   { transform: scale(0.05); opacity: 1; }
-  70%  { opacity: 0.6; }
-  100% { transform: scale(4.2); opacity: 0; }
-}
-
-/* the resume: loads hidden behind the clip, then sharpens into place */
+/* the resume: loads hidden behind the clip; when the white clears, the page grows from tiny to full size */
 .ri-view {
   position: absolute; inset: 0;
   z-index: 1;
@@ -1690,39 +1658,187 @@ html.ri-open { overflow: hidden; }
   background: var(--color-paper);
   cursor: default;
   opacity: 0;
-  transform: scale(1.045);
-  filter: blur(14px) saturate(1.4);
-  transition: opacity 0.7s ease 0.1s, transform 1.25s cubic-bezier(0.16, 1, 0.3, 1), filter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+  transition: opacity 0.35s ease;
 }
-.ri-view.ri-view--in { opacity: 1; transform: none; filter: none; }
+.ri-view.ri-view--in { opacity: 1; }
+.ri-view .ri-sheet {
+  transform: scale(0.06);
+  transform-origin: 50% 32vh;
+  opacity: 0;
+  transition: transform 1.2s cubic-bezier(0.22, 1.25, 0.36, 1) 0.32s, opacity 0.2s ease 0.3s;
+}
+.ri-view--in .ri-sheet { transform: none; opacity: 1; }
 .ri-bar {
-  display: flex; align-items: center; gap: var(--space-sm);
-  padding: 10px var(--space-md);
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--color-rule);
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-ink-3);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  background: color-mix(in oklab, var(--color-paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 2;
   transform: translateY(-110%);
   opacity: 0;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s, opacity 0.5s ease 0.45s;
 }
 .ri-view--in .ri-bar { transform: none; opacity: 1; }
-.ri-title { margin-right: auto; }
+.ri-title { margin-right: auto; font-weight: 500; letter-spacing: 0.01em; color: var(--color-ink); }
+
+/* buttons in the site's CTA voice: Download filled (primary), Open outlined, Close as a clear exit */
 .ri-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 40px;
+  padding: 0 18px;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-ink-2);
-  background: none;
-  border: 1px solid var(--color-rule);
-  border-radius: 4px;
-  padding: 4px 10px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 1px solid var(--color-ink-3);
+  border-radius: var(--radius-sm, 6px);
   cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
-.ri-btn:hover { color: var(--color-ink); border-color: var(--color-ink-3); }
+.ri-btn:hover { border-color: var(--color-ink); transform: translateY(-1px); box-shadow: 0 4px 14px -6px color-mix(in oklab, var(--color-ink) 45%, transparent); }
+.ri-btn:active { transform: translateY(0); box-shadow: none; }
+.ri-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.ri-btn--primary { color: var(--color-paper); background: var(--color-ink); border-color: var(--color-ink); }
+.ri-btn--primary:hover { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.ri-close { margin-left: 6px; padding: 0 14px; }
+.ri-close:hover { border-color: var(--term-red, oklch(52% 0.18 25)); color: var(--term-red, oklch(52% 0.18 25)); }
+.ri-btn--wide { }
 .ri-frame { flex: 1; width: 100%; border: none; background: #fff; }
 
+/* the resume, drawn with PDF.js: white pages on the site's own background */
+.ri-pages {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 36px 32px 72px;
+  background:
+    radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--color-accent) 7%, transparent) 0%, transparent 60%),
+    var(--color-paper-2);
+}
+.ri-pages:focus { outline: none; }
+.ri-pages--fallback { padding: 0; gap: 0; }
+.ri-pages--fallback .ri-frame { width: 100%; flex: 1; }
+.ri-sheet {
+  position: relative;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-ink) 7%, transparent),
+    0 2px 6px color-mix(in oklab, var(--color-ink) 6%, transparent),
+    0 18px 50px -12px color-mix(in oklab, var(--color-ink) 22%, transparent);
+}
+.ri-sheet--loading {
+  width: min(860px, calc(100vw - 64px));
+  aspect-ratio: 8.5 / 11;
+  background: linear-gradient(100deg, #fff 30%, #f1f1f4 50%, #fff 70%) 0 0 / 300% 100%;
+  animation: ri-shimmer 1.4s linear infinite;
+}
+@keyframes ri-shimmer { from { background-position: 100% 0; } to { background-position: -50% 0; } }
+.ri-canvas { display: block; }
+.ri-links { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.ri-link {
+  position: absolute;
+  pointer-events: auto;
+  border-radius: 2px;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.ri-link:hover, .ri-link:focus-visible {
+  background: color-mix(in oklab, var(--color-accent) 14%, transparent);
+  box-shadow: 0 1px 0 0 var(--color-accent);
+  outline: none;
+}
+@media (max-width: 600px) {
+  .ri-pages { padding: 16px 12px 48px; gap: 16px; }
+  .ri-bar { padding: 10px 12px; gap: 8px; }
+  .ri-btn { height: 38px; padding: 0 14px; }
+  .ri-btn--wide { display: none; }
+  .ri-title { font-size: 0; }
+  .ri-title::before { content: 'Resume'; font-size: var(--text-sm); }
+}
+
+/* PDF.js selectable text layer (from pdfjs-dist web/pdf_viewer.css, trimmed to what's used) */
+.textLayer {
+  color-scheme: only light;
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  letter-spacing: normal;
+  word-spacing: normal;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  z-index: 1;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.textLayer :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.textLayer > :not(.markedContent),
+.textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.textLayer .markedContent { display: contents; }
+.textLayer ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); color: transparent; }
+.textLayer br::selection { background: transparent; }
+.textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  user-select: none;
+}
+.textLayer.selecting .endOfContent { top: 0; }
+
 @media (prefers-reduced-motion: reduce) {
-  .ri-overlay, .ri-white, .ri-view, .ri-bar { transition: opacity 0.2s ease; transform: none; filter: none; }
-  .ri-bloom, .ri-ring { display: none; }
+  .ri-overlay, .ri-white, .ri-view, .ri-bar, .ri-view .ri-sheet { transition: opacity 0.2s ease; transform: none; filter: none; }
+}
+
+/* ── Resume intro build-up: the WebGL canvas (hollow-purple-fx.js) drawn over the page,
+      under the clip overlay that fades in on top of it ── */
+.ri-overlay--waiting { opacity: 0; }
+.ri-fx {
+  position: fixed; inset: 0;
+  width: 100vw; height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+  display: block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ri-fx { display: none; }
 }
