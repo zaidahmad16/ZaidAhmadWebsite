@@ -15,6 +15,8 @@
   var PDFJS = 'static/vendor/pdfjs/pdf.min.js', PDFJS_WORKER = 'static/vendor/pdfjs/pdf.worker.min.js';
   var ov = null, video = null, view = null, frameReady = false, stage = 'off';
   var pdfLib = null, pdfDoc = null, renderToken = 0, resizeTimer = null, lastWidth = 0;
+  var zoom = 1, renderedZoom = 1, zoomTimer = null, zoomLabel = null;
+  var ZOOM_MIN = 0.5, ZOOM_MAX = 3;
   var blobUrl = null, blobPromise = null;
 
   // Download the clip into memory (once). Skipped for reduced motion and data-saver users.
@@ -54,6 +56,15 @@
     view = el('div', 'ri-view', ov);
     var bar = el('div', 'ri-bar', view);
     el('span', 'ri-title', bar, 'Resume — Zaid Ahmad');
+    // zoom: − / 100% / +, plus ctrl+scroll (and trackpad pinch) on the page, ctrl +/−/0 on the keyboard
+    zoom = 1; renderedZoom = 1;
+    var zg = el('div', 'ri-zoom', bar);
+    var zOut = el('button', 'ri-zbtn', zg, '−'); zOut.type = 'button'; zOut.setAttribute('aria-label', 'Zoom out');
+    zoomLabel = el('button', 'ri-zlabel', zg, '100%'); zoomLabel.type = 'button'; zoomLabel.setAttribute('aria-label', 'Reset zoom');
+    var zIn = el('button', 'ri-zbtn', zg, '+'); zIn.type = 'button'; zIn.setAttribute('aria-label', 'Zoom in');
+    zOut.addEventListener('click', function () { setZoom(zoom / 1.2); });
+    zIn.addEventListener('click', function () { setZoom(zoom * 1.2); });
+    zoomLabel.addEventListener('click', function () { setZoom(1); });
     var dl = el('a', 'ri-btn ri-btn--primary', bar, 'Download ↓');
     dl.href = PDF; dl.setAttribute('download', 'ZaidAhmadResume.pdf');
     var tab = el('a', 'ri-btn ri-btn--wide', bar, 'Open ↗');
@@ -63,6 +74,30 @@
     close.addEventListener('click', teardown);
     var pages = el('div', 'ri-pages', view);
     pages.setAttribute('tabindex', '0');
+    // the mouse wheel zooms around the cursor (no modifier key); drag the page to move around it
+    pages.addEventListener('wheel', function (e) {
+      if (pages.classList.contains('ri-pages--fallback')) return;
+      e.preventDefault();
+      var dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      setZoom(zoom * Math.exp(-dy * 0.0022), e.clientX, e.clientY);
+    }, { passive: false });
+    var drag = null;
+    pages.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 || e.pointerType !== 'mouse' || (e.target.closest && e.target.closest('.ri-link'))) return;
+      drag = { x: e.clientX, y: e.clientY, sl: pages.scrollLeft, st: pages.scrollTop, moved: false };
+      e.preventDefault();   // no text selection fighting the drag
+      try { pages.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 4) return;
+      drag.moved = true;
+      pages.classList.add('ri-pages--dragging');
+      pages.scrollLeft = drag.sl - dx; pages.scrollTop = drag.st - dy;
+      e.preventDefault();
+    });
+    window.addEventListener('pointerup', function () { drag = null; pages.classList.remove('ri-pages--dragging'); });
     el('div', 'ri-sheet ri-sheet--loading', pages);
     renderPdf(pages);
   }
@@ -85,9 +120,10 @@
     loadPdf().then(function (doc) {
       if (token !== renderToken || !pages.isConnected) return;
       var avail = pages.clientWidth - (pages.clientWidth < 600 ? 24 : 64);
-      var cssW = Math.max(280, Math.min(860, avail));
+      var cssW = Math.max(280, Math.min(860, avail)) * zoom;
+      var drawnZoom = zoom;
       lastWidth = pages.clientWidth;
-      var dpr = Math.min(window.devicePixelRatio || 1, 3);
+      var dpr = Math.min((window.devicePixelRatio || 1) * Math.max(1, Math.min(zoom, 1.5)), 4);
       var frag = document.createDocumentFragment(), jobs = [];
       for (var n = 1; n <= doc.numPages; n++) jobs.push(doc.getPage(n));
       return Promise.all(jobs).then(function (list) {
@@ -127,8 +163,11 @@
         }, Promise.resolve());
       }).then(function () {
         if (token !== renderToken || !pages.isConnected) return;
+        var sl = pages.scrollLeft, st = pages.scrollTop;   // the zoomed preview already sits where the new pages land
         pages.innerHTML = '';
         pages.appendChild(frag);
+        pages.scrollLeft = sl; pages.scrollTop = st;
+        renderedZoom = drawnZoom;
         frameReady = true;
       });
     }).catch(function () {
@@ -141,6 +180,25 @@
       frame.addEventListener('load', function () { frameReady = true; });
       frame.src = PDF;
     });
+  }
+
+  // Zoom instantly (CSS zoom on the drawn pages), keeping the point under the cursor in place,
+  // then re-draw sharp at the new size once zooming pauses
+  function setZoom(z, cx, cy) {
+    z = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+    var pages = view && view.querySelector('.ri-pages:not(.ri-pages--fallback)');
+    if (!pages || Math.abs(z - zoom) < 0.001) return;
+    var r = pages.getBoundingClientRect();
+    if (cx == null) { cx = r.left + r.width / 2; cy = r.top + r.height / 2; }
+    var ox = cx - r.left, oy = cy - r.top;
+    var px = pages.scrollLeft + ox, py = pages.scrollTop + oy, k = z / zoom;
+    zoom = z;
+    if (zoomLabel) zoomLabel.textContent = Math.round(z * 100) + '%';
+    Array.prototype.forEach.call(pages.querySelectorAll('.ri-sheet'), function (s) { s.style.zoom = zoom / renderedZoom; });
+    pages.scrollLeft = px * k - ox;
+    pages.scrollTop = py * k - oy;
+    clearTimeout(zoomTimer);
+    zoomTimer = setTimeout(function () { renderPdf(pages); }, 220);
   }
 
   function onResize() {
@@ -224,7 +282,7 @@
   //    underneath from the start (its opening is the music swell), and the effect runs on its clock. ──
   var FX_SNAP = 'static/vendor/modern-screenshot/modern-screenshot.min.js';
   var FX_SKY = 'static/images/hp-sky.jpg';
-  var FX_DURATION = 3.1;   // the clip cuts to the Blue/Red sky shot at 3.15s
+  var FX_DURATION = 3.9;   // bubbles open on the clip's sky shot (3.15s) and fill the screen by here
   var fx = null, fxLoad = null;
 
   function loadScript(src) {
@@ -297,15 +355,19 @@
       onStart();
       video.currentTime = 0;
       playWithSound();
-      var t0 = performance.now();
+      var clk = { vt: -1, at: performance.now() };
       fx = window.HollowPurpleFX.play({
-        snapshot: r[0], sky: r[1], box: box, duration: FX_DURATION,
+        snapshot: r[0], sky: r[1], box: box, duration: FX_DURATION, video: video,
         // the canvas draws the element (melting) from here on, so hide the real one under it
         onFirstFrame: function () { if (target) { target.style.visibility = 'hidden'; fx && (fx.target = target); } },
         // the clip's clock once it's really playing; the wall clock while it buffers
+        // the clip's own playback position, so the bubbles open exactly on its sky shot; only if the
+        // clip stalls for over a second does the wall clock carry the build-up on
         clock: function () {
-          var wall = (performance.now() - t0) / 1000;
-          return video && !video.paused && video.currentTime > 0 ? Math.max(video.currentTime, wall - 0.25) : wall;
+          var now = performance.now(), vt = video ? video.currentTime : 0;
+          if (vt !== clk.vt) { clk.vt = vt; clk.at = now; }
+          var stalled = now - clk.at - 1000;
+          return stalled > 0 ? clk.vt + stalled / 1000 : clk.vt;
         },
         onDone: done,
       });
@@ -384,6 +446,11 @@
   }
 
   function onKey(e) {
+    if (stage === 'resume' && (e.ctrlKey || e.metaKey) && /^[=+\-0]$/.test(e.key)) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      if (e.key === '0') setZoom(1); else setZoom(e.key === '-' ? zoom / 1.2 : zoom * 1.2);
+      return;
+    }
     if (e.key !== 'Escape') return;
     e.preventDefault(); e.stopImmediatePropagation();
     if (stage === 'video' || stage === 'pre') finish(); else teardown();

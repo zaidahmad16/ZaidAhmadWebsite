@@ -12,8 +12,9 @@
 
   var FRAG = [
     'precision highp float;',
-    'uniform sampler2D uPage, uSky;',
-    'uniform vec2 uRes, uSkySize, uBlue, uRed;',
+    'uniform sampler2D uPage, uSky, uVid;',
+    'uniform vec2 uRes, uSkySize, uVidSize, uBlue, uRed;',
+    'uniform float uUseVid;',
     'uniform vec4 uBox;',                 // melting element: x, y, w, h (px, top-left origin)
     'uniform float uBlueR, uRedR, uMelt, uBub, uBubB, uBubR, uTime, uOrbs, uHasPage;',
     'mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }',
@@ -28,6 +29,12 @@
     '  float s = max(uRes.x / uSkySize.x, uRes.y / uSkySize.y);',
     '  vec2 uv = (q - 0.5 * uRes) / (uSkySize * s) + 0.5;',
     '  return texture2D(uSky, clamp(uv, 0.0, 1.0)).rgb;',
+    '}',
+    'vec3 vid(vec2 q){',
+    '  float s = min(uRes.x / uVidSize.x, uRes.y / uVidSize.y);',
+    '  vec2 uv = (q - 0.5 * uRes) / (uVidSize * s) + 0.5;',
+    '  if (uv.x < 0.0 || uv.y < 0.0 || uv.x > 1.0 || uv.y > 1.0) return vec3(0.0);',
+    '  return texture2D(uVid, uv).rgb;',
     '}',
     'vec3 rainbow(float h){ return 0.5 + 0.5 * cos(6.2831 * (h + vec3(0.0, 0.33, 0.67))); }',
     'float smin(float a, float b, float k){ float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0); return mix(b, a, h) - k * h * (1.0 - h); }',
@@ -93,7 +100,8 @@
     '    float swirl = (1.0 - uBub) * 3.2 * exp(-r / (0.35 * S));',
     '    float lens = smoothstep(-rim * 2.5, 0.0, d);',     // refraction toward the rim
     '    vec2 sq = c + rot(swirl + uTime * 0.6 * (1.0 - uBub)) * dc * (1.0 - 0.18 * lens);',
-    '    vec3 s = sky(mix(sq, p, smoothstep(0.75, 1.0, uBub)));',
+    '    vec2 sp = mix(sq, p, smoothstep(0.7, 1.0, uBub));',
+    '    vec3 s = uUseVid > 0.5 ? vid(sp) : sky(sp);',
     '    s += vec3(0.55, 0.8, 1.0) * smoothstep(-rim, 0.0, d) * 0.7;',     // bright refractive rim
     '    float inside = 1.0 - smoothstep(-1.5, 1.5, d);',
     '    col = mix(col, s, inside); al = mix(al, 1.0, inside);',
@@ -166,10 +174,11 @@
     if (opts.snapshot) texture(gl, 0, opts.snapshot, true);
     else texture(gl, 0, new ImageData(1, 1), true);
     texture(gl, 1, opts.sky, false);
+    var vtex = texture(gl, 2, new ImageData(2, 2), true);   // the playing clip, updated every frame
     var U = {};
-    ['uPage', 'uSky', 'uRes', 'uSkySize', 'uBlue', 'uRed', 'uBox', 'uBlueR', 'uRedR', 'uMelt', 'uBub', 'uBubB', 'uBubR', 'uTime', 'uOrbs', 'uHasPage']
+    ['uPage', 'uSky', 'uVid', 'uVidSize', 'uUseVid', 'uRes', 'uSkySize', 'uBlue', 'uRed', 'uBox', 'uBlueR', 'uRedR', 'uMelt', 'uBub', 'uBubB', 'uBubR', 'uTime', 'uOrbs', 'uHasPage']
       .forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
-    gl.uniform1i(U.uPage, 0); gl.uniform1i(U.uSky, 1);
+    gl.uniform1i(U.uPage, 0); gl.uniform1i(U.uSky, 1); gl.uniform1i(U.uVid, 2);
     gl.uniform1f(U.uHasPage, opts.snapshot ? 1 : 0);
     gl.clearColor(0, 0, 0, 0);
     gl.uniform2f(U.uRes, canvas.width, canvas.height);
@@ -183,16 +192,29 @@
     gl.uniform4f(U.uBox, bx, by, bw, bh);
     var r0 = Math.max(14 * k, Math.min(48 * k, bw * 0.085));
     var diag = Math.hypot(canvas.width, canvas.height);
-    var D = opts.duration || 3.1, done = false, raf = null, first = true;
+    var D = opts.duration || 3.9, done = false, raf = null, first = true;
+    var SKY = 3.22;   // just after the clip cuts to the Blue/Red sky shot (3.15s)
 
     function frame() {
       if (done) return;
       var t = opts.clock();
       // timeline (fractions of D): appear, rise and start to melt, full melt, bubbles
-      var a = easeInOut(seg(t, 0.0, 0.13 * D));
-      var rise = easeInOut(seg(t, 0.13 * D, 0.55 * D));
-      var melt = 0.08 * a + 0.4 * easeIn(seg(t, 0.13 * D, 0.42 * D)) + 0.52 * easeIn(seg(t, 0.42 * D, 0.71 * D));
-      var bubB = easeIn(seg(t, 0.71 * D, 0.99 * D)), bubR = easeIn(seg(t, 0.75 * D, 0.99 * D));
+      var a = easeInOut(seg(t, 0.0, 0.4));
+      var rise = easeInOut(seg(t, 0.4, 2.4));
+      var melt = 0.08 * a + 0.4 * easeIn(seg(t, 0.4, 1.7)) + 0.52 * easeIn(seg(t, 1.7, SKY - 0.1));
+      var bubB = easeIn(seg(t, SKY - 0.05, D - 0.05)), bubR = easeIn(seg(t, SKY + 0.05, D - 0.05));
+      // bubbles show the live clip (in motion) once it's on the sky shot; the sky still before that
+      var v = opts.video, live = v && v.readyState >= 2 && v.currentTime >= SKY;
+      if (live) {
+        try {
+          gl.activeTexture(gl.TEXTURE2);
+          gl.bindTexture(gl.TEXTURE_2D, vtex);
+          gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, v);
+          gl.uniform2f(U.uVidSize, v.videoWidth, v.videoHeight);
+        } catch (e) { live = false; }
+      }
+      gl.uniform1f(U.uUseVid, live ? 1 : 0);
       var blueY = lerp(by + bh * 0.42, by + bh * 0.04, rise), redY = lerp(by + bh * 0.62, by + bh * 0.96, rise);
       var blueR = r0 * a * lerp(1, 2.6, rise) * (1 + 0.06 * Math.sin(t * 9));
       var redR = r0 * 0.62 * a * lerp(1, 1.5, rise) * (1 + 0.06 * Math.cos(t * 11));
@@ -205,7 +227,7 @@
       gl.uniform1f(U.uBubB, lerp(blueR * 0.9, diag * 1.15, bubB));
       gl.uniform1f(U.uBubR, lerp(redR * 0.9, diag * 1.15, bubR));
       gl.uniform1f(U.uTime, t);
-      gl.uniform1f(U.uOrbs, a * (1 - seg(t, 0.72 * D, 0.8 * D)));
+      gl.uniform1f(U.uOrbs, a * (1 - seg(t, SKY, SKY + 0.25)));
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       if (first) { first = false; if (opts.onFirstFrame) opts.onFirstFrame(); }
