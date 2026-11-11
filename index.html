@@ -123,10 +123,23 @@
     <section id="work" class="page">
       <div class="page-inner">
         <p class="section-label">Selected work</p>
+
+        <div class="proj-filters" role="tablist" aria-label="Filter projects by discipline">
+          <button class="proj-filter-btn is-active" data-filter="all" aria-pressed="true">All</button>
+          <button class="proj-filter-btn" data-filter="ml-ai" aria-pressed="false">ML/AI</button>
+          <button class="proj-filter-btn" data-filter="data-science" aria-pressed="false">Data Science</button>
+          <button class="proj-filter-btn" data-filter="swe" aria-pressed="false">SWE</button>
+          <button class="proj-filter-btn" data-filter="systems" aria-pressed="false">Systems &amp; Embedded</button>
+        </div>
+
         <ul class="proj-list">
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="swe">
             <a href="projects/duely.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/duely.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/duely.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">Duely</div>
@@ -141,8 +154,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="data-science">
             <a href="projects/ontario-drive-test-map.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/ontario-drive-test-map.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/ontario-drive-test-map.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">OntarioDriveTestMap</div>
@@ -158,8 +175,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="swe">
             <a href="projects/salah.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/salah.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/salah.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">Salah</div>
@@ -174,8 +195,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="ml-ai">
             <a href="projects/rpi-packet-analyzer.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/rpi-packet-analyzer.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/rpi-packet-analyzer.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">RPi Network Packet Analyzer</div>
@@ -190,8 +215,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="swe">
             <a href="projects/carleton-course-map.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/carleton-course-map.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/carleton-course-map.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">Carleton Course Map</div>
@@ -207,8 +236,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="systems">
             <a href="projects/linux-kernel-patch.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/linux-kernel-patch.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/linux-kernel-patch.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">Linux Wireless Kernel Patch</div>
@@ -223,8 +256,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="systems">
             <a href="projects/nintendo-ds.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/nintendo-ds.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/nintendo-ds.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">Nintendo DS Business Card</div>
@@ -239,8 +276,12 @@
             </a>
           </li>
 
-          <li class="proj-row">
+          <li class="proj-row" data-cat="systems">
             <a href="projects/c-simulation.html" class="proj-row-link">
+              <div class="proj-row-thumb">
+                <img class="proj-row-thumb-img proj-row-thumb-img--light" src="static/images/og/light/c-simulation.png" alt="" loading="lazy" width="1200" height="630">
+                <img class="proj-row-thumb-img proj-row-thumb-img--dark" src="static/images/og/c-simulation.png" alt="" loading="lazy" width="1200" height="630">
+              </div>
               <div class="proj-row-main">
                 <div class="proj-row-namerow">
                   <div class="proj-row-name">Ghost Hunting Simulation</div>
@@ -499,6 +540,7 @@
 
 
   <script src="static/js/cinematic.js?v=2"></script>
+  <script src="static/js/proj-filter.js?v=1" defer></script>
   <script src="static/js/script.js?v=10"></script>
   <script src="static/js/cursor.js"></script>
   <script src="static/js/term-screen.js?v=1"></script>

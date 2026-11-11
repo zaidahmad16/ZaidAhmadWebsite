@@ -327,25 +327,82 @@ html.is-paged body { overflow: hidden; height: 100%; }
 .section-heading:first-child { margin-top: 0; }
 
 /* ── Project rows (Portfolio Grid) ─────── */
-.proj-list { list-style: none; }
+.proj-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3xs);
+  margin-bottom: var(--space-lg);
+}
 
-.proj-row { border-top: 1px solid var(--color-rule); }
-.proj-row:last-child { border-bottom: 1px solid var(--color-rule); }
+.proj-filter-btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-ink-2);
+  background: none;
+  border: 1px solid transparent;
+  padding: var(--space-3xs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color var(--dur-short) var(--ease-out),
+              background var(--dur-short) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .proj-filter-btn:hover { color: var(--color-ink); background: var(--color-paper-3); }
+}
+.proj-filter-btn.is-active { color: var(--color-accent); background: var(--color-accent-dim); }
+
+.proj-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.proj-row.is-hidden { display: none; }
 
 .proj-row-link {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   gap: var(--space-sm);
-  align-items: flex-start;
-  padding: var(--space-md) var(--space-xs);
+  padding: var(--space-xs);
   transition: background var(--dur-short) var(--ease-out);
   border-radius: var(--radius-md);
+  border: 1px solid var(--color-rule);
 }
 @media (hover: hover) and (pointer: fine) {
   .proj-row-link:hover { background: var(--color-paper-2); }
 }
 
-.proj-row-main { min-width: 0; }
+.proj-row-thumb {
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--color-paper-2);
+}
+.proj-row-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .proj-row-link:hover .proj-row-thumb-img { transform: scale(1.03); }
+}
+
+.proj-row-thumb-img--light { display: block; }
+.proj-row-thumb-img--dark { display: none; }
+[data-theme="dark"] .proj-row-thumb-img--light { display: none; }
+[data-theme="dark"] .proj-row-thumb-img--dark { display: block; }
+
+.proj-row-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
 
 .proj-row-namerow {
   display: flex;
@@ -423,7 +480,8 @@ html.is-paged body { overflow: hidden; height: 100%; }
   font-size: var(--text-xl);
   color: var(--color-ink-3);
   flex-shrink: 0;
-  padding-top: 2px;
+  align-self: flex-end;
+  margin-top: auto;
   transition: color var(--dur-short) var(--ease-out),
               transform var(--dur-short) var(--ease-out);
 }
@@ -753,7 +811,8 @@ html.is-paged body { overflow: hidden; height: 100%; }
 .theme-toggle:focus-visible,
 .id-btn:focus-visible { border-radius: var(--radius-pill); }
 .proj-row-link:focus-visible { border-radius: var(--radius-md); outline-offset: 2px; }
-.sn-link:focus-visible { border-radius: var(--radius-pill); }
+.sn-link:focus-visible,
+.proj-filter-btn:focus-visible { border-radius: var(--radius-pill); }
 .ct-link:focus-visible { outline-offset: 0; }
 
 /* ── prefers-reduced-motion ─────────────── */
@@ -1017,6 +1076,7 @@ html.is-paged body { overflow: hidden; height: 100%; }
 @media (max-width: 768px) {
   .page-inner { padding: var(--space-lg) var(--space-lg) var(--space-2xl); }
   .id-bio { max-width: 100%; }
+  .proj-list { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 600px) {
@@ -1028,6 +1088,7 @@ html.is-paged body { overflow: hidden; height: 100%; }
   .id-ctas { flex-direction: column; }
   .id-btn { text-align: center; }
   .proj-row-name { font-size: var(--text-lg); }
+  .proj-list { grid-template-columns: 1fr; }
 
   /* show mobile nav, configure as flex row */
   .mobile-nav {
@@ -1041,7 +1102,6 @@ html.is-paged body { overflow: hidden; height: 100%; }
 
 @media (max-width: 400px) {
   .id-ctas { gap: var(--space-2xs); }
-  .proj-row-link { grid-template-columns: 1fr auto; }
 }
 
 /* ══════════════════════════════════════════════════════════
